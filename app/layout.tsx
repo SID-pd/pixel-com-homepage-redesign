@@ -1,0 +1,54 @@
+import { Analytics } from '@vercel/analytics/next'
+import type { Metadata, Viewport } from 'next'
+import { Fredoka, Geist, Instrument_Serif } from 'next/font/google'
+import './globals.css'
+
+const geist = Geist({ subsets: ['latin'], variable: '--font-geist', display: 'swap' })
+const instrument = Instrument_Serif({
+  subsets: ['latin'],
+  weight: '400',
+  style: ['normal', 'italic'],
+  variable: '--font-instrument',
+  display: 'swap',
+})
+
+const fredoka = Fredoka({ subsets: ['latin'], variable: '--font-fredoka', display: 'swap' })
+
+const introScript = `try{if(sessionStorage.getItem('pixovo-intro')||matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.dataset.introSeen='1'}catch(e){}`
+
+export const metadata: Metadata = {
+  title: 'Pixovo Custom Photo Book Maker for Square Photo Books',
+  description:
+    'Upload your photos and let Pixovo design a custom square photo book in minutes. Loved by 50,000+ customers. Printed in the USA. Start free.',
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/icon-light-32x32.png', type: 'image/png' },
+      { url: '/icon.svg', type: 'image/svg+xml' },
+    ],
+    apple: '/apple-icon.png',
+  },
+}
+
+export const viewport: Viewport = {
+  colorScheme: 'light',
+  themeColor: '#f8f5f0',
+}
+
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  return (
+    <html
+      lang="en"
+      suppressHydrationWarning
+      className={`${geist.variable} ${instrument.variable} ${fredoka.variable} bg-background`}
+    >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: introScript }} />
+      </head>
+      <body>
+        {children}
+        {process.env.NODE_ENV === 'production' && <Analytics />}
+      </body>
+    </html>
+  )
+}
