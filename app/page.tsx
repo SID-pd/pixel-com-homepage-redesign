@@ -7,6 +7,7 @@ import { HowItWorks } from '@/components/pixel/how-it-works'
 import { CoverStudio } from '@/components/pixel/cover-studio'
 import { Templates } from '@/components/pixel/templates'
 import { GiftBanner } from '@/components/pixel/gift-banner'
+import { AppPromo } from '@/components/pixel/app-promo'
 import { Reviews } from '@/components/pixel/reviews'
 import { FinalCta, SiteFooter } from '@/components/pixel/final-cta'
 
@@ -23,6 +24,7 @@ export default function Page() {
         <CoverStudio />
         <Templates />
         <GiftBanner />
+        <AppPromo />
         <Reviews />
         <FinalCta />
       </main>
