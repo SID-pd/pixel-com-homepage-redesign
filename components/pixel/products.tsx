@@ -16,6 +16,7 @@ const products = [
     image: '/images/choose_your_size_1.webp',
     badge: 'Popular',
     span: 'lg:col-span-4',
+    maxW: 'max-w-[240px]',
   },
   {
     title: '10x10 Square Book',
@@ -25,6 +26,7 @@ const products = [
     image: '/images/choose_your_size_2.webp',
     badge: 'Most Popular',
     span: 'lg:col-span-4',
+    maxW: 'max-w-[265px]',
   },
   {
     title: '12x12 Square Book',
@@ -34,6 +36,7 @@ const products = [
     image: '/images/choose_your_size_3.webp',
     badge: 'Deluxe',
     span: 'lg:col-span-4',
+    maxW: 'max-w-[290px]',
   },
 ]
 
@@ -60,7 +63,7 @@ function ProductCard({ product }: { product: (typeof products)[number] }) {
       {/* Credit: Code forked from Paul Irish of Smashing Magazine */}
       <div className="panel__image panel__image--book my-6">
         <Link href={product.href} className="books__book__image">
-          <div className="books__book__img">
+          <div className={cn("books__book__img", product.maxW)}>
             <img
               src={product.image}
               alt={product.title}
@@ -96,7 +99,6 @@ function ProductCard({ product }: { product: (typeof products)[number] }) {
 
         .books__book__img {
           width: 100%;
-          max-width: 270px;
           will-change: transform;
           transform-origin: 0 100%;
           transform: rotate(-10deg);
