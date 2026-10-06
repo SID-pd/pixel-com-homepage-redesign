@@ -75,12 +75,8 @@ export function Hero() {
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: base, ease: easeOutExpo }}
-            className="inline-flex items-center gap-2 rounded-full bg-card/70 py-1.5 pl-1.5 pr-4 text-sm text-foreground/80 shadow-sm ring-1 ring-foreground/5 backdrop-blur"
+            className="inline-flex items-center gap-2 rounded-full bg-card/70 px-4 py-1.5 text-sm text-foreground/80 shadow-sm ring-1 ring-foreground/5 backdrop-blur"
           >
-            <span className="inline-flex items-center gap-1 rounded-full bg-accent px-2.5 py-0.5 text-xs font-medium text-accent-foreground">
-              <Sparkles className="size-3" aria-hidden />
-              Smart Design
-            </span>
             Premium Photo Books — Printed in the USA
           </motion.span>
 
