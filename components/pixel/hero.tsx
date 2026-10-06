@@ -82,9 +82,10 @@ export function Hero() {
 
           <h1
             id="hero-title"
-            className="text-balance font-serif text-[clamp(3rem,7vw,5.5rem)] leading-[0.94] tracking-[-0.02em]"
+            className="text-balance font-serif text-[clamp(2.75rem,6.5vw,5.25rem)] leading-[1.02] tracking-[-0.02em]"
           >
-            Create a custom photo book designed automatically in minutes.
+            Every photo has a heart.{' '}
+            <em className="font-serif font-normal italic text-accent">Give yours a home.</em>
           </h1>
 
           <motion.p
