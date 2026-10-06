@@ -13,14 +13,11 @@ export function ValueStrip() {
     <section aria-label="Why Pixovo" className="px-5 md:px-6">
       <Reveal
         staggerChildren={0.06}
-        className="mx-auto grid max-w-6xl grid-cols-2 gap-px overflow-hidden rounded-3xl bg-foreground/[0.06] ring-1 ring-foreground/[0.06] md:grid-cols-4"
+        className="mx-auto grid max-w-6xl grid-cols-2 gap-4 md:grid-cols-4"
       >
         {values.map(({ icon: Icon, title, text }) => (
-          <RevealItem key={title} className="group flex flex-col gap-3 bg-background p-5 transition-colors duration-300 hover:bg-card md:p-7">
-            <Icon
-              className="size-5 text-accent transition-transform duration-500 ease-out group-hover:-translate-y-0.5 group-hover:rotate-[-8deg]"
-              aria-hidden
-            />
+          <RevealItem key={title} className="flex flex-col gap-3 rounded-2xl bg-card p-5 md:p-6 shadow-sm">
+            <Icon className="size-5 text-accent" aria-hidden />
             <div>
               <h3 className="font-medium tracking-tight">{title}</h3>
               <p className="mt-0.5 text-sm text-muted-foreground">{text}</p>

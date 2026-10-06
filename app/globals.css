@@ -57,31 +57,31 @@
 :root {
   color-scheme: light;
   --radius: 1rem;
-  --background: oklch(0.975 0.008 80);
-  --foreground: oklch(0.2 0.015 55);
-  --card: oklch(0.99 0.004 80);
-  --card-foreground: oklch(0.2 0.015 55);
-  --popover: oklch(0.99 0.004 80);
-  --popover-foreground: oklch(0.2 0.015 55);
-  --primary: oklch(0.2 0.015 55);
-  --primary-foreground: oklch(0.975 0.008 80);
-  --secondary: oklch(0.94 0.012 75);
-  --secondary-foreground: oklch(0.2 0.015 55);
-  --muted: oklch(0.94 0.012 75);
-  --muted-foreground: oklch(0.47 0.015 55);
-  --accent: oklch(0.63 0.14 42);
+  --background: oklch(0.978 0.012 75); /* Mixbook warm sand / cream #FAF6F0 */
+  --foreground: oklch(0.20 0.018 50); /* Warm deep espresso charcoal */
+  --card: oklch(0.992 0.006 75); /* Soft off-white card canvas */
+  --card-foreground: oklch(0.20 0.018 50);
+  --popover: oklch(0.992 0.006 75);
+  --popover-foreground: oklch(0.20 0.018 50);
+  --primary: oklch(0.20 0.018 50);
+  --primary-foreground: oklch(0.98 0.008 75);
+  --secondary: oklch(0.945 0.016 75); /* Soft beige secondary container */
+  --secondary-foreground: oklch(0.20 0.018 50);
+  --muted: oklch(0.945 0.016 75);
+  --muted-foreground: oklch(0.48 0.018 50);
+  --accent: oklch(0.58 0.16 36); /* Mixbook signature warm terracotta / coral */
   --accent-foreground: oklch(0.99 0.004 80);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.2 0.015 55 / 0.1);
-  --input: oklch(0.2 0.015 55 / 0.15);
-  --ring: oklch(0.63 0.14 42);
-  --ink: oklch(0.19 0.012 55);
-  --ink-foreground: oklch(0.96 0.01 80);
+  --border: oklch(0.20 0.018 50 / 0.12);
+  --input: oklch(0.20 0.018 50 / 0.15);
+  --ring: oklch(0.58 0.16 36);
+  --ink: oklch(0.19 0.015 50);
+  --ink-foreground: oklch(0.97 0.01 75);
   --mint: oklch(0.88 0.07 160);
-  --butter: oklch(0.92 0.1 100);
+  --butter: oklch(0.93 0.1 85);
   --sky: oklch(0.86 0.06 230);
-  --rose: oklch(0.73 0.12 15);
-  --logo-ink: oklch(0.28 0.03 255);
+  --rose: oklch(0.72 0.14 25);
+  --logo-ink: oklch(0.25 0.03 40);
 }
 
 [data-intro-seen] .intro-overlay {
