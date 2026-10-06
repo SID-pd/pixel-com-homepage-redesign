@@ -270,7 +270,7 @@ export function AppPromo() {
                   rel="noreferrer"
                   className="inline-flex items-center gap-3 rounded-2xl bg-card px-5 py-3 text-foreground ring-1 ring-foreground/10 shadow-float transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lift"
                 >
-                  <GooglePlayIcon className="size-6 shrink-0 fill-current" />
+                  <GooglePlayIcon className="size-6 shrink-0" />
                   <div className="flex flex-col text-left">
                     <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
                       GET IT ON
@@ -298,7 +298,22 @@ function AppleIcon({ className }: { className?: string }) {
 function GooglePlayIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-      <path d="M3.6 1.83C3.34 2.1 3.2 2.52 3.2 3.06v17.88c0 .54.14.96.4 1.23l.06.06L14.07 11.8v-.2L3.66 1.77l-.06.06zm13.72 13.72l-3.25-3.25v-.6l3.25-3.25.07.04 3.85 2.19c1.1.62 1.1 1.64 0 2.27l-3.85 2.19-.07.04zm-3.25-3.85L3.92 2.2c-.37-.37-.98-.37-1.35 0L14.07 11.7zm0 1.2l-11.5 9.5c.37.37.98.37 1.35 0l10.15-9.5z" />
+      <path
+        d="M3.609 1.814A2.37 2.37 0 0 0 3 3.487v17.026c0 .66.23 1.25.609 1.673l10.183-10.183L3.609 1.814z"
+        fill="#00D2FF"
+      />
+      <path
+        d="M17.067 8.725l-3.275 3.275 3.275 3.275 3.58-2.045c.9-.514.9-1.946 0-2.46l-3.58-2.045z"
+        fill="#FFC107"
+      />
+      <path
+        d="M13.792 12L3.609 1.814c.22-.244.52-.404.861-.404.28 0 .54.09.76.24l11.837 6.765-3.275 3.585z"
+        fill="#00F076"
+      />
+      <path
+        d="M13.792 12l3.275 3.585-11.837 6.765c-.22.15-.48.24-.76.24-.341 0-.641-.16-.861-.404L13.792 12z"
+        fill="#FF3D00"
+      />
     </svg>
   )
 }
