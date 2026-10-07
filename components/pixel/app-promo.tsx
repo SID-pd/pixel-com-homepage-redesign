@@ -13,15 +13,12 @@ import {
 import {
   Download,
   Flame,
-  Globe,
   Layers,
-  QrCode,
   Smartphone,
   Sparkles,
   Star,
   Zap,
 } from 'lucide-react'
-import { cn } from '@/lib/utils'
 import { easeOutExpo } from '@/lib/motion'
 import { SectionHeading } from './section-heading'
 import { Reveal, RevealItem } from './reveal'
@@ -30,19 +27,19 @@ const appFeatures = [
   {
     icon: Zap,
     title: 'Instant Camera Roll Sync',
-    text: 'Select 100+ photos directly from your phone camera roll in one tap.',
+    text: 'Select 100+ photos directly from your phone in one tap.',
     color: '#58B2C4',
   },
   {
     icon: Layers,
     title: 'Touch-Optimized Editor',
-    text: 'Pinch to zoom, swap spreads with a swipe, and preview your book in 3D.',
+    text: 'Pinch to zoom, swap spreads with a swipe, preview in 3D.',
     color: '#FBE58B',
   },
   {
     icon: Flame,
-    title: 'Auto-Save & Direct Order',
-    text: 'Your progress syncs seamlessly. Order with Apple Pay or Google Pay in seconds.',
+    title: 'Auto-Save & Express Checkout',
+    text: 'Seamless progress sync. Order with Apple Pay or Google Pay.',
     color: '#DC8A97',
   },
 ]
@@ -56,7 +53,7 @@ export function AppPromo() {
   const mouseY = useMotionValue(0)
 
   const springConfig = { stiffness: 70, damping: 20 }
-  const tiltX = useSpring(useTransform(mouseY, [-0.5, 0.5], [14, -14]), springConfig)
+  const tiltX = useSpring(useTransform(mouseY, [-0.5, 0.5], [10, -10]), springConfig)
   const tiltY = useSpring(useMotionValue(0), springConfig)
 
   // Scroll driven 3D sweet-spot animation
@@ -65,12 +62,12 @@ export function AppPromo() {
     offset: ['start end', 'end start'],
   })
 
-  // Sweet spot scroll transformations: left to right glide + 3D rotation
-  const scrollRotateY = useTransform(scrollYProgress, [0.15, 0.5, 0.85], [-24, 0, 24])
-  const scrollX = useTransform(scrollYProgress, [0.15, 0.5, 0.85], [-45, 0, 45])
-  const scrollScale = useTransform(scrollYProgress, [0.2, 0.5, 0.8], [0.94, 1.04, 0.96])
+  // Sweet spot scroll transformations
+  const scrollRotateY = useTransform(scrollYProgress, [0.15, 0.5, 0.85], [-18, 0, 18])
+  const scrollX = useTransform(scrollYProgress, [0.15, 0.5, 0.85], [-30, 0, 30])
+  const scrollScale = useTransform(scrollYProgress, [0.2, 0.5, 0.8], [0.96, 1.02, 0.97])
   const infoOpacity = useTransform(scrollYProgress, [0.3, 0.45, 0.8], [0, 1, 1])
-  const infoY = useTransform(scrollYProgress, [0.3, 0.45], [28, 0])
+  const infoY = useTransform(scrollYProgress, [0.3, 0.45], [20, 0])
 
   function handleMouseMove(e: React.PointerEvent<HTMLDivElement>) {
     if (reduceMotion || e.pointerType !== 'mouse') return
@@ -79,7 +76,7 @@ export function AppPromo() {
     const y = (e.clientY - rect.top) / rect.height - 0.5
     mouseX.set(x)
     mouseY.set(y)
-    tiltY.set(x * 28)
+    tiltY.set(x * 20)
   }
 
   function handleMouseLeave() {
@@ -93,9 +90,9 @@ export function AppPromo() {
       ref={sectionRef}
       id="app"
       aria-labelledby="app-promo-title"
-      className="scroll-mt-24 px-4 py-20 md:px-6 md:py-28"
+      className="scroll-mt-24 px-4 py-10 md:px-6 md:py-16"
     >
-      <div className="mx-auto max-w-6xl rounded-[2.5rem] bg-secondary/80 px-6 py-14 shadow-float ring-1 ring-foreground/5 backdrop-blur-xl md:px-12 md:py-20">
+      <div className="mx-auto max-w-5xl rounded-3xl bg-secondary/80 px-5 py-8 shadow-float ring-1 ring-foreground/5 backdrop-blur-xl md:px-10 md:py-12">
         <SectionHeading
           eyebrow="Pixovo Mobile App"
           title={
@@ -103,23 +100,23 @@ export function AppPromo() {
               Design on the go. <em className="text-accent">Memories in your pocket.</em>
             </span>
           }
-          description="Upload photos straight from your camera roll, auto-layout your photo book in seconds, and order directly from your iOS or Android phone."
+          description="Upload photos straight from your camera roll, auto-layout your photo book in seconds, and order directly from iOS or Android."
         />
 
-        <div className="mt-12 grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center lg:gap-14">
-          {/* 3D Interactive Rotating Phone Stage */}
+        <div className="mt-8 grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-10">
+          {/* Scaled-Down 3D Interactive Rotating Phone Stage */}
           <div
             onPointerMove={handleMouseMove}
             onPointerLeave={handleMouseLeave}
-            className="relative flex items-center justify-center py-6 [perspective:1200px]"
+            className="relative flex items-center justify-center py-2 [perspective:1000px]"
           >
             {/* Background Radial Glow */}
             <div
               aria-hidden
-              className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,oklch(0.88_0.08_160/0.4),transparent_65%)]"
+              className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,oklch(0.88_0.08_160/0.35),transparent_65%)]"
             />
 
-            {/* 3D Phone Container */}
+            {/* Scaled-down 3D Phone Container (~210px width) */}
             <motion.div
               style={{
                 x: reduceMotion ? 0 : scrollX,
@@ -127,63 +124,63 @@ export function AppPromo() {
                 rotateX: reduceMotion ? 0 : tiltX,
                 scale: reduceMotion ? 1 : scrollScale,
               }}
-              className="relative aspect-[9/18] w-[260px] transform-gpu rounded-[2.75rem] bg-ink p-3 shadow-lift ring-4 ring-ink/20 sm:w-[290px] [transform-style:preserve-3d]"
+              className="relative aspect-[9/18] w-[210px] transform-gpu rounded-[2.25rem] bg-ink p-2.5 shadow-lift ring-4 ring-ink/20 sm:w-[225px] [transform-style:preserve-3d]"
             >
               {/* Dynamic Island / Notch */}
-              <div aria-hidden className="absolute left-1/2 top-5 z-30 h-4 w-24 -translate-x-1/2 rounded-full bg-ink" />
+              <div aria-hidden className="absolute left-1/2 top-4 z-30 h-3.5 w-20 -translate-x-1/2 rounded-full bg-ink" />
 
               {/* Mobile Screen Mockup */}
-              <div className="relative flex h-full w-full flex-col overflow-hidden rounded-[2.25rem] bg-background text-foreground shadow-inner">
+              <div className="relative flex h-full w-full flex-col overflow-hidden rounded-[1.85rem] bg-background text-foreground shadow-inner">
                 {/* Mobile Header Bar */}
-                <div className="flex items-center justify-between border-b px-4 pb-2 pt-6 text-xs font-semibold text-foreground/80">
+                <div className="flex items-center justify-between border-b px-3 pb-1.5 pt-5 text-[11px] font-semibold text-foreground/80">
                   <span className="flex items-center gap-1">
-                    <Smartphone className="size-3.5 text-accent" />
+                    <Smartphone className="size-3 text-accent" />
                     Pixovo App
                   </span>
-                  <span className="rounded-full bg-accent/15 px-2 py-0.5 text-[10px] text-accent font-medium">
+                  <span className="rounded-full bg-accent/15 px-1.5 py-0.5 text-[9px] text-accent font-medium">
                     v2.4 Live
                   </span>
                 </div>
 
                 {/* Mobile Screen Content */}
-                <div className="flex flex-1 flex-col gap-3 p-3 overflow-hidden">
-                  <div className="relative aspect-[4/3] w-full overflow-hidden rounded-xl bg-card shadow-sm">
+                <div className="flex flex-1 flex-col gap-2 p-2.5 overflow-hidden">
+                  <div className="relative aspect-[4/3] w-full overflow-hidden rounded-lg bg-card shadow-sm">
                     <Image
                       src="/images/choose_your_size_2.webp"
                       alt="Pixovo mobile book editor preview"
                       fill
-                      sizes="280px"
+                      sizes="220px"
                       className="object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                    <span className="absolute bottom-2 left-2 rounded-md bg-card/85 px-2 py-0.5 text-[10px] font-medium text-foreground backdrop-blur">
+                    <span className="absolute bottom-1.5 left-1.5 rounded-md bg-card/85 px-1.5 py-0.5 text-[9px] font-medium text-foreground backdrop-blur">
                       10x10 Square Book
                     </span>
                   </div>
 
                   {/* Photo Grid Selector Simulation */}
-                  <div className="grid grid-cols-3 gap-1.5 pt-1">
+                  <div className="grid grid-cols-3 gap-1 pt-0.5">
                     {['/images/photo-wedding.png', '/images/photo-travel.png', '/images/photo-baby.png'].map(
                       (src, i) => (
-                        <div key={i} className="relative aspect-square overflow-hidden rounded-lg">
-                          <Image src={src} alt="" fill sizes="90px" className="object-cover" />
+                        <div key={i} className="relative aspect-square overflow-hidden rounded-md">
+                          <Image src={src} alt="" fill sizes="70px" className="object-cover" />
                         </div>
                       ),
                     )}
                   </div>
 
                   {/* Mobile Action Bar */}
-                  <div className="mt-auto flex items-center justify-between rounded-xl bg-card p-2.5 shadow-sm ring-1 ring-foreground/5">
-                    <div className="flex items-center gap-2">
-                      <span className="grid size-7 place-items-center rounded-lg bg-accent text-accent-foreground">
-                        <Sparkles className="size-3.5" />
+                  <div className="mt-auto flex items-center justify-between rounded-lg bg-card p-2 shadow-sm ring-1 ring-foreground/5">
+                    <div className="flex items-center gap-1.5">
+                      <span className="grid size-6 place-items-center rounded-md bg-accent text-accent-foreground">
+                        <Sparkles className="size-3" />
                       </span>
                       <div className="flex flex-col">
-                        <span className="text-[11px] font-medium leading-tight">Auto-Designed</span>
-                        <span className="text-[9px] text-muted-foreground">32 pages · 140 photos</span>
+                        <span className="text-[10px] font-medium leading-tight">Auto-Designed</span>
+                        <span className="text-[8px] text-muted-foreground">32 pages · 140 photos</span>
                       </div>
                     </div>
-                    <span className="rounded-lg bg-primary px-2.5 py-1 text-[10px] font-medium text-primary-foreground">
+                    <span className="rounded-md bg-primary px-2 py-0.5 text-[9px] font-medium text-primary-foreground">
                       Order
                     </span>
                   </div>
@@ -193,48 +190,48 @@ export function AppPromo() {
               {/* Floating 3D Badge Left */}
               <motion.div
                 style={{ opacity: infoOpacity, y: infoY }}
-                className="absolute -left-12 top-16 z-40 hidden flex-col gap-1 rounded-2xl bg-card/90 p-3 shadow-float ring-1 ring-foreground/5 backdrop-blur-xl md:flex [transform:translateZ(40px)]"
+                className="absolute -left-10 top-12 z-40 hidden flex-col gap-0.5 rounded-xl bg-card/90 p-2 shadow-float ring-1 ring-foreground/5 backdrop-blur-xl md:flex [transform:translateZ(30px)]"
               >
-                <div className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
-                  <Star className="size-3.5 fill-accent text-accent" />
+                <div className="flex items-center gap-1 text-[11px] font-semibold text-foreground">
+                  <Star className="size-3 fill-accent text-accent" />
                   <span>4.9 App Rating</span>
                 </div>
-                <span className="text-[10px] text-muted-foreground">15,000+ Mobile Reviews</span>
+                <span className="text-[9px] text-muted-foreground">15,000+ Reviews</span>
               </motion.div>
 
               {/* Floating 3D Badge Right */}
               <motion.div
                 style={{ opacity: infoOpacity, y: infoY }}
-                className="absolute -right-10 bottom-20 z-40 hidden flex-col gap-1 rounded-2xl bg-card/90 p-3 shadow-float ring-1 ring-foreground/5 backdrop-blur-xl md:flex [transform:translateZ(50px)]"
+                className="absolute -right-8 bottom-16 z-40 hidden flex-col gap-0.5 rounded-xl bg-card/90 p-2 shadow-float ring-1 ring-foreground/5 backdrop-blur-xl md:flex [transform:translateZ(35px)]"
               >
-                <div className="flex items-center gap-1.5 text-xs font-semibold text-foreground">
-                  <Download className="size-3.5 text-accent" />
+                <div className="flex items-center gap-1 text-[11px] font-semibold text-foreground">
+                  <Download className="size-3 text-accent" />
                   <span>Free Download</span>
                 </div>
-                <span className="text-[10px] text-muted-foreground">iOS & Android Compatible</span>
+                <span className="text-[9px] text-muted-foreground">iOS & Android</span>
               </motion.div>
             </motion.div>
           </div>
 
           {/* App Features & Download Buttons Column */}
-          <div className="flex flex-col gap-6">
-            <Reveal className="flex flex-col gap-4" staggerChildren={0.12}>
+          <div className="flex flex-col gap-5">
+            <Reveal className="flex flex-col gap-3" staggerChildren={0.1}>
               {appFeatures.map((feat) => {
                 const Icon = feat.icon
                 return (
                   <RevealItem
                     key={feat.title}
-                    className="group flex gap-4 rounded-2xl bg-card p-4 shadow-sm ring-1 ring-foreground/5 transition-all duration-300 hover:shadow-float hover:ring-foreground/10"
+                    className="group flex gap-3.5 rounded-xl bg-card p-3.5 shadow-sm ring-1 ring-foreground/5 transition-all duration-300 hover:shadow-md hover:ring-foreground/10"
                   >
                     <span
-                      className="grid size-11 shrink-0 place-items-center rounded-xl transition-transform duration-300 group-hover:scale-110"
+                      className="grid size-9 shrink-0 place-items-center rounded-lg transition-transform duration-300 group-hover:scale-105"
                       style={{ background: `${feat.color}25`, color: feat.color }}
                     >
-                      <Icon className="size-5" />
+                      <Icon className="size-4.5" />
                     </span>
                     <div className="flex flex-col gap-0.5">
-                      <h3 className="text-base font-semibold tracking-tight">{feat.title}</h3>
-                      <p className="text-sm leading-relaxed text-muted-foreground">{feat.text}</p>
+                      <h3 className="text-sm font-semibold tracking-tight">{feat.title}</h3>
+                      <p className="text-xs leading-relaxed text-muted-foreground">{feat.text}</p>
                     </div>
                   </RevealItem>
                 )
@@ -242,24 +239,24 @@ export function AppPromo() {
             </Reveal>
 
             {/* Store Badges & Download Options */}
-            <div className="mt-2 flex flex-col gap-3 border-t pt-6">
-              <span className="text-xs font-medium uppercase tracking-[0.16em] text-muted-foreground">
+            <div className="mt-1 flex flex-col gap-2.5 border-t pt-4">
+              <span className="text-[11px] font-medium uppercase tracking-wider text-muted-foreground">
                 Get the Pixovo app today
               </span>
-              <div className="flex flex-wrap items-center gap-3">
+              <div className="flex flex-wrap items-center gap-2.5">
                 {/* Apple App Store Button */}
                 <a
                   href="https://pixovo.com/"
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-3 rounded-2xl bg-ink px-5 py-3 text-ink-foreground shadow-float transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lift"
+                  className="inline-flex items-center gap-2.5 rounded-xl bg-ink px-4 py-2.5 text-ink-foreground shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-float"
                 >
-                  <AppleIcon className="size-6 shrink-0 fill-current" />
+                  <AppleIcon className="size-5 shrink-0 fill-current" />
                   <div className="flex flex-col text-left">
-                    <span className="text-[10px] font-medium uppercase tracking-wider text-ink-foreground/70">
+                    <span className="text-[9px] font-medium uppercase tracking-wider text-ink-foreground/70">
                       Download on the
                     </span>
-                    <span className="text-sm font-semibold leading-tight">App Store</span>
+                    <span className="text-xs font-semibold leading-tight">App Store</span>
                   </div>
                 </a>
 
@@ -268,14 +265,14 @@ export function AppPromo() {
                   href="https://pixovo.com/"
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-3 rounded-2xl bg-card px-5 py-3 text-foreground ring-1 ring-foreground/10 shadow-float transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lift"
+                  className="inline-flex items-center gap-2.5 rounded-xl bg-card px-4 py-2.5 text-foreground ring-1 ring-foreground/10 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:shadow-float"
                 >
-                  <GooglePlayIcon className="size-6 shrink-0" />
+                  <GooglePlayIcon className="size-5 shrink-0" />
                   <div className="flex flex-col text-left">
-                    <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground">
+                    <span className="text-[9px] font-medium uppercase tracking-wider text-muted-foreground">
                       GET IT ON
                     </span>
-                    <span className="text-sm font-semibold leading-tight">Google Play</span>
+                    <span className="text-xs font-semibold leading-tight">Google Play</span>
                   </div>
                 </a>
               </div>

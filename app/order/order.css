@@ -1,0 +1,210 @@
+.order-page h3 {
+    font-size: 35px;
+    margin-bottom: 30px !important;
+}
+
+.search-box {
+    position: relative;
+    margin-bottom: 12px;
+}
+
+.search-box input {
+    width: 40%;
+    font-size: 16px;
+    padding-left: 38px;
+}
+
+.search-box i {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+}
+
+.search-box input::placeholder {
+    color: #888888;
+    opacity: 0.8;
+    font-size: 16px;
+}
+
+.order-content-tbl i.fa.fa-eye,
+.order-content-tbl i.fa.fa-redo {
+    color: #4bb8c4;
+}
+
+.order-page.order-inner-page .order-content {
+    width: 84%;
+    margin: 0px auto;
+}
+
+@media only screen and (max-width: 1024px) {
+    .order-page.order-inner-page table.custom-tbl {
+        touch-action: auto;
+        border-left: 0 solid #4bb8c4;
+        border-right: 0 solid #4bb8c4;
+        overflow-x: hidden;
+        width: 1000px !important;
+    }
+
+}
+
+@media only screen and (max-width: 991px) {
+    .order-page.order-inner-page .order-content {
+        width: 90%;
+        margin: 0px auto;
+    }
+
+    .order-page.order-inner-page table.custom-tbl {
+        width: 1200px !important;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .search-box input {
+        width: 100%;
+    }
+
+    .order-page.order-inner-page .order-content {
+        width: 96%;
+    }
+
+    .order-page h3 {
+        font-size: 30px;
+    }
+}
+
+/* ════════════════════════════════════════════
+   ORDER POLICY BANNER — 30-day reorder /
+   auto-remove notice (above the table)
+   ════════════════════════════════════════════ */
+
+.order-policy-banner {
+    display: flex;
+    align-items: stretch;
+    gap: 24px;
+    margin: 0 auto 22px;
+    padding: 20px 28px;
+    width: 96%;
+    background: #f3fbfa;
+    border: 1.5px solid rgba(75, 184, 196, 0.30);
+    border-radius: 18px;
+    box-shadow: 0 4px 14px rgba(75, 184, 196, 0.06);
+}
+
+.order-policy-banner .opb-item {
+    flex: 1 1 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-width: 0;
+}
+
+.order-policy-banner .opb-sep {
+    width: 1px;
+    background: linear-gradient(
+        to bottom,
+        transparent 0%,
+        rgba(75, 184, 196, 0.35) 15%,
+        rgba(75, 184, 196, 0.35) 85%,
+        transparent 100%
+    );
+    flex: 0 0 1px;
+}
+
+.order-policy-banner .opb-icon {
+    flex: 0 0 56px;
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.order-policy-banner .opb-icon svg {
+    width: 26px;
+    height: 26px;
+    display: block;
+}
+
+.opb-icon--reorder {
+    background: #e6faf5;
+    color: #0a8a65;
+}
+
+.opb-icon--remove {
+    background: #fde8ec;
+    color: #0ba28d;
+}
+
+.order-policy-banner .opb-text {
+    min-width: 0;
+}
+
+.order-policy-banner .opb-text h4 {
+    margin: 0 0 4px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #4bb8c4;
+}
+
+.order-policy-banner .opb-text p {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.5;
+    color: #6b7280;
+}
+
+/* ── Mobile responsiveness ── */
+@media (max-width: 768px) {
+    .order-policy-banner {
+        flex-direction: column;
+        gap: 18px;
+        padding: 18px 18px;
+        width: 100%;
+    }
+
+    .order-policy-banner .opb-sep {
+        width: 100%;
+        height: 1px;
+        flex: 0 0 1px;
+        background: linear-gradient(
+            to right,
+            transparent 0%,
+            rgba(75, 184, 196, 0.35) 15%,
+            rgba(75, 184, 196, 0.35) 85%,
+            transparent 100%
+        );
+    }
+
+    .order-policy-banner .opb-icon {
+        flex: 0 0 48px;
+        width: 48px;
+        height: 48px;
+        border-radius: 14px;
+    }
+
+    .order-policy-banner .opb-icon svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    .order-policy-banner .opb-text h4 {
+        font-size: 16px;
+    }
+
+    .order-policy-banner .opb-text p {
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 480px) {
+    .order-policy-banner {
+        padding: 16px 14px;
+    }
+
+    .order-policy-banner .opb-item {
+        gap: 12px;
+    }
+}

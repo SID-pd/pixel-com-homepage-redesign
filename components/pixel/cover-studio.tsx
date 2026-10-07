@@ -35,7 +35,7 @@ export function CoverStudio() {
   }
 
   return (
-    <section aria-labelledby="studio-title" className="px-5 py-24 md:px-6 md:py-32">
+    <section aria-labelledby="studio-title" className="px-5 py-12 md:px-6 md:py-18">
       <div className="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-2 lg:gap-20">
         <div
           onPointerMove={handleMove}
@@ -87,7 +87,7 @@ export function CoverStudio() {
               <motion.span
                 animate={{ color: material.text }}
                 transition={{ duration: 0.6 }}
-                className="relative font-serif text-[clamp(1rem,2.4vw,1.6rem)] italic"
+                className="relative font-serif text-[clamp(1rem,2.4vw,1.6rem)]"
               >
                 Summer in Amalfi
               </motion.span>

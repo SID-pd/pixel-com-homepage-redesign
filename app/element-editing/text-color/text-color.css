@@ -1,0 +1,22 @@
+color-chrome {
+    width: 100% !important;
+    display: block;
+}
+
+.chrome-picker {
+    width: 100% !important;
+    border-radius: 10px !important;
+
+    .saturation {
+        border-radius: 10px 10px 0 0 !important;
+    }
+}
+
+.sketch-picker {
+    width: auto !important;
+    border-radius: 10px !important;
+
+    .sketch-saturation {
+        border-radius: 10px 10px 0 0 !important;
+    }
+}

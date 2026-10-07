@@ -5,9 +5,12 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-instrument), ui-serif, Georgia, serif;
-  --font-brand: var(--font-fredoka), ui-rounded, system-ui, sans-serif;
+  /* One family, matching pixovo.com. The serif/display/brand/heading aliases are kept so existing classes keep working. */
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: var(--font-sans);
+  --font-display: var(--font-sans);
+  --font-brand: var(--font-sans);
+  --font-heading: var(--font-sans);
   --color-logo-ink: var(--logo-ink);
 
   --color-ring: var(--ring);
@@ -57,31 +60,31 @@
 :root {
   color-scheme: light;
   --radius: 1rem;
-  --background: oklch(0.978 0.012 75); /* Mixbook warm sand / cream #FAF6F0 */
-  --foreground: oklch(0.20 0.018 50); /* Warm deep espresso charcoal */
-  --card: oklch(0.992 0.006 75); /* Soft off-white card canvas */
-  --card-foreground: oklch(0.20 0.018 50);
-  --popover: oklch(0.992 0.006 75);
-  --popover-foreground: oklch(0.20 0.018 50);
-  --primary: oklch(0.20 0.018 50);
-  --primary-foreground: oklch(0.98 0.008 75);
-  --secondary: oklch(0.945 0.016 75); /* Soft beige secondary container */
-  --secondary-foreground: oklch(0.20 0.018 50);
-  --muted: oklch(0.945 0.016 75);
-  --muted-foreground: oklch(0.48 0.018 50);
-  --accent: oklch(0.58 0.16 36); /* Mixbook signature warm terracotta / coral */
+  --background: oklch(0.975 0.008 80);
+  --foreground: oklch(0.2 0.015 55);
+  --card: oklch(0.99 0.004 80);
+  --card-foreground: oklch(0.2 0.015 55);
+  --popover: oklch(0.99 0.004 80);
+  --popover-foreground: oklch(0.2 0.015 55);
+  --primary: oklch(0.2 0.015 55);
+  --primary-foreground: oklch(0.975 0.008 80);
+  --secondary: oklch(0.94 0.012 75);
+  --secondary-foreground: oklch(0.2 0.015 55);
+  --muted: oklch(0.94 0.012 75);
+  --muted-foreground: oklch(0.47 0.015 55);
+  --accent: oklch(0.63 0.14 42);
   --accent-foreground: oklch(0.99 0.004 80);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.20 0.018 50 / 0.12);
-  --input: oklch(0.20 0.018 50 / 0.15);
-  --ring: oklch(0.58 0.16 36);
-  --ink: oklch(0.19 0.015 50);
-  --ink-foreground: oklch(0.97 0.01 75);
+  --border: oklch(0.2 0.015 55 / 0.1);
+  --input: oklch(0.2 0.015 55 / 0.15);
+  --ring: oklch(0.63 0.14 42);
+  --ink: oklch(0.19 0.012 55);
+  --ink-foreground: oklch(0.96 0.01 80);
   --mint: oklch(0.88 0.07 160);
-  --butter: oklch(0.93 0.1 85);
+  --butter: oklch(0.92 0.1 100);
   --sky: oklch(0.86 0.06 230);
-  --rose: oklch(0.72 0.14 25);
-  --logo-ink: oklch(0.25 0.03 40);
+  --rose: oklch(0.73 0.12 15);
+  --logo-ink: oklch(0.28 0.03 255);
 }
 
 [data-intro-seen] .intro-overlay {
@@ -122,4 +125,115 @@
   .animate-marquee {
     animation: none;
   }
+}
+
+/* ------------------------------------------------------------------ */
+/* Long-form content (blog articles, terms, privacy) rendered from the  */
+/* extracted CMS HTML. Styled with the pixel tokens, not legacy CSS.    */
+/* ------------------------------------------------------------------ */
+.prose-pixovo {
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  color: color-mix(in oklch, var(--foreground) 82%, transparent);
+  overflow-wrap: anywhere;
+}
+.prose-pixovo > * + * { margin-top: 1.25rem; }
+.prose-pixovo p.lede {
+  font-family: var(--font-poppins), system-ui, sans-serif;
+  font-size: 1.5rem;
+  line-height: 1.45;
+  color: var(--foreground);
+}
+.prose-pixovo h2 {
+  font-family: var(--font-poppins), system-ui, sans-serif;
+  font-size: clamp(1.75rem, 3.2vw, 2.25rem);
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--foreground);
+  margin-top: 3.25rem;
+  scroll-margin-top: 7rem;
+}
+.prose-pixovo h3 {
+  font-size: 1.2rem;
+  font-weight: 650;
+  line-height: 1.35;
+  color: var(--foreground);
+  margin-top: 2rem;
+}
+.prose-pixovo strong { color: var(--foreground); font-weight: 650; }
+.prose-pixovo a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklch, var(--accent) 35%, transparent);
+  text-underline-offset: 3px;
+  transition: text-decoration-color .2s;
+}
+.prose-pixovo a:hover { text-decoration-color: var(--accent); }
+.prose-pixovo ul, .prose-pixovo ol { padding-left: 1.4rem; }
+.prose-pixovo ul { list-style: disc; }
+.prose-pixovo ol { list-style: decimal; }
+.prose-pixovo li + li { margin-top: .5rem; }
+.prose-pixovo li::marker { color: var(--accent); }
+.prose-pixovo img { border-radius: 1.5rem; width: 100%; height: auto; }
+.prose-pixovo .art-inline-img { margin: 2rem 0; }
+
+/* comparison tables: scroll on small screens instead of squashing */
+.prose-pixovo .tbl-wrap { overflow-x: auto; border-radius: 1.25rem; border: 1px solid color-mix(in oklch, var(--foreground) 10%, transparent); background: var(--card); -webkit-overflow-scrolling: touch; }
+.prose-pixovo table { width: 100%; min-width: 34rem; border-collapse: collapse; font-size: .95rem; line-height: 1.5; }
+.prose-pixovo th { text-align: left; font-weight: 650; background: var(--secondary); color: var(--foreground); padding: .85rem 1rem; white-space: nowrap; }
+.prose-pixovo td { padding: .85rem 1rem; border-top: 1px solid color-mix(in oklch, var(--foreground) 8%, transparent); vertical-align: top; }
+.prose-pixovo tr.total td { font-weight: 650; color: var(--foreground); background: color-mix(in oklch, var(--accent) 9%, transparent); }
+
+/* callout cards */
+.prose-pixovo .mistake-card, .prose-pixovo .step-box, .prose-pixovo .style-card, .prose-pixovo .snapshot-box, .prose-pixovo .process-col {
+  background: var(--card);
+  border: 1px solid color-mix(in oklch, var(--foreground) 9%, transparent);
+  border-radius: 1.5rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 2px oklch(0.2 0.02 50 / .04);
+}
+.prose-pixovo .mistake-card h3, .prose-pixovo .style-card h3, .prose-pixovo .step-box h3 { margin-top: 0; }
+.prose-pixovo .mistake-card + .mistake-card, .prose-pixovo .step-box + .step-box { margin-top: 1rem; }
+.prose-pixovo .mistake-card .fix {
+  margin-top: 1rem; padding: .85rem 1rem; border-radius: 1rem;
+  background: color-mix(in oklch, var(--accent) 9%, transparent);
+  color: var(--foreground); font-size: .98rem; line-height: 1.6;
+}
+.prose-pixovo .step-box { display: flex; gap: 1rem; align-items: flex-start; }
+.prose-pixovo .step-num, .prose-pixovo .num-badge {
+  flex: none; display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: 9999px;
+  background: var(--accent); color: var(--accent-foreground); font-weight: 650; font-size: .95rem; line-height: 1;
+}
+.prose-pixovo .style-grid, .prose-pixovo .process-compare { display: grid; gap: 1rem; grid-template-columns: 1fr; }
+@media (min-width: 640px) { .prose-pixovo .style-grid, .prose-pixovo .process-compare { grid-template-columns: 1fr 1fr; } }
+.prose-pixovo .process-col h3 { margin-top: 0; }
+.prose-pixovo .process-col.ai { border-color: color-mix(in oklch, var(--accent) 45%, transparent); background: color-mix(in oklch, var(--accent) 5%, var(--card)); }
+.prose-pixovo ul.num-steps, .prose-pixovo ul.check-list, .prose-pixovo ul.feature-list, .prose-pixovo ul.mistake-list { list-style: none; padding-left: 0; }
+.prose-pixovo ul.num-steps li { display: flex; gap: .75rem; align-items: flex-start; }
+.prose-pixovo ul.num-steps .num-badge { width: 1.75rem; height: 1.75rem; font-size: .8rem; }
+.prose-pixovo ul.check-list li, .prose-pixovo ul.feature-list li { position: relative; padding-left: 1.9rem; }
+.prose-pixovo ul.check-list li::before, .prose-pixovo ul.feature-list li::before {
+  content: ''; position: absolute; left: 0; top: .55em; width: 1.1rem; height: 1.1rem; border-radius: 9999px;
+  background: var(--accent) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 70% no-repeat;
+}
+.prose-pixovo dl.snapshot-box .row { display: flex; justify-content: space-between; gap: 1rem; padding: .6rem 0; }
+.prose-pixovo dl.snapshot-box .row + .row { border-top: 1px solid color-mix(in oklch, var(--foreground) 8%, transparent); }
+.prose-pixovo dl.snapshot-box dt { color: var(--muted-foreground); }
+.prose-pixovo dl.snapshot-box dd { font-weight: 600; color: var(--foreground); text-align: right; }
+
+/* legal documents are denser than articles */
+.prose-legal { font-size: 1rem; line-height: 1.75; color: color-mix(in oklch, var(--foreground) 80%, transparent); }
+.prose-legal > * + * { margin-top: .9rem; }
+.prose-legal ul { list-style: disc; padding-left: 1.3rem; }
+.prose-legal li + li { margin-top: .35rem; }
+.prose-legal li::marker { color: var(--accent); }
+.prose-legal a { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+.prose-legal strong { color: var(--foreground); }
+
+/* Poppins headings: bold like pixovo.com, slightly tightened. Utilities such as font-semibold still win. */
+@layer base {
+  h1, h2, h3, .font-serif { font-weight: 700; letter-spacing: -0.02em; }
+  h4, h5, h6 { font-weight: 600; }
+  /* accent words inside headings use colour, not italics (Poppins italics are not loaded) */
+  h1 em, h2 em, h3 em, .font-serif em { font-style: normal; }
 }

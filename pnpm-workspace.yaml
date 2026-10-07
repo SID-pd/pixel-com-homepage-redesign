@@ -3,3 +3,4 @@ pmOnFail: ignore
 minimumReleaseAgeExclude:
   - '@next/*'
   - next
+  - idb@8.0.4

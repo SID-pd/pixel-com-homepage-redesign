@@ -1,0 +1,281 @@
+.profile-page {
+    text-align: center;
+    padding: 150px 0 70px 0;
+}
+
+.profile-img {
+    text-align: center;
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    display: block;
+    position: relative;
+    top: -75px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 1px solid #e4e4e4;
+}
+
+.profile-img .pro-img {
+    border-radius: 50%;
+    padding: 10px;
+    height: 150px;
+    width: 150px;
+}
+
+.profile-page .container {
+    width: 50%;
+    margin: 0px auto;
+}
+
+.profile-page .white-box {
+    background-color: #ffffff;
+    border-radius: 15px;
+    padding: 0px 40px 20px 40px;
+    box-shadow: 0 0 22px -11px #ccc;
+    position: relative;
+    border: 1px solid #e4e4e4;
+}
+
+.profile-page .white-box.profile-block {
+    background-color: #4bb8c4;
+}
+
+.profile-page .white-box.profile-block h2 {
+    color: #fce091;
+}
+
+.profile-page .white-box.profile-block h3 {
+    color: #ffffff;
+    margin-bottom: 0;
+}
+
+.profile-page .white-box .upload-btn {
+    background: transparent;
+    border: 0px;
+    position: absolute;
+    padding: 8px 10px !important;
+    top: 0px;
+    right: 0px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    width: 45px;
+    height: 45px;
+    outline: 0;
+    border: 1px solid #e4e4e4;
+}
+
+.profile-page .white-box button img {
+    top: -2px;
+    position: relative;
+}
+
+.profile-page h2 {
+    font-size: 25px;
+    margin-top: -70px;
+}
+
+.profile-page h4 {
+    color: #000000;
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 0;
+    text-align: left;
+}
+
+.white-box.profile-form {
+    text-align: left;
+    padding: 40px;
+    margin-top: 15px;
+}
+
+.profile-form label {
+    width: 30%;
+    font-size: 16px;
+    display: inline-block;
+}
+
+.profile-form .form-control {
+    width: 68%;
+    border: 0px;
+    font-size: 16px;
+    height: 40px;
+    display: inline-block;
+    border: 1px solid #000000;
+}
+
+.profile-form .from-group {
+    margin-bottom: 20px;
+}
+
+.profile-form .form-control.add-new-shipping-btn {
+    height: 50px;
+    font-weight: 600;
+}
+
+.profile-form .form-control.add-new-shipping-btn:hover {
+    background-color: #4bb8c4;
+    color: #ffffff;
+}
+
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+#add-new-shipping-address-modal .modal-dialog {
+    max-width: 600px;
+}
+
+.white-box.privacy-policy-block h3 {
+    font-size: 18px;
+    color: #000000;
+    margin-bottom: 5px;
+}
+
+.white-box.privacy-policy-block {
+    text-align: left;
+    margin-top: 15px;
+    padding: 40px;
+}
+
+.save-changes-btn {
+    background-color: #4bb8c4;
+    text-align: center;
+    padding: 5px 20px;
+    border: 1px solid #4bb8c4;
+    color: #ffffff;
+    font-weight: 600;
+    margin-top: 30px;
+    height: 50px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.save-changes-btn:hover {
+    background-color: #ffffff;
+    color: #4bb8c4;
+    border: 1px solid #4bb8c4;
+}
+
+
+.profile-location-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    color: #4bb8c4;
+}
+
+.user-dt {
+    color: #9d9d9d;
+    align-items: center;
+    gap: 5px;
+    display: flex;
+    font-size: 14px;
+}
+
+@media (max-width:1024px) {
+    .profile-page .container {
+        width: 70%;
+        max-width: inherit;
+    }
+}
+
+@media (max-width:767px) {
+    .profile-page .container {
+        width: 90%;
+    }
+
+    .profile-form b {
+        font-size: 16px;
+        line-height: 22px;
+        display: block;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .white-box.profile-form,
+    .white-box.privacy-policy-block {
+        padding: 30px 20px;
+    }
+
+    .profile-form label {
+        display: block;
+        width: 100%;
+    }
+
+    .profile-form .form-control {
+        display: block;
+        width: 100%;
+    }
+
+    .profile-page {
+        padding: 130px 0 50px;
+    }
+
+    .profile-page h4 {
+        text-align: center;
+        font-weight: 600;
+    }
+
+    .profile-page h2 {
+        font-size: 20px;
+    }
+
+    .profile-page h3 {
+        font-size: 16px;
+    }
+    .profile-form {
+		padding: 30px 20px;
+	}
+
+	.profile-page-img img {
+		width: 100%;
+		border-radius: 20px;
+	}
+
+	.profile-page-img {
+		position: relative;
+		left: 0;
+		bottom: 0;
+		margin-bottom: 0px;
+		margin-top: 40px;
+	}
+
+	.profile-page h3 {
+		margin-bottom: 10px;
+	}
+
+	.profile-page {
+		padding: 100px 0 30px 0;
+	}
+}
+
+@media (max-width:360px) {
+    .profile-form .form-control.add-new-shipping-btn {
+        font-size: 14px !important;
+    }
+}
+
+
+.profile-form .form-control.account-setting-btn {
+    height: 50px;
+    font-weight: 600;
+}
+
+.profile-form .form-control.account-setting-btn:hover {
+    background-color: #0ba28d;
+    color: #ffffff;
+}

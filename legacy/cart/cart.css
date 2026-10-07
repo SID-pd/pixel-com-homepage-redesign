@@ -1,0 +1,66 @@
+.sub-total-block {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+}
+
+.action-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+}
+
+.action-box a i {
+    font-size: 20px;
+    color: #87c4ce;
+}
+/* ─── Quantity stepper (cart rows) ──────────────────────────────────────────
+   Mirrors the checkout Order Summary stepper (see checkout.css) so the control
+   looks the same in both places the customer can change the copy count. */
+.quantity-block {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid #dcdcdc;
+    border-radius: 6px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.quantity-block .qty-btn {
+    width: 28px;
+    height: 28px;
+    border: 0;
+    background: #f5f5f5;
+    color: #0a0a0a;
+    font-size: 15px;
+    line-height: 1;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.quantity-block .qty-btn:hover:not(:disabled) {
+    background: #e9e9e9;
+}
+
+.quantity-block .qty-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.quantity-block .qty-value {
+    min-width: 34px;
+    padding: 0 4px;
+    text-align: center;
+    font-size: 14px;
+    border-left: 1px solid #dcdcdc;
+    border-right: 1px solid #dcdcdc;
+}
+
+.qty-unit-hint {
+    display: block;
+    color: #8a8a8a;
+    font-size: 12px;
+}

@@ -1,0 +1,869 @@
+input.form-control.is-invalid + .card-icons{
+    top: 30%;
+    right: 30px;
+}
+.checkout-container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 20px;
+}
+
+.checkout-heading {
+  color: #16324f;
+  font-family: Poppins, "Poppins Fallback", sans-serif;
+  font-size: 42.5px;
+  font-weight: 700;
+  line-height: 52px;
+  margin-top: 80px;
+  margin-bottom: 10px !important;
+}
+
+.checkout-title {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.checkout-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.checkout-form,
+.checkout-summary {
+  flex: 1;
+  min-width: 300px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background-color: #fff;
+}
+
+.album-title {
+  color: black;
+  font-weight: 700;
+}
+
+.maim-lable {
+  color: rgb(75, 184, 196);
+  font-weight: 600;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.billing-form label {
+  font-size: 16px;
+  color: black;
+  font-weight: 500;
+  margin-bottom: 0px;
+}
+
+
+.billing-form .form-check label {
+  font-size: 14px;
+  color: gray;
+  font-weight: 500;
+}
+
+.billing-form .form-check {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.billing-form input {
+  font-size: 14px;
+  color: gray;
+}
+
+.product-detail div span:first-child {
+  font-size: 14px;
+  color: #666464;
+  font-weight: 400;
+}
+
+.product-detail div span:nth-child(2) {
+  font-size: 14px;
+  color: #0a0a0a;
+  font-weight: 400;
+}
+
+.total-calculation div span {
+  font-size: 16px;
+}
+
+/* ─── Quantity stepper (Order Summary) ──────────────────────────────────────
+   The copy count for this book. `.qty-row` gets a little extra vertical room
+   because the control is taller than the plain text rows around it. */
+.product-detail .qty-row {
+  margin: 4px 0;
+}
+
+.quantity-block {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid #dcdcdc;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.quantity-block .qty-btn {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  background: #f5f5f5;
+  color: #0a0a0a;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quantity-block .qty-btn:hover:not(:disabled) {
+  background: #e9e9e9;
+}
+
+.quantity-block .qty-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.quantity-block .qty-input {
+  width: 44px;
+  height: 30px;
+  border: 0;
+  border-left: 1px solid #dcdcdc;
+  border-right: 1px solid #dcdcdc;
+  text-align: center;
+  font-size: 14px;
+  color: #0a0a0a;
+  /* Overrides the global `.checkout-form input { display:block; width:100% }`
+     rule, which would otherwise stretch this to the full summary width. */
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+  background: #fff;
+}
+
+.quantity-block .qty-input:focus {
+  outline: none;
+}
+
+.quantity-block .qty-input:disabled {
+  background: #fafafa;
+}
+
+.checkout-form h4,
+.checkout-summary h4 {
+  margin-bottom: 15px;
+}
+
+.checkout-form input {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.checkout-form .country-field {
+  background-color: #f7f9fa;
+  color: #13343b;
+  font-weight: 500;
+}
+
+.checkout-form .country-field:focus {
+  border-color: #ccc;
+  box-shadow: none;
+}
+
+.checkout-shipping-note {
+  margin-top: 4px;
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  border: 1px solid rgba(75, 184, 196, 0.3);
+  border-radius: 8px;
+  background: #f3fafb;
+  color: #13343b;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.checkout-btn {
+  width: 100%;
+  padding: 10px;
+  background-color: #0070f3;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.summary-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.summary-item img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  margin-right: 15px;
+  border-radius: 5px;
+}
+
+.summary-total {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.summary-total.total {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.btn-outline {
+  background: transparent;
+  border: 1px solid rgb(94, 82, 64, 0.2);
+  color: rgb(19, 52, 59, 1);
+  margin-bottom: 10px;
+}
+
+.btn-outline:hover {
+  background: transparent;
+  border: 1px solid rgb(94, 82, 64, 0.2) !important;
+  color: rgb(19, 52, 59, 1);
+}
+
+.form-section h3 {
+  color: #0a0a0a;
+  font-size: 14px;
+}
+
+.payment-methods {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 13px;
+}
+
+.payment-methods label input {
+  margin-right: 10px;
+}
+
+.size-options .selected {
+  box-shadow: 0 0 0 3px #4bb8c4;
+}
+
+.size-options {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 15px;
+  max-height: 500px;
+  padding-right: 10px;
+  /* margin-top: 10px; */
+
+}
+
+
+.size-option-box {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+
+.size-option {
+  position: relative;
+  text-align: center;
+  background-color: #ffffff !important;
+  /* padding: 15px 10px; */
+  border: 2px solid #ffffff !important;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  width: fit-content;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 120px;
+  margin: 15px;
+}
+
+@media only screen and (max-width: 991px) {
+  .size-options {
+    display: grid !important;
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+
+
+@media only screen and (max-width: 320px) {
+  .size-options {
+    display: grid !important;
+    grid-template-columns: repeat(1, 1fr) !important;
+  }
+}
+
+@media only screen and (max-width: 375px) {
+  .size-options {
+    display: grid !important;
+    grid-template-columns: repeat(1, 1fr) !important; 
+  }
+}
+
+@media only screen and (max-width: 425px) {
+  .size-options {
+    display: grid !important;
+    gap:0;
+    
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+  
+}
+
+
+.size-option.selected {
+  border-color: #4bb8c4;
+  background-color: #f0f9ff;
+  box-shadow: 0 0 0 3px #4bb8c4;
+}
+
+/* .size-option img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+  border-radius: 5px;
+}
+
+.size-option__name {
+  font-weight: 600;
+  font-size: 14px;
+  margin-bottom: 5px;
+  color: #16324f;
+}
+
+.size-option__price {
+  color: #4bb8c4;
+  font-weight: 600;
+  font-size: 14px;
+} */
+
+.cover-option.selected {
+  box-shadow: 0 0 0 3px #4bb8c4;
+}
+
+.modal-body {
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: 20px;
+}
+
+.modal-backdrop {
+  overflow: hidden;
+}
+
+.size-options::-webkit-scrollbar,
+.cover-options::-webkit-scrollbar,
+.modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.size-options::-webkit-scrollbar-track,
+.cover-options::-webkit-scrollbar-track,
+.modal-body::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+.size-options::-webkit-scrollbar-thumb,
+.cover-options::-webkit-scrollbar-thumb,
+.modal-body::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+.size-options::-webkit-scrollbar-thumb:hover,
+.cover-options::-webkit-scrollbar-thumb:hover,
+.modal-body::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+.custom-btn {
+  text-align: center;
+  color: #fff !important;
+  background-color: #0ba28d !important;
+  border: 1px solid #0ba28d !important;
+  border-radius: 6.75px;
+  outline: 0;
+  font-family: Poppins, "Poppins Fallback", sans-serif;
+  font-size: 15.8px;
+  font-weight: 500;
+  line-height: 24.5px;
+  padding: .375rem .75rem;
+}
+
+.custom-btn:hover {
+  color: #0ba28d;
+  background-color: #fff;
+  border-color: #0ba28d;
+}
+
+.navigation {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  justify-content: end;
+  margin-bottom: 10px;
+}
+
+.navigation button {
+  color: #ffffff;
+  background: #0ba28d;
+  border-radius: 14px;
+  width: 40px;
+  height: 39px;
+  border: none;
+}
+
+/* Album preview injected from the order_html collection.
+ *
+ * The markup carries absolute pixel geometry from the editor canvas, so it is
+ * painted scaled rather than reflowed: the .canvas-border keeps its intrinsic
+ * layout box (which overflows this page), transform scales it about its centre,
+ * and overflow:hidden clips the overflow evenly on both sides. --preview-scale is
+ * measured at runtime in page.tsx — the intrinsic size varies with the device the
+ * customer saved from. The 1 default keeps this a no-op before the first measure.
+ *
+ * Equivalent to .fit-content in order-detail.css, which needs no scaling because
+ * that page gives the flipbook a much wider stage than this summary column. */
+.checkout-flip-html {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.checkout-flip-html > .canvas-border {
+  flex: 0 0 auto;
+  transform: scale(var(--preview-scale, 1));
+  transform-origin: center center;
+}
+
+/* Editor-only chrome that must not follow the markup onto checkout: the canvas
+ * guide border, and the outline on whichever element happened to be selected
+ * when the page was captured. */
+.checkout-flip-html .div-canvas {
+  border: none !important;
+}
+
+.checkout-flip-html .selected-element {
+  outline: none !important;
+  border: none !important;
+}
+
+
+.size-options .size-option {
+  position: relative;
+}
+
+.cover-option {
+  position: relative;
+}
+
+
+.cover-option .ribbon span {
+  top: 22px !important;
+  right: -26px !important;
+  width: 128px !important;
+}
+
+.ribbon {
+  position: absolute;
+  right: -5px;
+  top: -5px;
+  z-index: 1;
+  overflow: hidden;
+  width: 93px;
+  height: 93px;
+  text-align: right;
+}
+
+.ribbon span {
+  font-size: 10px;
+  color: #fff;
+  text-transform: uppercase;
+  text-align: center;
+  font-weight: bold;
+  line-height: 32px;
+  transform: rotate(45deg);
+  width: 125px;
+  display: block;
+  background: #79a70a;
+  background: linear-gradient(#9bc90d 0%, #79a70a 100%);
+  box-shadow: 0 3px 10px -5px rgba(0, 0, 0, 1);
+  position: absolute;
+  top: 17px;
+  right: -29px;
+}
+
+.ribbon span::before {
+  content: '';
+  position: absolute;
+  left: 0px;
+  top: 100%;
+  z-index: -1;
+  border-left: 3px solid #79A70A;
+  border-right: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+  border-top: 3px solid #79A70A;
+}
+
+.ribbon span::after {
+  content: '';
+  position: absolute;
+  right: 0%;
+  top: 100%;
+  z-index: -1;
+  border-right: 3px solid #79A70A;
+  border-left: 3px solid transparent;
+  border-bottom: 3px solid transparent;
+  border-top: 3px solid #79A70A;
+}
+
+.red span {
+  background: linear-gradient(#f70505 0%, #8f0808 100%);
+}
+
+.red span::before {
+  border-left-color: #8f0808;
+  border-top-color: #8f0808;
+}
+
+.red span::after {
+  border-right-color: #8f0808;
+  border-top-color: #8f0808;
+}
+
+.blue span {
+  background: linear-gradient(#2989d8 0%, #1e5799 100%);
+}
+
+.blue span::before {
+  border-left-color: #1e5799;
+  border-top-color: #1e5799;
+}
+
+.blue span::after {
+  border-right-color: #1e5799;
+  border-top-color: #1e5799;
+}
+
+@media only screen and (max-width:991px) {
+  .checkout-heading {
+    font-size: 35px;
+    line-height: 45px;
+  }
+}
+
+@media only screen and (max-width:767px) {
+  .payment-methods label input {
+    margin-right: 5px;
+    vertical-align: -2px;
+  }
+
+  .billing-form .form-check {
+    align-items: flex-start;
+  }
+
+  .billing-form .form-check-input:checked[type="checkbox"] {
+    margin-top: 2px;
+  }
+
+  .billing-form label {
+    font-size: 14px;
+  }
+
+  .billing-card-block {
+    padding: 10px 20px 0px 20px;
+  }
+
+  .order-summary-block {
+    padding: 15px 0 0px 0;
+  }
+  .order-summary-block .maim-lable{
+    margin-bottom: 10px !important;
+  }
+  .container.chackout-page {
+    margin-bottom: 25px !important;
+}
+
+  .payment-detail-heading {
+    margin-top: 30px;
+  }
+  .order-summary-block .card-body{
+    padding-top: 0; 
+  }
+  .maim-lable {
+    text-align: center;
+    margin-bottom: 5px !important;
+  }
+h4.maim-lable.card-title.payment-detail-heading{
+  margin-top: 10px;
+}
+  .flipbook-wrapper .navigation,
+  .flip-customize-btn,
+  .checkout-submit-btn {
+    justify-content: center !important;
+  }
+
+  .flip-customize-btn {
+    margin-bottom: 10px !important;
+  }
+
+  .checkout-submit-btn {
+    margin-top: 30px !important;
+  }
+
+  .coupon-section input,
+  .coupon-section button.btn.btn-secondary {
+    font-size: 14px !important;
+  }
+}
+
+@media only screen and (max-width:340px) {
+  .billing-form input {
+    font-size: 12px;
+  }
+}
+
+.font-set {
+  font-size: 20px;
+}
+
+.flip-customize-btn {
+  gap: 10px;
+}
+
+.customize-size-selection .size-options .selected {
+  box-shadow: none;
+}
+
+.customize-size-selection .size-options .size-option:hover {
+  box-shadow: none;
+}
+
+.customize-size-selection .size-options .selected img {
+  border: 2px solid #4bb8c4 !important;
+}
+
+
+.shipping-wrapper {
+  margin-top: 20px;
+}
+
+.shipping-title {
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.shipping-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.shipping-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  padding: 16px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all .2s ease;
+  background: #fff;
+}
+
+.shipping-card:hover {
+  border-color: #6366f1;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.shipping-card.active {
+  border: 2px solid #6366f1;
+  background: #f9fafb;
+}
+
+.shipping-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.shipping-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.service-name {
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.delivery-time {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+.shipping-price {
+  font-weight: 600;
+  font-size: 16px;
+  color: #111827;
+}
+
+.payment-form {
+  max-width: 400px;
+  margin: auto;
+}
+
+.card-icons {
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  transform: translateY(-50%);
+  display: flex;
+  gap: 6px;
+}
+
+.card-icons img {
+  width: 35px;
+  opacity: 0.4;
+  transition: 0.3s;
+}
+
+.card-icons img.active {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.footer-icons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 5px;
+}
+
+.footer-icons img {
+  width: 45px;
+  opacity: 0.8;
+}
+
+/* ============================================================
+   TERMS & CONDITIONS CONSENT
+   Sits between the order summary and the Place Order button.
+   ============================================================ */
+.terms-consent {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.terms-consent-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  cursor: pointer;
+  font-size: 15px;
+  color: var(--demo-navy, #16324f);
+  /* The whole row is the hit target, but keep it off the full page width. */
+  width: fit-content;
+}
+
+/* Custom control: the native box cannot be styled to match the design, so it is
+   hidden visually while staying focusable and exposed to assistive tech. */
+.terms-consent-label input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+  margin: 0;
+  border: 1.5px solid var(--demo-border, #ece4d6);
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  position: relative;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.terms-consent-label input[type="checkbox"]:hover {
+  border-color: var(--demo-teal, #0ba28d);
+}
+
+.terms-consent-label input[type="checkbox"]:checked {
+  background: var(--demo-teal, #0ba28d);
+  border-color: var(--demo-teal, #0ba28d);
+}
+
+/* Tick drawn with a rotated border so no icon font or SVG is needed. */
+.terms-consent-label input[type="checkbox"]:checked::after {
+  content: "";
+  position: absolute;
+  left: 10px;
+  top: 5px;
+  width: 7px;
+  height: 13px;
+  border: solid #fff;
+  border-width: 0 2.5px 2.5px 0;
+  transform: rotate(45deg);
+}
+
+/* Visible keyboard focus — the native outline is lost with appearance: none. */
+.terms-consent-label input[type="checkbox"]:focus-visible {
+  outline: 2px solid var(--demo-teal, #0ba28d);
+  outline-offset: 2px;
+}
+
+.terms-consent-label a {
+  color: var(--demo-teal, #0ba28d);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.terms-consent-label a:hover {
+  text-decoration: underline;
+}
+
+/* Error state — mirrors the red outline in the reference design. */
+.terms-consent.has-error .terms-consent-label {
+  padding: 10px 14px;
+  border: 2px solid #d64545;
+  border-radius: 10px;
+  width: auto;
+}
+
+.terms-consent-error {
+  color: #d64545;
+  font-size: 13px;
+}
+
+@media (max-width: 575px) {
+  .terms-consent-label {
+    align-items: center;
+    font-size: 14px;
+  }
+  .terms-consent-label input[type="checkbox"] {
+    /* Nudge down so the box lines up with the first line of wrapped text. */
+    margin-top: 2px;
+  }
+}

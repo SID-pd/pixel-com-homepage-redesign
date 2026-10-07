@@ -1,0 +1,871 @@
+/* ============================================================
+   Pixie — futuristic AI order-assistant widget
+
+   Colors/gradient are NOT hardcoded here — every --pix-primary/-secondary/
+   -accent/-highlight/-success/-bg/-text/-muted/-on-grad/-bg-soft/-border
+   (and their "-rgb" companions, used for rgba() shadows/borders) is supplied
+   inline from theme.ts on the widget's root element and inherited down.
+   -bg-soft and -border are themselves derived from theme.ts's `surface`/
+   `border` fields (see themeToCssVars). Edit theme.ts to re-color the whole
+   widget; this file only ever reads var(--pix-*).
+
+   --pix-text colors general copy (bot bubbles, headings, body text).
+   --pix-on-grad colors anything sitting ON the gradient itself — the
+   launcher icon, header avatar glyph, your own sent bubbles, and every
+   gradient-filled button — since those need to stay legible against
+   --pix-primary/-secondary/-accent specifically, not the panel background.
+   ============================================================ */
+
+.launcher,
+.panel {
+  --pix-grad: linear-gradient(var(--pix-grad-angle, 135deg), var(--pix-primary) 0%, var(--pix-secondary) 45%, var(--pix-accent) 100%);
+  font-family: var(--font-geist-sans, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif);
+}
+
+/* ---------- Floating launcher ---------- */
+.launcher {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: 62px;
+  height: 62px;
+  border: none;
+  border-radius: 50%;
+  background: var(--pix-grad);
+  color: var(--pix-on-grad);
+  cursor: pointer;
+  z-index: 2147483000;
+  display: grid;
+  place-items: center;
+  box-shadow: 0 10px 30px rgba(var(--pix-primary-rgb), 0.45), 0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s;
+  animation: pixFloat 4s ease-in-out infinite;
+}
+.launcher:hover {
+  transform: scale(1.08);
+  box-shadow: 0 14px 40px rgba(var(--pix-secondary-rgb), 0.6);
+}
+.launcherOpen {
+  animation: none;
+}
+.launcherIcon {
+  font-size: 26px;
+  line-height: 1;
+  font-weight: 700;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+}
+.launcherImg {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+.launcherGlow {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: var(--pix-grad);
+  filter: blur(14px);
+  opacity: 0.55;
+  z-index: -1;
+  animation: pixPulse 3s ease-in-out infinite;
+}
+@keyframes pixFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@keyframes pixPulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.15); }
+}
+
+/* ---------- Panel shell ---------- */
+.panel {
+  position: fixed;
+  right: 24px;
+  bottom: 100px;
+  width: 384px;
+  max-width: calc(100vw - 32px);
+  height: 620px;
+  max-height: calc(100vh - 130px);
+  background: var(--pix-bg);
+  background-image: radial-gradient(120% 80% at 100% 0%, rgba(var(--pix-primary-rgb), 0.18) 0%, transparent 55%),
+    radial-gradient(120% 80% at 0% 100%, rgba(var(--pix-accent-rgb), 0.14) 0%, transparent 55%);
+  border: 1px solid var(--pix-border);
+  border-radius: 22px;
+  z-index: 2147483000;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  color: var(--pix-text);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  transform: translateY(24px) scale(0.96);
+  pointer-events: none;
+  transition: opacity 0.28s ease, transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1);
+  backdrop-filter: blur(12px);
+}
+.panelOpen {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* animated gradient top hairline */
+.panel::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--pix-primary), var(--pix-secondary), var(--pix-accent), var(--pix-primary));
+  background-size: 300% 100%;
+  animation: pixSheen 6s linear infinite;
+}
+@keyframes pixSheen {
+  to { background-position: 300% 0; }
+}
+
+/* ---------- Header ---------- */
+.header {
+  position: relative;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 16px 14px;
+  border-bottom: 1px solid var(--pix-border);
+  /* Defensive: the host site styles the bare <header> element (fixed, white).
+     We render a <div>, but keep these resets so no global leak can apply. */
+  background: transparent;
+  width: auto;
+  height: auto;
+  top: auto;
+  left: auto;
+  box-shadow: none;
+}
+.headerAvatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--pix-grad);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  font-size: 20px;
+  color: var(--pix-on-grad);
+  box-shadow: 0 6px 18px rgba(var(--pix-primary-rgb), 0.5);
+}
+.headerMeta {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+}
+.headerMeta strong {
+  font-size: 15px;
+  letter-spacing: 0.2px;
+}
+.headerStatus {
+  font-size: 11.5px;
+  color: var(--pix-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.onlineDot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--pix-success);
+  box-shadow: 0 0 8px var(--pix-success);
+}
+.headerActions {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.headerBtn {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  border: 1px solid var(--pix-border);
+  background: var(--pix-bg-soft);
+  color: var(--pix-muted);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+.headerBtn:hover {
+  color: var(--pix-on-grad);
+  background: rgba(var(--pix-secondary-rgb), 0.22);
+  border-color: rgba(var(--pix-secondary-rgb), 0.6);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(var(--pix-secondary-rgb), 0.3);
+}
+.headerBtn:active {
+  transform: translateY(0);
+}
+/* restart glyph */
+.iconRestart {
+  font-size: 16px;
+  line-height: 1;
+  display: block;
+}
+.headerBtn:hover .iconRestart {
+  transform: rotate(-90deg);
+  transition: transform 0.3s ease;
+}
+/* minimize: a clean horizontal bar */
+.iconMinimize {
+  display: block;
+  width: 13px;
+  height: 2px;
+  border-radius: 2px;
+  background: currentColor;
+}
+
+/* ---------- Live quote bar ---------- */
+.quote {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--pix-border);
+  background: rgba(var(--pix-primary-rgb), 0.08);
+}
+.quoteRows {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.quoteTag {
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--pix-bg-soft);
+  border: 1px solid var(--pix-border);
+  color: var(--pix-text);
+}
+.quoteTotal {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  line-height: 1.2;
+  white-space: nowrap;
+}
+.quoteTotal span {
+  font-size: 10px;
+  color: var(--pix-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.quoteTotal strong {
+  font-size: 16px;
+  background: var(--pix-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ---------- Message body ---------- */
+.body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(var(--pix-text-rgb), 0.18) transparent;
+}
+.body::-webkit-scrollbar { width: 6px; }
+.body::-webkit-scrollbar-thumb { background: rgba(var(--pix-text-rgb), 0.18); border-radius: 6px; }
+
+.row {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  animation: pixIn 0.32s ease both;
+}
+.rowBot { justify-content: flex-start; }
+.rowUser { justify-content: flex-end; }
+@keyframes pixIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.avatar {
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  border-radius: 9px;
+  background: var(--pix-grad);
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  color: var(--pix-on-grad);
+  overflow: hidden;
+}
+.avatarSpark { line-height: 1; }
+/* Set theme.ts's avatarIcon to an image URL to replace the ✦ glyph above
+   with a real image, scoped to chat message avatars only. */
+.avatarImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.bubble {
+  max-width: 78%;
+  padding: 10px 13px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  border-radius: 16px;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.bubbleBot {
+  background: var(--pix-bg-soft);
+  border: 1px solid var(--pix-border);
+  border-bottom-left-radius: 5px;
+  color: var(--pix-text);
+}
+.bubbleUser {
+  background: var(--pix-grad);
+  color: var(--pix-on-grad);
+  border-bottom-right-radius: 5px;
+  box-shadow: 0 6px 16px rgba(var(--pix-primary-rgb), 0.35);
+}
+
+/* typing dots */
+.typing {
+  display: inline-flex;
+  gap: 4px;
+  align-items: center;
+}
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--pix-muted);
+  animation: pixBlink 1.3s infinite ease-in-out;
+}
+.dot:nth-child(2) { animation-delay: 0.2s; }
+.dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes pixBlink {
+  0%, 80%, 100% { opacity: 0.3; transform: translateY(0); }
+  40% { opacity: 1; transform: translateY(-3px); }
+}
+
+/* ---------- Chips ---------- */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-left: 36px;
+  animation: pixIn 0.32s ease both;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 13px;
+  font-size: 13px;
+  border-radius: 999px;
+  border: 1px solid rgba(var(--pix-secondary-rgb), 0.4);
+  background: rgba(var(--pix-secondary-rgb), 0.08);
+  color: var(--pix-text);
+  cursor: pointer;
+  transition: 0.18s;
+}
+.chip:hover:not(:disabled) {
+  background: rgba(var(--pix-secondary-rgb), 0.22);
+  border-color: var(--pix-secondary);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(var(--pix-secondary-rgb), 0.3);
+}
+.chip:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+.chipPrice {
+  font-size: 11px;
+  color: var(--pix-highlight);
+  font-weight: 600;
+}
+
+/* ---------- Combined photo-count/size/pages box ---------- */
+.comboWrap {
+  padding-left: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: pixIn 0.32s ease both;
+}
+.comboBox {
+  border-radius: 13px;
+  border: 1px solid var(--pix-border);
+  background: var(--pix-bg-soft);
+  padding: 12px 13px;
+}
+.comboSection {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.comboSection + .comboSection {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--pix-border);
+}
+.comboLabel {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--pix-muted);
+  font-weight: 600;
+}
+.comboChipRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.chipActive {
+  background: var(--pix-grad);
+  border-color: transparent;
+  color: var(--pix-on-grad);
+}
+.chipActive .chipPrice {
+  color: var(--pix-on-grad);
+}
+.chipActive:hover:not(:disabled) {
+  background: var(--pix-grad);
+  transform: none;
+  box-shadow: 0 6px 16px rgba(var(--pix-primary-rgb), 0.35);
+}
+.comboContinue {
+  align-self: flex-start;
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: none;
+  background: var(--pix-grad);
+  color: var(--pix-on-grad);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(var(--pix-primary-rgb), 0.4);
+  transition: 0.18s;
+}
+.comboContinue:hover:not(:disabled) { transform: translateY(-1px); }
+.comboContinue:disabled { opacity: 0.5; cursor: default; }
+
+/* ---------- Upload zone ---------- */
+.uploadWrap {
+  padding-left: 36px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: pixIn 0.32s ease both;
+}
+.dropZone {
+  border: 1.5px dashed rgba(var(--pix-secondary-rgb), 0.5);
+  border-radius: 14px;
+  padding: 20px 14px;
+  text-align: center;
+  cursor: pointer;
+  background: rgba(var(--pix-secondary-rgb), 0.06);
+  transition: 0.2s;
+}
+.dropZone:hover,
+.dropZoneActive {
+  background: rgba(var(--pix-secondary-rgb), 0.16);
+  border-color: var(--pix-secondary);
+}
+.dropIcon {
+  font-size: 22px;
+  margin-bottom: 4px;
+}
+.dropTitle { font-size: 13.5px; font-weight: 600; margin: 0; }
+.dropHint { font-size: 11.5px; color: var(--pix-muted); margin: 2px 0 0; }
+
+.thumbs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+}
+.thumb {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 9px;
+  overflow: hidden;
+  border: 1px solid var(--pix-border);
+}
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.thumbRemove {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(0, 0, 0, 0.6);
+  color: var(--pix-on-grad);
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+}
+.thumbMore {
+  display: grid;
+  place-items: center;
+  background: var(--pix-bg-soft);
+  font-size: 13px;
+  color: var(--pix-muted);
+}
+.thumbProgressTrack {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4px;
+  background: rgba(0, 0, 0, 0.35);
+}
+.thumbProgressFill {
+  height: 100%;
+  background: var(--pix-grad);
+  transition: width 0.15s linear;
+}
+.thumbFailed {
+  border-color: #e5484d;
+}
+.thumbFailedLabel {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 10.5px;
+  font-weight: 600;
+  text-align: center;
+  padding: 4px;
+}
+.uploadConfirm {
+  align-self: flex-start;
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: none;
+  background: var(--pix-grad);
+  color: var(--pix-on-grad);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(var(--pix-primary-rgb), 0.4);
+  transition: 0.18s;
+}
+.uploadConfirm:hover:not(:disabled) { transform: translateY(-1px); }
+.uploadConfirm:disabled { opacity: 0.5; cursor: default; }
+
+/* ---------- Uploaded-photos history bubble ---------- */
+.photosBubble {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
+  max-width: 220px;
+  padding: 6px;
+}
+.photosBubble .thumb {
+  border-color: var(--pix-border);
+}
+
+/* ---------- Action CTAs ---------- */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding-left: 36px;
+  animation: pixIn 0.32s ease both;
+}
+.actionBtn {
+  padding: 9px 15px;
+  border-radius: 12px;
+  border: 1px solid rgba(var(--pix-secondary-rgb), 0.5);
+  background: rgba(var(--pix-secondary-rgb), 0.1);
+  color: var(--pix-text);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.18s;
+}
+.actionBtn:hover { background: rgba(var(--pix-secondary-rgb), 0.25); transform: translateY(-1px); }
+.actionBtnPrimary {
+  background: var(--pix-grad);
+  border-color: transparent;
+  color: var(--pix-on-grad);
+  box-shadow: 0 8px 20px rgba(var(--pix-primary-rgb), 0.4);
+}
+
+/* ---------- Input bar ---------- */
+.inputBar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  border-top: 1px solid var(--pix-border);
+  background: var(--pix-bg-soft);
+}
+.input {
+  flex: 1;
+  height: 42px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid var(--pix-border);
+  background: var(--pix-bg-soft);
+  color: var(--pix-text);
+  font-size: 13.5px;
+  outline: none;
+  transition: 0.18s;
+}
+.input::placeholder { color: var(--pix-muted); }
+.input:focus {
+  border-color: var(--pix-secondary);
+  box-shadow: 0 0 0 3px rgba(var(--pix-secondary-rgb), 0.18);
+}
+.sendBtn {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  border-radius: 50%;
+  border: none;
+  background: var(--pix-grad);
+  color: var(--pix-on-grad);
+  font-size: 15px;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  transition: 0.18s;
+  box-shadow: 0 6px 16px rgba(var(--pix-primary-rgb), 0.4);
+}
+.sendBtn:hover:not(:disabled) { transform: scale(1.06); }
+.sendBtn:disabled { opacity: 0.45; cursor: default; box-shadow: none; }
+
+/* ---------- Welcome / Start screen ---------- */
+.welcome {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 14px;
+  padding: 14px 6px 6px;
+  min-height: 100%;
+  animation: pixIn 0.4s ease both;
+}
+.welcomeHero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: 2px 8px;
+}
+.welcomeIcon {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  background: var(--pix-grad);
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  font-size: 28px;
+  color: var(--pix-on-grad);
+  box-shadow: 0 10px 26px rgba(var(--pix-primary-rgb), 0.55);
+  animation: pixFloat 4s ease-in-out infinite;
+}
+.welcomeTitle {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  color: var(--pix-welcome-title);
+}
+.welcomeSubtitle {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--pix-welcome-subtitle);
+  max-width: 30ch;
+}
+.welcomeSubtitle strong {
+  color: var(--pix-text);
+}
+.startBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 13px 18px;
+  border: none;
+  border-radius: 14px;
+  background: var(--pix-grad);
+  color: var(--pix-on-grad);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 10px 24px rgba(var(--pix-primary-rgb), 0.45);
+  transition: transform 0.18s, box-shadow 0.18s;
+}
+.startBtn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 30px rgba(var(--pix-secondary-rgb), 0.5);
+}
+.startArrow {
+  font-size: 16px;
+  transition: transform 0.2s;
+}
+.startBtn:hover .startArrow {
+  transform: translateX(3px);
+}
+.startGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.startGhost {
+  width: 100%;
+  padding: 9px 14px;
+  border-radius: 12px;
+  border: 1px solid var(--pix-border);
+  background: transparent;
+  color: var(--pix-muted);
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.18s;
+}
+.startGhost:hover {
+  color: var(--pix-text);
+  border-color: rgba(var(--pix-secondary-rgb), 0.5);
+  background: rgba(var(--pix-secondary-rgb), 0.1);
+}
+
+.suggestBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.suggestLabel {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: var(--pix-muted);
+  padding-left: 4px;
+}
+.suggestList {
+  display: flex;
+  flex-direction: column;
+  border-radius: 13px;
+  border: 1px solid var(--pix-border);
+  background: var(--pix-bg-soft);
+  overflow: hidden;
+}
+.suggestItem {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  width: 100%;
+  text-align: left;
+  padding: 11px 13px;
+  border: none;
+  border-bottom: 1px solid var(--pix-border);
+  background: transparent;
+  color: var(--pix-text);
+  font-size: 13px;
+  cursor: pointer;
+  transition: 0.18s;
+}
+.suggestItem:last-child {
+  border-bottom: none;
+}
+.suggestItem:hover {
+  background: rgba(var(--pix-secondary-rgb), 0.16);
+}
+.suggestIcon {
+  font-size: 16px;
+  line-height: 1;
+  flex: 0 0 auto;
+}
+.suggestChevron {
+  margin-left: auto;
+  font-size: 18px;
+  color: var(--pix-muted);
+}
+
+
+/* ---------- Responsive ---------- */
+@media (max-width: 600px) {
+  /* On phones the panel fills the screen — only the bubble shows when closed. */
+  .panel {
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    max-width: 100%;
+    height: 100dvh;
+    max-height: 100dvh;
+    border-radius: 0;
+    border: none;
+    transform: translateY(100%);
+  }
+  .panelOpen {
+    transform: translateY(0);
+  }
+  /* Hide the floating bubble while the full-screen panel is open. */
+  .launcherOpen {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .launcher {
+    right: 16px;
+    bottom: 16px;
+  }
+  .header {
+    padding-top: max(16px, env(safe-area-inset-top));
+  }
+  .inputBar {
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+  }
+  .bubble {
+    max-width: 82%;
+    font-size: 14.5px;
+  }
+}
+
+/* ---------- Photo-book editor canvas (mobile) ---------- */
+/* On the mobile editor the launcher is painted on top of the fixed bottom toolbar
+   (.modal-editing-footer, z-index 999) and covers its right-most tools — the
+   launcher wins the stacking order with z-index 2147483000. Hide the whole widget
+   while the editing canvas is showing; it comes back in preview mode.
+   src/app/element-editing/page.tsx toggles body.editor-canvas-mode. 768px matches
+   that page's isMobile check (window.innerWidth <= 768), which is deliberately
+   wider than this file's own 600px breakpoint above.
+   :global() keeps the body selector global while .launcher/.panel stay locally
+   hashed — so this does not depend on the generated class-name hash. */
+@media (max-width: 768px) {
+  :global(body.editor-canvas-mode) .launcher,
+  :global(body.editor-canvas-mode) .panel {
+    display: none;
+  }
+}

@@ -1,0 +1,33 @@
+User-agent: *
+Allow: /
+
+# OpenAI / ChatGPT
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# Anthropic / Claude
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+# Google Gemini / AI Overviews
+User-agent: Google-Extended
+Allow: /
+
+# Perplexity AI
+User-agent: PerplexityBot
+Allow: /
+
+# Standard defensive rules
+User-agent: *
+Disallow: /admin
+Disallow: /my-account
+Disallow: /api
+
+# Sitemap
+Sitemap: https://pixovo.com/sitemap.xml

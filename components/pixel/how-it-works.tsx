@@ -162,7 +162,7 @@ function EditorPreview({ active }: { active: number }) {
                     <Image src="/images/photo-wedding.png" alt="" fill sizes="200px" className="object-cover" />
                   </div>
                   <div className="flex flex-col justify-center gap-1 p-3 text-ink">
-                    <span className="font-serif text-xl italic md:text-3xl">June, always.</span>
+                    <span className="font-serif text-xl md:text-3xl">June, always.</span>
                     <span className="text-[10px] uppercase tracking-[0.2em] text-ink/50 md:text-xs">Positano · 2025</span>
                   </div>
                 </div>
@@ -218,8 +218,51 @@ export function HowItWorks() {
           description="No design skills. No blank pages. Just your photos, arranged beautifully — with you in control of every detail."
         />
 
-        <div className="mt-10 grid gap-8 lg:mt-6 lg:grid-cols-2 lg:gap-16">
-          <div className="sticky top-20 z-10 -mx-1 self-start rounded-[2rem] bg-ink px-1 py-2 lg:top-[18vh] lg:order-2 lg:py-[6vh]">
+        {/* Mobile View (< lg): Step Selector Tabs & Preview Card (Zero Text Overlap) */}
+        <div className="mt-8 flex flex-col gap-6 lg:hidden">
+          {/* Step Selector Pills */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none">
+            {steps.map((step, i) => {
+              const StepIcon = step.icon
+              const isSelected = active === i
+              return (
+                <button
+                  key={step.title}
+                  onClick={() => setActive(i)}
+                  className={cn(
+                    'flex shrink-0 items-center gap-2 rounded-2xl px-4 py-2.5 text-xs font-semibold transition-all duration-300',
+                    isSelected
+                      ? 'bg-accent text-accent-foreground shadow-md'
+                      : 'bg-ink-foreground/10 text-ink-foreground/70 hover:bg-ink-foreground/15 hover:text-ink-foreground',
+                  )}
+                >
+                  <StepIcon className="size-4" />
+                  <span>0{i + 1}. {step.title}</span>
+                </button>
+              )
+            })}
+          </div>
+
+          {/* Active Visual Editor Preview */}
+          <div className="rounded-[2rem] bg-ink border border-white/10 p-2 shadow-xl">
+            <EditorPreview active={active} />
+          </div>
+
+          {/* Active Step Description Card */}
+          <div className="rounded-2xl bg-ink-foreground/5 p-5 border border-white/10 flex items-start gap-4">
+            <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-accent text-accent-foreground font-bold text-sm">
+              0{active + 1}
+            </span>
+            <div className="flex flex-col gap-1">
+              <h3 className="font-serif text-xl font-bold text-ink-foreground">{steps[active].title}</h3>
+              <p className="text-xs leading-relaxed text-ink-foreground/70">{steps[active].text}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Desktop View (lg+): Sticky Preview + Scrollable Step Items */}
+        <div className="mt-10 hidden grid-cols-2 gap-16 lg:grid lg:mt-6">
+          <div className="sticky top-[18vh] z-10 self-start rounded-[2rem] bg-ink px-1 py-[6vh] lg:order-2">
             <EditorPreview active={active} />
           </div>
           <ol className="lg:order-1">
@@ -227,6 +270,40 @@ export function HowItWorks() {
               <StepItem key={step.title} index={i} active={active === i} onActive={setActive} />
             ))}
           </ol>
+        </div>
+
+        {/* AI Transparency Integration Banner */}
+        <div className="mt-16 rounded-3xl bg-neutral-900/90 border border-neutral-800 p-6 md:p-8">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 border-b border-neutral-800 pb-6">
+            <div>
+              <span className="text-xs font-semibold uppercase tracking-wider text-amber-400">Human-First Design</span>
+              <h4 className="mt-1 font-serif text-2xl font-medium text-white">
+                Our AI doesn’t replace you. <em className="text-amber-400">It helps you.</em>
+              </h4>
+            </div>
+            <span className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-3 py-1.5 text-xs font-semibold text-emerald-400 border border-emerald-500/20">
+              <Check className="size-3.5" /> 60-Second Draft Guaranteed
+            </span>
+          </div>
+
+          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4 text-xs text-neutral-300">
+            <div className="flex items-start gap-2.5">
+              <span className="text-emerald-400 font-bold">✓</span>
+              <span><strong>AI Analyzes Photos:</strong> Evaluates image quality, faces, and events</span>
+            </div>
+            <div className="flex items-start gap-2.5">
+              <span className="text-emerald-400 font-bold">✓</span>
+              <span><strong>Auto-Chaptering:</strong> Organizes camera rolls into visual stories</span>
+            </div>
+            <div className="flex items-start gap-2.5">
+              <span className="text-emerald-400 font-bold">✓</span>
+              <span><strong>Smart Suggestions:</strong> Recommends layouts and caption ideas</span>
+            </div>
+            <div className="flex items-start gap-2.5">
+              <span className="text-emerald-400 font-bold">✓</span>
+              <span><strong>100% User Control:</strong> YOU make all final layout & photo decisions</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>

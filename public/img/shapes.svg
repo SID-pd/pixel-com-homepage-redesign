@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512" fill="none" stroke="currentColor" stroke-width="32" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Main Rectangle -->
+  <rect x="64" y="64" width="160" height="160" rx="16" ry="16" />
+
+  <!-- Diamond (rotated square) -->
+  <rect x="240" y="240" width="160" height="160" rx="16" ry="16" transform="rotate(45 320 320)" />
+
+  <!-- Circle -->
+  <circle cx="384" cy="96" r="48" />
+
+  <!-- Vertical Lamchoras (Tall Rectangle) -->
+  <rect x="96" y="280" width="80" height="160" rx="16" ry="16" />
+</svg>

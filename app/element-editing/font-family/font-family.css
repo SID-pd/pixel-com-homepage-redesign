@@ -1,0 +1,31 @@
+.text-fontfamily {
+    height: calc(100vh - 163px);
+    overflow-x: auto;
+    margin-top: 10px;
+}
+
+.font-card {
+    border: 1px solid;
+    padding: 7px 15px;
+    font-weight: 500;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.font-card:hover {
+    color: #0ba28d;
+}
+
+.font-card .form-check-input {
+    height: 18px;
+    width: 19px;
+    border: 1px solid #0ba28d;
+}
+
+.font-card .form-check-input:checked {
+    background-color: #0ba28d;
+}
+
+.row a {
+    color: #0ba28d;
+}

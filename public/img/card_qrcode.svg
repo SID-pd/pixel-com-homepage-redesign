@@ -1,0 +1,42 @@
+<svg width="415" height="185" viewBox="0 0 415 185" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<style>
+    @font-face {
+      font-family: 'Roboto Slab';
+      src: url('https://fonts.gstatic.com/s/robotoslab/v21/BngMUXZYTXPIvIBgJJSb6u9N_6A.woff2') format('woff2');
+      font-weight: 600;
+      font-style: normal;
+    }
+
+    .custom-text {
+      font-family: 'Roboto Slab';
+      font-size: 32px;
+      fill: #333;
+    }
+</style>
+
+<rect x="1" y="1" width="413" height="183" rx="19" fill="url(#paint0_linear_1769_7947)" stroke="#D0C801" stroke-width="2"/>
+
+<!-- Editable Text -->
+<foreignObject x="20" y="0" width="180" height="100%" style="place-content: center;">
+    <div xmlns="http://www.w3.org/1999/xhtml" class="custom-text" style="font-size: 18px; color: #706519; line-height: 1.4;">
+        This Card Talks. Scan the QR to Find Out What It Says!
+    </div>
+</foreignObject>
+
+<rect x="236" y="19" width="148" height="148" rx="5" fill="white" stroke="#D0C801" stroke-width="2"/>
+<path d="M360 43H385V143H360V168H260V143H235V43H260V18H360V43Z" fill="white"/>
+<rect x="243.333" y="26.3335" width="133.333" height="133.333" fill="url(#pattern0_1769_7947)"/>
+<defs>
+<pattern id="pattern0_1769_7947" patternContentUnits="objectBoundingBox" width="1" height="1">
+<use xlink:href="#image0_1769_7947" transform="scale(0.001)"/>
+</pattern>
+<linearGradient id="paint0_linear_1769_7947" x1="415" y1="0" x2="148.859" y2="311.985" gradientUnits="userSpaceOnUse">
+<stop offset="0.582401" stop-color="white"/>
+<stop offset="1" stop-color="#FFFEDD"/>
+</linearGradient>
+
+<!-- Change Image URL Only -->
+<image id="image0_1769_7947" href="https://docs.lightburnsoftware.com/legacy/img/QRCode/ExampleCode.png" height="1000" width="1000" />
+</defs>
+</svg>
+

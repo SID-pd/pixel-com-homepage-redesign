@@ -1,0 +1,61 @@
+.tick-container {
+    position: relative;
+    width: 250px;
+    height: 60px;
+    margin: 0 auto;
+    overflow: hidden;
+    background: #fff;
+  }
+  
+  .ticks {
+    display: flex;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    will-change: transform;
+  }
+  
+  .tick {
+    width: 2px;
+    height: 24px;
+    margin: 0 2px;
+    background-color: rgba(0, 0, 0, 0.3);
+    align-self: flex-end;
+    position: relative;
+  }
+  
+  .tick.major {
+    height: 32px;
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  
+  .tick-label {
+    font-size: 10px;
+    position: absolute;
+    top: -18px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+  
+  .center-indicator {
+    width: 2px;
+    height: 40px;
+    background-color: red;
+    position: absolute;
+    top: 50%;
+    left: 51.2%;
+    transform: translateX(-50%) translateY(-50%);
+    z-index: 3;
+  }
+  
+  .zoom-label {
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .zoom-value {
+    font-size: 16px;
+  }
+  

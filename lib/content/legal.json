@@ -1,0 +1,166 @@
+[
+ {
+  "slug": "terms",
+  "title": "Terms & Conditions",
+  "intro": "Please read these terms carefully before using Pixovo.",
+  "metaTitle": "Terms and Conditions Pixovo",
+  "metaDescription": "Read Pixovo's terms and conditions for using our AI photo book design platform and ordering photo books.",
+  "updatedAt": "2026-04-21T06:23:57.651Z",
+  "sections": [
+   {
+    "n": 1,
+    "id": "acceptance-of-terms",
+    "title": "Acceptance of Terms",
+    "html": "<p>By accessing or using the Pixovo website and services, you agree to be bound by these Terms &amp; Conditions and our Privacy Policy. If you do not agree with any part of these terms, please do not use our services.</p>"
+   },
+   {
+    "n": 2,
+    "id": "use-of-our-services",
+    "title": "Use of Our Services",
+    "html": "<p>Pixovo provides an online platform that allows you to create, customize and order photo books and related products. You agree to use our services only for lawful purposes and in accordance with these terms.</p>"
+   },
+   {
+    "n": 3,
+    "id": "account-registration",
+    "title": "Account Registration",
+    "html": "<p>To place an order or access certain features, you may be required to create an account. You agree to provide accurate, current and complete information and to keep your account details secure.</p>"
+   },
+   {
+    "n": 4,
+    "id": "orders-and-payments",
+    "title": "Orders and Payments",
+    "html": "<p>All orders are subject to product availability and confirmation of payment. We reserve the right to refuse or cancel any order at our discretion. Prices are subject to change without notice.</p>"
+   },
+   {
+    "n": 5,
+    "id": "shipping-and-delivery",
+    "title": "Shipping and Delivery",
+    "html": "<p>We strive to deliver your orders on time. Delivery times are estimates and may vary based on your location, shipping method, and other factors beyond our control.</p>"
+   },
+   {
+    "n": 6,
+    "id": "returns-and-refunds",
+    "title": "Returns and Refunds",
+    "html": "<p>Due to the personalized nature of our products, we accept returns only for damaged or defective items.</p>"
+   },
+   {
+    "n": 7,
+    "id": "intellectual-property",
+    "title": "Intellectual Property",
+    "html": "<p>All content on the Pixovo website, including text, graphics, logos, images, and software, is the property of Pixovo and is protected by copyright and other intellectual property laws.</p>"
+   },
+   {
+    "n": 8,
+    "id": "user-content",
+    "title": "User Content",
+    "html": "<p>You retain ownership of the content you upload. By uploading content, you grant Pixovo a license to use it for the purpose of providing our services, including printing and delivering your products.</p>"
+   },
+   {
+    "n": 9,
+    "id": "prohibited-uses",
+    "title": "Prohibited Uses",
+    "html": "<p>You agree not to use our services for any unlawful purpose or in any way that may harm, disable, or impair our website or interfere with any other user's use of our services.</p>"
+   },
+   {
+    "n": 10,
+    "id": "limitation-of-liability",
+    "title": "Limitation of Liability",
+    "html": "<p>Pixovo is not liable for any indirect, incidental, or consequential damages arising from the use or inability to use our services or products.</p>"
+   },
+   {
+    "n": 11,
+    "id": "changes-to-terms",
+    "title": "Changes to Terms",
+    "html": "<p>We may update these Terms &amp; Conditions at any time. Changes will be posted on this page with the updated effective date.</p>"
+   },
+   {
+    "n": 12,
+    "id": "contact-us",
+    "title": "Contact Us",
+    "html": "<p>If you have any questions about these Terms &amp; Conditions, please contact us at<br><strong>support@pixovo.com</strong></p>"
+   }
+  ]
+ },
+ {
+  "slug": "privacy-policy",
+  "title": "Privacy Policy",
+  "intro": "Your privacy is important to us. Please read our policy carefully to understand how we collect, use, and protect your information.",
+  "metaTitle": " Privacy Policy Pixovo",
+  "metaDescription": "Learn how Pixovo collects, uses, and protects your photos and personal information when you design and order a photo book.",
+  "updatedAt": "2026-10-01T10:23:57.159Z",
+  "sections": [
+   {
+    "n": 1,
+    "id": "overview",
+    "title": "Overview",
+    "html": "<p>This Privacy Policy explains how Pixovo (\"we\", \"us\",for \"our\") collects, uses, stores, and protects your personal information when you use our website and services.</p>"
+   },
+   {
+    "n": 2,
+    "id": "information-we-collect",
+    "title": "Information We Collect",
+    "html": "<p>We may collect the following types of information:</p>\n                    <ul>\n                        <li>Personal information (name, email, phone, address, etc.)</li>\n                        <li>Order and payment information</li>\n                        <li>Photos and content you upload for your photobooks</li>\n                        <li>Device and usage information</li>\n                        <li>Cookies and tracking technologies</li>\n                    </ul>"
+   },
+   {
+    "n": 3,
+    "id": "how-we-use-your-information",
+    "title": "How We Use Your Information",
+    "html": "<p>We use your information to:</p>\n                    <ul>\n                        <li>Process and deliver your orders</li>\n                        <li>Provide and improve our services</li>\n                        <li>Communicate with you about your orders</li>\n                        <li>Send promotional offers (if you opt-in)</li>\n                        <li>Ensure security and prevent fraud</li>\n                    </ul>"
+   },
+   {
+    "n": 4,
+    "id": "sharing-of-information",
+    "title": "Sharing of Information",
+    "html": "<p>We do not sell your personal information. We may share your information with trusted third parties only for order processing, delivery, payment, and service improvement.</p>"
+   },
+   {
+    "n": 5,
+    "id": "data-protection",
+    "title": "Data Protection",
+    "html": "<p>We implement industry-standard security measures to protect your personal information. However, no method of transmission over the internet is 100% secure.</p>"
+   },
+   {
+    "n": 6,
+    "id": "your-rights-choices",
+    "title": "Your Rights & Choices",
+    "html": "<p>You have the right to:</p>\n                    <ul>\n                        <li>Access, update, or delete your personal information</li>\n                        <li>Opt-out of marketing communications</li>\n                        <li>Disable cookies through your browser settings</li>\n                    </ul>"
+   },
+   {
+    "n": 7,
+    "id": "cookies",
+    "title": "Cookies",
+    "html": "<p>We use cookies to enhance your experience, analyze site traffic, and personalize content. You can manage cookie preferences in your browser settings.</p>"
+   },
+   {
+    "n": 8,
+    "id": "third-party-services",
+    "title": "Third-Party Services",
+    "html": "<p>We may use third-party services (e.g., payment gateways, shipping carriers, analytics providers) that have their own privacy policies.</p>"
+   },
+   {
+    "n": 9,
+    "id": "changes-to-this-policy",
+    "title": "Changes to This Policy",
+    "html": "<p>We may update this Privacy Policy from time to time. Any changes will be posted on this page with the updated effective date.</p>"
+   },
+   {
+    "n": 10,
+    "id": "contact-us",
+    "title": "Contact Us",
+    "html": "<p>If you have any questions about this Privacy Policy, please contact us at:<br>\n                    <a href=\"mailto:support@pixovo.com\"> support@pixovo.com</a></p>"
+   },
+   {
+    "n": 11,
+    "id": "effective-date",
+    "title": "Effective Date",
+    "html": "<p>This Privacy Policy is effective as of May 15, 2024.</p>"
+   },
+   {
+    "n": 12,
+    "id": "governing-law",
+    "title": "Governing Law",
+    "html": "<p>This policy is governed by the laws of the United States. Any disputes will be resolved in the courts of California.</p>"
+   }
+  ]
+ }
+]

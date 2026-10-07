@@ -1,0 +1,67 @@
+ .bg-color .tab-content {
+   max-height: calc(100vh - 315px);
+   overflow-x: hidden;
+ }
+
+ .bg-color .text-bgcolor-main {
+   /* height: calc(100vh - 120px); */
+   /* overflow-x: auto; */
+   margin-top: 10px;
+
+   @media (max-width: 768px) {
+     height: 250px;
+   }
+ }
+
+ .bg-color .text-bgcolor {
+   &>div {
+     border: 1px solid;
+     padding: 7px 15px;
+     font-weight: 500;
+     border-radius: 10px;
+     margin-bottom: 10px;
+
+     &:hover {
+       color: #0ba28d;
+     }
+
+     .form-check-input {
+       height: 19px;
+       width: 19px;
+       border: 1px solid #0ba28d;
+
+       &:checked {
+         background-color: #0ba28d
+       }
+     }
+   }
+ }
+
+ .bg-color .row a {
+   color: #0ba28d
+ }
+
+ .bg-color .bg-title {
+   font-weight: bold;
+ }
+
+ .bg-color .color-box {
+   width: 20px;
+   height: 20px;
+   border-radius: 5px;
+   display: inline-block;
+   border: 1px solid darkgrey;
+ }
+
+ .bg-color label>div {
+   margin-left: 5px;
+   display: flex;
+   justify-content: start;
+   align-items: center;
+   padding-top: 1px;
+ }
+
+ .bg-color .clear-color {
+   text-decoration: none;
+   cursor: pointer;
+ }

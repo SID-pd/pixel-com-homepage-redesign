@@ -1,0 +1,1067 @@
+.size-options .selected {
+    box-shadow: 0 0 0 3px #4bb8c4;
+}
+
+.cover-option.selected {
+    box-shadow: 0 0 0 3px #4bb8c4;
+}
+
+.step-1 .selected {
+    border: 3px solid #0ba28d;
+}
+
+
+.image-preview-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.image-preview img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 6px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.upload-label {
+    display: block;
+    text-align: center;
+    cursor: pointer;
+    padding: 20px;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    background: #fafafa;
+}
+
+.image-preview {
+    position: relative;
+}
+
+.photo-item__remove {
+    background: black;
+    color: white;
+    font-size: 14px;
+    border-radius: 17px;
+    height: 25px;
+    width: 25px;
+    position: absolute;
+    top: 3%;
+    right: 0%;
+}
+
+.gx-2 {
+    gap: 10px;
+}
+
+.top-border-set {
+    border-top: 2px dashed;
+    padding-top: 10px;
+}
+
+.custom-btn {
+    text-align: center;
+    color: #fff !important;
+    background-color: #0ba28d !important;
+    border: 1px solid #0ba28d !important;
+    border-radius: 6.75px;
+    outline: 0;
+    font-family: Poppins, "Poppins Fallback", sans-serif;
+    font-size: 15.8px;
+    font-weight: 500;
+    line-height: 24.5px;
+    padding: .375rem .75rem;
+}
+
+.custom-btn:hover {
+    color: #0ba28d;
+    background-color: #fff;
+    border-color: #0ba28d;
+}
+
+.modal-title {
+    font-size: 20px;
+}
+
+.modal-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 10px;
+    background: #0ba28d;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.modal-close-btn:hover {
+    background: #0ba28d;
+}
+
+.meta-speed {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #666;
+}
+
+.progress-container {
+    flex: 1;
+    min-width: 150px;
+}
+
+.progress-outer {
+    background: #f2f2f2;
+    height: 8px;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.small {
+    font-size: 12px;
+    color: #888;
+    margin-top: 6px;
+}
+
+.progress-file-info {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.progress-scroll {
+    max-height: 400px;
+    overflow-y: overlay;
+    padding-right: 15px;
+}
+
+/* width */
+.progress-scroll::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+.progress-scroll::-webkit-scrollbar-track {
+    /* box-shadow: inset 0 0 5px grey; */
+    background-color: #ededed;
+    border-radius: 10px;
+}
+
+/* Handle */
+.progress-scroll::-webkit-scrollbar-thumb {
+    background: #0ba28d;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+.progress-scroll::-webkit-scrollbar-thumb:hover {
+    background: #ab5960;
+}
+
+.completed-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    max-height: 400px;
+    overflow-y: overlay;
+}
+
+
+/* width */
+.completed-images::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+.completed-images::-webkit-scrollbar-track {
+    /* box-shadow: inset 0 0 5px grey; */
+    background-color: #ededed;
+    border-radius: 10px;
+}
+
+/* Handle */
+.completed-images::-webkit-scrollbar-thumb {
+    background: #0ba28d;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+.completed-images::-webkit-scrollbar-thumb:hover {
+    background: #ab5960;
+}
+
+
+.completed-images img {
+    width: 120px;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 6px;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+#Sign-up-modal .btn-group button {
+    font-size: 15px;
+}
+
+#Sign-up-modal .button-list button {
+    font-size: 12px;
+}
+
+.modal-footer .custom-btn {
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.uploaded-photos .completed-images .text-success {
+    text-align: center;
+    font-weight: 600 !important;
+}
+
+@media only screen and (max-width:1024px) {
+    .uploaded-photos .col-12.col-md-6.mb-3 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+
+    .uploaded-photos .completed-images .mb-3 {
+        flex: 0 0 20%;
+        max-width: 20%;
+    }
+
+    .uploaded-photos .completed-images .text-success {
+        font-size: 14px;
+    }
+}
+
+@media only screen and (max-width:991px) {
+    .uploaded-photos .completed-images .mb-3 {
+        max-width: 30%;
+        flex: 0 0 30%;
+    }
+}
+
+@media only screen and (max-width:767px) {
+    .image-progress-card .progress-file-info {
+        width: 60%;
+    }
+
+    .uploaded-photos .col-12.col-md-6.mb-3 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    .photo-book-step-section h4 {
+        text-align: center;
+    }
+
+    .photo-book-step-section h4 {
+        margin-bottom: 15px;
+    }
+}
+
+.photo-box {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    /* 🔥 perfect square */
+    overflow: hidden;
+    border-radius: 8px;
+    border: 4px solid transparent;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    background: #f8f9fa;
+}
+
+.photo-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* 🔥 crop without stretch */
+}
+
+.photo-box:hover {
+    transform: scale(1.03);
+}
+
+.photo-box.active {
+    border-color: #0d6efd;
+    /* Bootstrap primary */
+}
+
+.photo-box-checkAll {
+    display: flex;
+    gap: 10px;
+    justify-content: end;
+}
+
+/* Icon container */
+.check-icon {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.55);
+    color: #fff;
+    font-size: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0.7);
+    transition: all 0.2s ease;
+}
+
+/* Show icon when selected */
+.check-icon.show {
+    opacity: 1;
+    transform: scale(1);
+    background: #0d6efd;
+}
+
+.d-desktop .row {
+    align-items: end;
+    justify-content: space-around;
+}
+
+.upload-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* gap: 10px; */
+    text-align: center;
+}
+
+.upload-box h2 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: #05263b;
+}
+
+.browse-text {
+    margin: 0;
+    font-size: 16px;
+    color: #4b5b68;
+}
+
+.file-types {
+    margin-top: 6px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    background: rgba(0, 170, 255, 0.08);
+    color: #0077aa;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.d-desktop .row {
+    align-items: end;
+    justify-content: space-around;
+}
+
+/* ════════════════════════════════════════════
+   UPLOAD PANEL — Photo Visibility & Storage card
+   + Privacy reassurance strip + footer note
+   ════════════════════════════════════════════ */
+
+/* Drop-zone label becomes a row: drop text on the left, storage card on right.
+   Both sides get equal proportions so the panel reads as balanced. */
+.p-book-upload-block label.upload-drop-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 28px;
+    padding: 40px 32px !important;
+    min-height: 320px;
+}
+
+/* LEFT — drop-zone content column */
+.upload-drop-text {
+    flex: 1 1 0;
+    max-width: 440px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 6px;
+}
+
+.upload-drop-icon {
+    width: 64px;
+    height: 64px;
+    color: #4bb8c4;
+    margin-bottom: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.upload-drop-icon svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* RIGHT — Photo Visibility & Storage card */
+.photo-storage-card {
+    flex: 0 0 380px;
+    max-width: 380px;
+    text-align: left;
+    cursor: default;
+    background: #ffffff;
+    border: 1.5px solid rgba(75, 184, 196, 0.35);
+    border-radius: 18px;
+    box-shadow: 0 6px 22px rgba(75, 184, 196, 0.08);
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+/* Horizontal divider between the two items (matches reference image) */
+.photo-storage-card .ps-divider {
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(
+        to right,
+        transparent 0%,
+        rgba(75, 184, 196, 0.35) 15%,
+        rgba(75, 184, 196, 0.35) 85%,
+        transparent 100%
+    );
+    margin: 2px 0;
+}
+
+/* SVG icon sizing inside avatars / trash tag */
+.photo-storage-card .ps-avatar svg,
+.photo-storage-card .ps-tag--trash svg {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
+.photo-storage-card .ps-title {
+    text-align: center;
+    color: #4bb8c4;
+    font-weight: 700;
+    font-size: 17px;
+    margin: 0 0 4px;
+}
+
+.photo-storage-card .ps-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.ps-avatar {
+    flex: 0 0 44px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.ps-avatar--guest {
+    background: #fde8ec;
+    color: #0ba28d;
+}
+
+.ps-avatar--member {
+    background: #e6faf5;
+    color: #0a8a65;
+}
+
+.ps-info {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.ps-info strong {
+    display: block;
+    color: #1a1a2e;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 3px;
+}
+
+.ps-info p {
+    margin: 0;
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: #6b7280;
+}
+
+.ps-highlight {
+    color: #0a8a65;
+    font-weight: 700;
+}
+
+.ps-tag {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.ps-tag--trash {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1.5px dashed #e29aa2;
+    color: #0ba28d;
+    font-size: 16px;
+}
+
+.ps-tag--days {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: #e6faf5;
+    color: #0a8a65;
+    line-height: 1;
+}
+
+.ps-tag--days b {
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.ps-tag--days small {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+/* Privacy reassurance strip (below the action buttons) */
+.upload-privacy-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-top: 22px;
+    padding: 18px;
+    /* border: 1px solid #eef1f4; */
+    border-radius: 16px;
+    /* background: #ffffff; */
+}
+
+.ups-item{
+    background: #ffffff;
+    padding: 14px;
+}
+.upload-privacy-strip .ups-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.ups-icon {
+    flex: 0 0 46px;
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+}
+
+.ups-icon--shield { background: #e6faf5; color: #0a8a65; }
+.ups-icon--lock { background: #fff6dd; color: #c79a2b; }
+.ups-icon--clock { background: #fde8ec; color: #0ba28d; }
+.ups-icon--quality { background: #e8f9f9; color: #4bb8c4; }
+
+/* Inline SVGs inside the privacy-strip icon tiles */
+.ups-icon svg {
+    width: 22px;
+    height: 22px;
+    display: block;
+}
+
+.ups-text strong {
+    display: block;
+    color: #4bb8c4;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 2px;
+}
+
+.ups-text p {
+    margin: 0;
+    font-size: 12.5px;
+    line-height: 1.45;
+    color: #6b7280;
+}
+
+/* Footer reassurance note */
+.upload-footer-note {
+    margin-top: 16px;
+    padding: 14px;
+    border-radius: 14px;
+    background: #f6fbfb;
+    text-align: center;
+    color: #6b7280;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.upload-footer-note .fa-heart {
+    color: #e2606c;
+}
+
+/* ── Responsive ── */
+@media (max-width: 991px) {
+    .upload-privacy-strip {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    /* Per requirement: hide the storage card on mobile */
+    .photo-storage-card {
+        display: none;
+    }
+    /* Drop text reverts to normal centered block when the card is hidden */
+    .p-book-upload-block label.upload-drop-label {
+        display: block;
+        min-height: 0;
+        padding: 28px 18px !important;
+    }
+    .upload-drop-text {
+        max-width: 100%;
+    }
+    .upload-drop-icon {
+        width: 52px;
+        height: 52px;
+    }
+}
+
+@media (max-width: 575px) {
+    .upload-privacy-strip {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ============================================================
+   PHOTO BOOK STUDIO — demo theme restyle (design only)
+   Cream section, pastel step tiles, white cards, teal accents.
+   ============================================================ */
+.photo-book-step-section {
+    position: relative;
+    /* Clip only the x-axis so the decorative blobs can't cause sideways scroll,
+       while NEVER clipping vertical content (the old `overflow: hidden` cut the
+       bottom of the wizard on mobile once the real size cards loaded). */
+    overflow-x: clip;
+    background: var(--demo-cream, #f7f4f0);
+    padding: 60px 0 80px;
+    font-family: "Poppins", "Poppins Fallback", sans-serif;
+}
+.photo-book-step-section > .container {
+    position: relative;
+    z-index: 2;
+}
+
+/* decorative pastel blobs */
+.pb-blob {
+    position: absolute;
+    border-radius: 50%;
+    z-index: 1;
+    pointer-events: none;
+}
+.pb-blob-blue {
+    width: 170px;
+    height: 170px;
+    background: #cbe6f2;
+    top: 110px;
+    left: -40px;
+}
+.pb-blob-yellow-sm {
+    width: 42px;
+    height: 42px;
+    background: var(--demo-yellow, #f6e2a8);
+    top: 210px;
+    left: 200px;
+}
+.pb-blob-pink-sm {
+    width: 26px;
+    height: 26px;
+    background: #f2ccd4;
+    top: 280px;
+    left: 160px;
+}
+.pb-blob-yellow {
+    width: 110px;
+    height: 110px;
+    background: #f6e6ad;
+    top: 130px;
+    right: 60px;
+}
+.pb-blob-pink {
+    width: 150px;
+    height: 150px;
+    background: #f2ccd4;
+    top: 300px;
+    right: -50px;
+}
+.pb-blob-green {
+    width: 130px;
+    height: 130px;
+    background: #d8e8cc;
+    /* was bottom: -40px; kept inside the section now that vertical overflow is
+       visible, so it can't poke into the footer. */
+    bottom: 0;
+    left: -40px;
+}
+
+/* heading */
+.photo-book-step-section h2.mb-4 {
+    color: var(--demo-navy, #16324f);
+    font-weight: 700;
+    font-size: 52px;
+}
+.photo-book-step-section h2 span {
+    color: var(--demo-teal, #0ba28d);
+}
+.photo-book-step-section center p {
+    color: var(--demo-muted, #5a6b7b);
+    font-size: 17px;
+    line-height: 1.9;
+}
+
+/* ---- Layout-shift reservations for the wizard ----------------------------
+   Step 1 renders an empty container until its API call resolves (its
+   `closeModal` flag starts false), so the whole card block appeared at once and
+   pushed the footer down — the shift Lighthouse scored against
+   footer.demo-footer on /photo-book.
+
+   Heights measured from the settled layout at real viewport widths:
+       >=768px  993px  (desktop size grid)
+       <=767px  644px  (.d-desktop is display:none below 768 in main.css:2912,
+                        so the shorter mobile UI renders instead)
+   The wizard total adds the progress-step strip (~149px desktop) on top.
+
+   Reserved a few px over the measured value so growth, not collapse, is the
+   failure mode. Re-measure if the size/cover catalogue changes materially. */
+.photo-book-step-section {
+    --pb-step1-h: 995px;
+    --pb-wizard-h: 1145px;
+}
+
+@media (max-width: 767px) {
+    .photo-book-step-section {
+        --pb-step1-h: 650px;
+        --pb-wizard-h: 800px;
+    }
+}
+
+/* Holds the wizard's space while PhotoBookWizard is suspended (see page.tsx),
+   so the prerendered heading above it never moves. */
+.pb-wizard-fallback {
+    min-height: var(--pb-wizard-h);
+}
+
+.p-book-step-content.step-1 {
+    min-height: var(--pb-step1-h);
+}
+
+/* ---- step indicator: numbered pastel tiles ---- */
+.photo-book-step {
+    margin-top: 46px;
+}
+.photo-book-step ul {
+    counter-reset: pb-step;
+    padding-left: 0;
+    margin-bottom: 0;
+}
+.photo-book-step li {
+    padding-top: 12px;
+}
+.photo-book-step span.pb-step-tile {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 74px;
+    height: 74px;
+    border-radius: 18px;
+    font-size: 30px;
+    left: auto;
+    top: auto;
+    z-index: 2;
+    box-shadow: 0 10px 22px rgba(22, 50, 79, 0.08);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.photo-book-step span.pb-step-tile.pink {
+    background: #f6d7d7;
+    color: #d05a63;
+}
+.photo-book-step span.pb-step-tile.teal {
+    background: #d3efe9;
+    color: var(--demo-teal, #0ba28d);
+}
+.photo-book-step span.pb-step-tile.yellow {
+    background: #faedc4;
+    color: #b9862f;
+}
+.photo-book-step span.pb-step-tile.green {
+    background: #d6e7d2;
+    color: #3fa876;
+}
+.photo-book-step span.pb-step-tile.blue {
+    background: #cfe3ec;
+    color: #2b6f8f;
+}
+.photo-book-step span.pb-step-num {
+    counter-increment: pb-step;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid #f3f4f6;
+    box-shadow: 0 4px 10px rgba(22, 50, 79, 0.1);
+    color: var(--demo-navy, #16324f);
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+    left: calc(50% - 58px);
+    top: 0;
+    z-index: 3;
+}
+.photo-book-step span.pb-step-num::before {
+    content: counter(pb-step);
+}
+/* connector line between tiles */
+.photo-book-step-section .photo-book-step li:before {
+    content: '';
+    position: absolute;
+    height: 2px;
+    width: calc(100% - 110px);
+    left: calc(50% + 55px);
+    top: 49px;
+    background: #e5e7eb;
+}
+.photo-book-step-section .photo-book-step li:last-child:before {
+    display: none;
+}
+.photo-book-step-section .photo-book-step li h3 {
+    color: var(--demo-navy, #16324f);
+    font-size: 17px;
+    font-weight: 600;
+    margin-top: 16px;
+}
+/* active step */
+.photo-book-step-section .photo-book-step .active h3 {
+    color: var(--demo-coral, #d98a86);
+}
+.photo-book-step .active span.pb-step-tile {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 28px rgba(22, 50, 79, 0.16);
+}
+.photo-book-step .active span.pb-step-num {
+    border-color: var(--demo-coral, #d98a86);
+    color: var(--demo-coral, #d98a86);
+}
+
+/* ---- step-1 cards ---- */
+.step-1 .pb-card {
+    background: #fff;
+    border: 1px solid var(--demo-border, #ece4d6);
+    border-radius: 16px;
+    box-shadow: 0 14px 34px rgba(22, 50, 79, 0.05);
+    padding: 26px 30px 32px;
+    margin-bottom: 26px;
+    text-align: center;
+}
+.step-1 .pb-card-head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    text-align: left;
+}
+.step-1 .pb-card-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    font-size: 19px;
+    flex-shrink: 0;
+}
+.step-1 .pb-card-icon.pink {
+    background: #f6d7d7;
+    color: #d05a63;
+}
+.step-1 .pb-card-icon.green {
+    background: #d6e7d2;
+    color: #3fa876;
+}
+.step-1 .pb-card-icon.blue {
+    background: #cfe3ec;
+    color: #2b6f8f;
+}
+.photo-book-step-section .step-1 .pb-card-head h3 {
+    margin: 0;
+    color: var(--demo-navy, #16324f);
+    font-size: 22px;
+    font-weight: 700;
+}
+.photo-book-step-section .step-1 h4.pb-card-sub {
+    text-align: center;
+    color: var(--demo-navy, #16324f);
+    font-size: 17px;
+    font-weight: 600;
+    margin: 20px 0 24px;
+}
+.step-1 .pb-card input[type="radio"] {
+    accent-color: var(--demo-teal, #0ba28d);
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+.step-1 .pb-card label {
+    color: var(--demo-navy, #16324f);
+    font-weight: 500;
+    cursor: pointer;
+    vertical-align: middle;
+}
+.step-1 .pb-card img {
+    cursor: pointer;
+    margin-bottom: 14px;
+}
+.step-1 .pb-card img:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 30px rgba(22, 50, 79, 0.14);
+}
+.step-1 .pb-card .form-control {
+    border: 1px solid #e3dccd;
+    border-radius: 10px;
+    /* padding: 11px 12px; */
+    font-size: 14px;
+    color: var(--demo-navy, #16324f);
+    background: #fff;
+}
+.step-1 .pb-card .form-control:focus {
+    border-color: var(--demo-teal, #0ba28d);
+    box-shadow: 0 0 0 3px rgba(11, 162, 141, 0.15);
+}
+
+/* continue button */
+.photo-book-step-section button.pb-continue {
+    background: var(--demo-teal, #0ba28d);
+    border: 1.5px solid var(--demo-teal, #0ba28d);
+    color: #fff;
+    border-radius: 10px;
+    padding: 12px 26px;
+    font-size: 15px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    transition: background 0.25s ease;
+}
+.photo-book-step-section button.pb-continue:hover,
+.photo-book-step-section button.pb-continue:focus {
+    background: var(--demo-teal-dark, #166358);
+    border-color: var(--demo-teal-dark, #166358);
+    color: #fff;
+}
+
+/* ---- responsive ---- */
+@media (max-width: 991px) {
+    .photo-book-step-section h2.mb-4 {
+        font-size: 40px;
+    }
+    .photo-book-step span.pb-step-tile {
+        width: 60px;
+        height: 60px;
+        border-radius: 14px;
+        font-size: 24px;
+    }
+    .photo-book-step span.pb-step-num {
+        width: 26px;
+        height: 26px;
+        font-size: 12px;
+        left: calc(50% - 48px);
+    }
+    .photo-book-step-section .photo-book-step li:before {
+        top: 42px;
+        width: calc(100% - 90px);
+        left: calc(50% + 45px);
+    }
+    .photo-book-step-section .photo-book-step li h3 {
+        font-size: 14px;
+    }
+    .pb-blob-yellow-sm,
+    .pb-blob-pink-sm {
+        display: none;
+    }
+}
+
+@media (max-width: 767px) {
+    .photo-book-step-section {
+        padding: 40px 0 60px;
+    }
+    .photo-book-step-section h2.mb-4 {
+        font-size: 32px;
+    }
+    .photo-book-step {
+        margin-top: 26px;
+    }
+    .photo-book-step span.pb-step-tile {
+        width: 46px;
+        height: 46px;
+        font-size: 19px;
+    }
+    .photo-book-step span.pb-step-num {
+        width: 22px;
+        height: 22px;
+        font-size: 11px;
+        left: calc(50% - 36px);
+        top: -6px;
+    }
+    .photo-book-step-section .photo-book-step li:before {
+        display: none;
+    }
+    .photo-book-step-section .photo-book-step li h3 {
+        font-size: 12px;
+    }
+    .step-1 .pb-card {
+        padding: 20px 18px 24px;
+        margin-bottom: 18px;
+    }
+    .photo-book-step-section .step-1 .pb-card-head h3 {
+        font-size: 18px;
+    }
+    .photo-book-step-section .step-1 h4.pb-card-sub {
+        font-size: 15px;
+        margin: 14px 0 16px;
+    }
+    .photo-book-step-section button.pb-continue {
+        width: 100%;
+        justify-content: center;
+    }
+}

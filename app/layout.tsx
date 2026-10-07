@@ -1,18 +1,16 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Fredoka, Geist, Instrument_Serif } from 'next/font/google'
+import { Poppins } from 'next/font/google'
+import { ClientProviders } from './providers'
 import './globals.css'
 
-const geist = Geist({ subsets: ['latin'], variable: '--font-geist', display: 'swap' })
-const instrument = Instrument_Serif({
+// Same family and weights as the live pixovo.com (Poppins 400/500/600/700). One family keeps the site fast and consistent.
+const poppins = Poppins({
   subsets: ['latin'],
-  weight: '400',
-  style: ['normal', 'italic'],
-  variable: '--font-instrument',
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-poppins',
   display: 'swap',
 })
-
-const fredoka = Fredoka({ subsets: ['latin'], variable: '--font-fredoka', display: 'swap' })
 
 const introScript = `try{if(sessionStorage.getItem('pixovo-intro')||matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.dataset.introSeen='1'}catch(e){}`
 
@@ -40,13 +38,15 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geist.variable} ${instrument.variable} ${fredoka.variable} bg-background`}
+      className={`${poppins.variable} bg-background`}
     >
       <head>
         <script dangerouslySetInnerHTML={{ __html: introScript }} />
       </head>
       <body>
-        {children}
+        <ClientProviders>
+          {children}
+        </ClientProviders>
         {process.env.NODE_ENV === 'production' && <Analytics />}
       </body>
     </html>

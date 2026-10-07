@@ -1,0 +1,163 @@
+
+/* ── Professional global loader: brand-coloured dots orbiting on a frosted cream backdrop ── */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 26px;
+  background: rgba(247, 243, 236, 0.82);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+/* The group slowly rotates so the four dots orbit a shared centre. */
+.spinner {
+  position: relative;
+  width: 86px;
+  height: 86px;
+  animation: pvOrbit 1.6s linear infinite;
+}
+
+/* Each dot pulses (scales in/out) on a staggered delay → a "chasing" orbit. */
+.dot {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  animation: pvBounce 1.6s ease-in-out infinite;
+}
+
+/* Pixovo logo palette: teal, sky, amber, rose — one per compass point. */
+.dot1 { top: 0;    left: 50%; transform: translateX(-50%); background: #17a08c; animation-delay: 0s;    }
+.dot2 { right: 0;  top: 50%;  transform: translateY(-50%); background: #6fbfdd; animation-delay: 0.2s;  }
+.dot3 { bottom: 0; left: 50%; transform: translateX(-50%); background: #efc14e; animation-delay: 0.4s;  }
+.dot4 { left: 0;   top: 50%;  transform: translateY(-50%); background: #ec8ea0; animation-delay: 0.6s;  }
+
+.label {
+  margin: 0;
+  color: #1a2332;
+  font-family: "Poppins", "Poppins Fallback", sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+/* Animated "..." after the word, without shifting the layout. */
+.dots::after {
+  content: "";
+  display: inline-block;
+  width: 1.1em;
+  text-align: left;
+  animation: pvDots 1.4s steps(1, end) infinite;
+}
+
+@keyframes pvOrbit {
+  to { transform: rotate(360deg); }
+}
+
+/* `scale` is used (not transform) so it composes with each dot's centring translate. */
+@keyframes pvBounce {
+  0%, 100% { scale: 0.45; opacity: 0.55; }
+  50%      { scale: 1;    opacity: 1;    }
+}
+
+@keyframes pvDots {
+  0%   { content: ""; }
+  25%  { content: "."; }
+  50%  { content: ".."; }
+  75%  { content: "..."; }
+  100% { content: ""; }
+}
+
+/* Respect users who prefer less motion. */
+@media (prefers-reduced-motion: reduce) {
+  .spinner { animation-duration: 3.2s; }
+  .dot, .dots::after { animation: none; }
+}
+
+
+/* ========================================================================= */
+.loading-active{
+  overflow: hidden !important;
+}
+.unique-loader-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgb(222, 222, 222);
+  /* display: flex;
+    align-items: center;
+    justify-content: center; */
+  z-index: 99999;
+  overflow: hidden;
+}
+
+.unique-loader {
+  position: relative;
+  width: 70px;
+  height: 70px;
+  top: -15px;
+  left: 0px;
+  margin: 0 auto;
+}
+
+.loader-set {
+  width: 100%;
+  text-align: center;
+  z-index: 9;
+  justify-content:center;
+  align-items: center;
+  height: 100%;
+  display: flex;
+}
+
+.loader-spinner {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #4bb8c4, #0ba28d);
+  animation: morphSpin 1.8s infinite ease-in-out;
+  border-radius: 20%;
+  box-shadow: 0 0 20px rgba(106, 17, 203, 0.4), 0 0 35px rgba(37, 117, 252, 0.2);
+}
+
+.pencil-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 30px !important;
+  color: white;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+@keyframes morphSpin {
+  0% {
+    transform: rotate(0deg);
+    border-radius: 25% 25% 35% 35%;
+  }
+
+  25% {
+    border-radius: 45% 55% 35% 65%;
+  }
+
+  50% {
+    transform: rotate(180deg);
+    border-radius: 50%;
+  }
+
+  75% {
+    border-radius: 30% 70% 60% 40%;
+  }
+
+  100% {
+    transform: rotate(360deg);
+    border-radius: 25% 25% 35% 35%;
+  }
+}

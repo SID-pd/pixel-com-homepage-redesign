@@ -9,15 +9,9 @@ import { TiltCard } from './tilt-card'
 import { motion } from 'motion/react'
 import { fadeUp } from '@/lib/motion'
 import { Reveal } from './reveal'
+import { TEMPLATES } from '@/lib/flow/catalog'
 
-const templates = [
-  { name: 'Gallery', tag: 'Minimal', pages: 40, image: '/images/template-minimal.png' },
-  { name: 'Road Trip', tag: 'Travel', pages: 60, image: '/images/template-collage.png' },
-  { name: 'Ever After', tag: 'Wedding', pages: 80, image: '/images/template-classic.png' },
-  { name: 'Field Notes', tag: 'Travel', pages: 48, image: '/images/template-journal.png' },
-  { name: 'Our Year', tag: 'Family', pages: 52, image: '/images/hero-book.png' },
-  { name: 'Wide Open', tag: 'Landscape', pages: 36, image: '/images/product-photobook.png' },
-]
+const templates = TEMPLATES
 
 export function Templates() {
   const scroller = useRef<HTMLUListElement>(null)
@@ -29,7 +23,7 @@ export function Templates() {
   }
 
   return (
-    <section id="templates" aria-labelledby="templates-title" className="scroll-mt-24 py-24 md:py-32">
+    <section id="templates" aria-labelledby="templates-title" className="scroll-mt-24 py-12 md:py-18">
       <div className="mx-auto max-w-6xl px-5 md:px-6">
         <SectionHeading
           eyebrow="Start from a template"
@@ -69,31 +63,43 @@ export function Templates() {
         >
           {templates.map((t) => (
             <motion.li key={t.name} variants={fadeUp} className="w-[78vw] shrink-0 snap-start sm:w-[340px]">
-                <TiltCard intensity={9} lift={8} className="rounded-[1.75rem]">
-                  <Link href="#start" className="block focus-visible:outline-none">
-                    <div className="relative aspect-[4/5] overflow-hidden rounded-[1.75rem] bg-muted shadow-float transition-shadow duration-500 group-hover:shadow-lift">
-                      <Image
-                        src={t.image}
-                        alt={`${t.name} template preview`}
-                        fill
-                        sizes="(min-width: 640px) 340px, 78vw"
-                        className="object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.07]"
-                      />
-                      <span className="absolute left-4 top-4 rounded-full bg-card/85 px-3 py-1 text-xs font-medium backdrop-blur">
-                        {t.tag}
-                      </span>
-                      <div className="absolute inset-x-4 bottom-4 translate-y-3 opacity-0 transition-all duration-500 ease-out group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100">
-                        <span className="flex h-11 items-center justify-center rounded-full bg-card/90 text-sm font-medium shadow-lg backdrop-blur">
-                          Use this template
+              <TiltCard intensity={9} lift={8} className="rounded-[2rem]">
+                <Link href={`/photo-book/?template=${t.id}`} className="group block focus-visible:outline-none">
+                  <div className="relative aspect-[4/5] overflow-hidden rounded-[2rem] bg-muted border border-black/5 shadow-md transition-all duration-500 group-hover:shadow-2xl">
+                    <Image
+                      src={t.image}
+                      alt={`${t.name} template preview`}
+                      fill
+                      sizes="(min-width: 640px) 340px, 78vw"
+                      className="object-cover transition-transform duration-[1.2s] ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-[1.07]"
+                    />
+                    
+                    {/* Top Tag Pill */}
+                    <span 
+                      className="absolute left-4 top-4 rounded-full px-3.5 py-1 text-xs font-bold text-[#191514] shadow-sm backdrop-blur-md"
+                      style={{ backgroundColor: t.tagBg }}
+                    >
+                      {t.tag}
+                    </span>
+
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+
+                    {/* Bottom Overlay Info Pill */}
+                    <div className="absolute inset-x-3 bottom-3 z-10">
+                      <div className="flex items-center justify-between gap-3 p-3.5 rounded-[1.5rem] bg-white/90 backdrop-blur-xl border border-white/60 shadow-xl transition-all duration-300 group-hover:bg-white group-hover:scale-[1.02]">
+                        <div>
+                          <h3 className="font-serif text-lg font-bold text-[#191514] leading-tight">{t.name}</h3>
+                          <span className="text-xs font-medium text-muted-foreground">{t.pages} pages layout</span>
+                        </div>
+                        <span className="shrink-0 rounded-xl bg-accent text-accent-foreground px-3 py-1.5 text-xs font-semibold shadow-sm group-hover:bg-accent/90">
+                          Customize
                         </span>
                       </div>
                     </div>
-                    <div className="mt-4 flex items-baseline justify-between px-1">
-                      <h3 className="font-serif text-2xl">{t.name}</h3>
-                      <span className="text-sm text-muted-foreground">{t.pages} pages</span>
-                    </div>
-                  </Link>
-                </TiltCard>
+                  </div>
+                </Link>
+              </TiltCard>
             </motion.li>
           ))}
         </ul>
