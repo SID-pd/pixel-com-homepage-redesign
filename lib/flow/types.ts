@@ -41,7 +41,12 @@ export type Item = {
   font?: string
   color?: string
   size?: number
-  align?: 'left' | 'center' | 'right'
+  align?: 'left' | 'center' | 'right' | 'justify'
+  bold?: boolean
+  italic?: boolean
+  /** background colour behind the text box (null/undefined = none) */
+  fill?: string | null
+  border?: boolean
   // sticker
   emoji?: string
 }

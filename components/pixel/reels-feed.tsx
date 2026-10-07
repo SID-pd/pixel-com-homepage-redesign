@@ -227,7 +227,7 @@ export function ReelsFeedSection() {
 
               <div className="pointer-events-auto flex items-center gap-2">
                 <a
-                  href="https://www.icreativetechnologies.com/"
+                  href="https://www.google.com/search?q=Pixovo&stick=H4sIAAAAAAAA_-NgU1I1qLAwSElKSzJKTUs1MUszM7C0MqgwMjU3NjFKSTIySjI3skw1X8TKFpBZkV-WDwBRDVDCMgAAAA&hl=en&mat=CQk0NxzWu7hcElcBzAmVZgQcmLTQ9588wX0dgKmZtkzqmi7c250ZVxgyArbiP9uGuvyaK9I1c4VfLseEMozg3ssjRs4hYU41lpPiOmfZ4o1KzJsuvHT0hBVKEkxtnRk-Rsc&authuser=0&ved=1t:350944"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-1 bg-white/90 backdrop-blur-md px-2.5 py-1.5 rounded-full shadow-md border border-white/40 text-[11px] font-bold text-amber-600 hover:scale-105 transition"

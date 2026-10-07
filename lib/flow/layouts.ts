@@ -28,7 +28,7 @@ function frameItem(f: Frame, photoId: string | null): Item {
 export function titleItem(text: string): Item {
   return {
     id: uid('t'), type: 'text', x: 8, y: 78, w: 84, h: 14, rotation: 0,
-    text, font: 'sans', color: '#2a2623', size: 56, align: 'center',
+    text, font: 'sans', color: '#2a2623', size: 56, align: 'center', bold: true,
   }
 }
 

@@ -87,6 +87,24 @@ export const ops = {
   },
   layoutCount: LAYOUTS.length,
 
+  /**
+   * Clear a page: photo frames are emptied (the frame stays so a new photo can drop in), text and stickers are removed.
+   * `side` limits it to one half of the spread; items are assigned to the half their centre is in.
+   */
+  clearPage(spreadId: string, side: 'left' | 'right' | 'both') {
+    flow.commit(
+      onSpread(spreadId, (items) =>
+        items.flatMap((i) => {
+          const centre = i.x + i.w / 2
+          const inside = side === 'both' || (side === 'left' ? centre < 50 : centre >= 50)
+          if (!inside) return [i]
+          if (i.type === 'photo') return [{ ...i, photoId: null }]
+          return []
+        }),
+      ),
+    )
+  },
+
   // ---- pages ---------------------------------------------------------------
   canAddSpread(count: number) {
     return (count - 1) * 2 + 2 <= MAX_PAGES
@@ -114,6 +132,17 @@ export const ops = {
       const copy: Spread = { ...src, id: uid('s'), items: src.items.map((it) => ({ ...it, id: uid('i') })) }
       const next = spreads.slice()
       next.splice(i + 1, 0, copy)
+      return next
+    })
+  },
+  /** Drag-and-drop reorder from the pages sidebar. Index 0 is the cover and never moves. */
+  reorderSpread(from: number, to: number) {
+    if (from < 1 || to < 1 || from === to) return
+    flow.commit((spreads) => {
+      if (from >= spreads.length || to >= spreads.length) return spreads
+      const next = spreads.slice()
+      const [moved] = next.splice(from, 1)
+      next.splice(to, 0, moved)
       return next
     })
   },

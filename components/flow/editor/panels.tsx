@@ -9,6 +9,7 @@ import { flow } from '@/lib/flow/store'
 import type { Item, Photo, Spread } from '@/lib/flow/types'
 import { cn } from '@/lib/utils'
 import { ops } from './ops'
+import { TextEditor } from './text-tools'
 
 function PanelTitle({ children, hint }: { children: React.ReactNode; hint?: string }) {
   return (
@@ -34,6 +35,7 @@ export function PhotosPanel({
 }) {
   const input = useRef<HTMLInputElement>(null)
   const [error, setError] = useState('')
+  const [unusedOnly, setUnusedOnly] = useState(false)
 
   async function upload(files: File[]) {
     setError('')
@@ -50,14 +52,13 @@ export function PhotosPanel({
 
   return (
     <div>
-      <PanelTitle hint="Tap a photo to place it, or drag it onto a frame.">Photos</PanelTitle>
-      <div className="mb-4 flex gap-2">
+      <div className="mb-4 flex items-center gap-2.5">
         <button
           type="button"
           onClick={() => input.current?.click()}
-          className="flex h-11 flex-1 items-center justify-center gap-2 rounded-xl bg-foreground text-sm font-medium text-background transition hover:bg-foreground/90"
+          className="flex h-12 flex-1 items-center justify-center gap-2 rounded-full bg-accent px-5 text-sm font-semibold text-accent-foreground transition hover:brightness-105"
         >
-          <ImagePlus className="size-4" /> Upload
+          <ImagePlus className="size-4" /> Add more photos
         </button>
         <button
           type="button"
@@ -65,10 +66,11 @@ export function PhotosPanel({
             const have = new Set(photos.map((p) => p.name))
             flow.addPhotos((await samplePhotos(12)).filter((p) => !have.has(p.name)))
           }}
-          className="flex h-11 items-center justify-center gap-2 rounded-xl px-3.5 text-sm font-medium ring-1 ring-inset ring-foreground/15 transition hover:bg-foreground/5"
+          className="grid size-12 shrink-0 place-items-center rounded-full bg-secondary transition hover:bg-foreground/10"
           aria-label="Add sample photos"
+          title="Add sample photos"
         >
-          <Sparkles className="size-4" /> Samples
+          <Sparkles className="size-5 text-accent" />
         </button>
         <input
           ref={input}
@@ -83,6 +85,21 @@ export function PhotosPanel({
           }}
         />
       </div>
+      <div className="mb-3 flex items-center justify-between gap-3 text-sm">
+        <p>
+          <strong className="font-semibold">{photos.length}</strong> photo{photos.length === 1 ? '' : 's'}
+          <span className="text-muted-foreground"> · {photos.filter((p) => !used.has(p.id)).length} unused</span>
+        </p>
+        <button
+          type="button"
+          aria-pressed={unusedOnly}
+          onClick={() => setUnusedOnly((v) => !v)}
+          className={cn('rounded-full px-3 py-1.5 text-xs font-medium transition', unusedOnly ? 'bg-foreground text-background' : 'bg-secondary hover:bg-foreground/10')}
+        >
+          Unused only
+        </button>
+      </div>
+      <p className="mb-3 text-xs text-muted-foreground">Tap a photo to place it, or drag it onto a frame.</p>
       {error && (
         <p role="alert" className="mb-3 text-xs text-destructive">
           {error}
@@ -92,7 +109,7 @@ export function PhotosPanel({
         <p className="rounded-xl bg-secondary px-3 py-6 text-center text-sm text-muted-foreground">No photos yet. Upload some to get started.</p>
       ) : (
         <ul className="grid grid-cols-3 gap-2">
-          {photos.map((p) => (
+          {photos.filter((p) => !unusedOnly || !used.has(p.id)).map((p) => (
             <li key={p.id}>
               <button
                 type="button"
@@ -199,38 +216,7 @@ export function BackgroundsPanel({ spread }: { spread: Spread }) {
 }
 
 export function TextPanel({ spread, onAdded }: { spread: Spread; onAdded: (id: string) => void }) {
-  const presets = [
-    { label: 'Add a heading', sample: 'Heading', size: 64, font: 'sans', h: 16 },
-    { label: 'Add a subheading', sample: 'Subheading', size: 40, font: 'sans', h: 11 },
-    { label: 'Add a caption', sample: 'A little caption', size: 28, font: 'sans', h: 8 },
-    { label: 'Add handwritten note', sample: 'Happy moments', size: 56, font: 'brand', h: 14 },
-  ]
-  return (
-    <div>
-      <PanelTitle hint="Add words anywhere, then drag to place.">Text</PanelTitle>
-      <ul className="space-y-2.5">
-        {presets.map((p) => (
-          <li key={p.label}>
-            <button
-              type="button"
-              onClick={() => {
-                const item: Item = {
-                  id: uid('t'), type: 'text', x: 20, y: 40, w: 60, h: p.h, rotation: 0,
-                  text: p.sample, font: p.font, color: spread.bg === '#2a2623' ? '#ffffff' : '#2a2623', size: p.size, align: 'center',
-                }
-                ops.add(spread.id, item)
-                onAdded(item.id)
-              }}
-              className="flex h-14 w-full items-center gap-3 rounded-xl px-4 text-left ring-1 ring-inset ring-foreground/12 transition hover:ring-accent"
-            >
-              <Type className="size-4 shrink-0 text-muted-foreground" />
-              <span className="text-sm font-medium">{p.label}</span>
-            </button>
-          </li>
-        ))}
-      </ul>
-    </div>
-  )
+  return <TextEditor spread={spread} item={null} onAdded={onAdded} />
 }
 
 export function StickersPanel({ spread, onAdded }: { spread: Spread; onAdded: (id: string) => void }) {

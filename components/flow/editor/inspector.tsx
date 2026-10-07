@@ -12,6 +12,7 @@ import { cn } from '@/lib/utils'
 import { SpreadView, itemFilter } from '../spread-view'
 import { BackgroundsPanel } from './panels'
 import { createBurst, ops } from './ops'
+import { TextEditor } from './text-tools'
 
 export type InspectorTab = 'pages' | 'edit' | 'arrange' | 'page'
 
@@ -82,7 +83,7 @@ function Segmented<T extends string>({ value, options, onChange }: { value: T; o
 }
 
 export function InspectorBody({
-  tab, spread, item, photos, onRequestPhotos, onDeselect, aspect,
+  tab, spread, item, photos, onRequestPhotos, onDeselect, aspect, onAddedItem,
 }: {
   tab: Exclude<InspectorTab, 'pages'>
   spread: Spread
@@ -91,6 +92,7 @@ export function InspectorBody({
   onRequestPhotos: () => void
   onDeselect: () => void
   aspect: number
+  onAddedItem?: (id: string) => void
 }) {
   const burst = useMemo(() => createBurst(), [])
 
@@ -208,64 +210,7 @@ export function InspectorBody({
   }
 
   if (item.type === 'text') {
-    return (
-      <div>
-        <Section title="Text">
-          <textarea
-            value={item.text ?? ''}
-            rows={3}
-            onFocus={burst.begin}
-            onBlur={burst.end}
-            onChange={(e) => { burst.begin(); patchLive({ text: e.target.value }) }}
-            aria-label="Text"
-            className="w-full resize-none rounded-xl border border-foreground/12 bg-background p-3 text-sm outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/25"
-          />
-        </Section>
-        <Section title="Font">
-          <div className="grid grid-cols-2 gap-2">
-            {FONTS.map((f) => (
-              <button
-                key={f.id}
-                type="button"
-                onClick={() => patch({ font: f.id })}
-                aria-pressed={item.font === f.id}
-                className={cn('h-11 rounded-xl text-base transition', item.font === f.id ? 'bg-accent/10 ring-2 ring-accent' : 'ring-1 ring-inset ring-foreground/12 hover:bg-foreground/5')}
-                style={{ fontFamily: f.css }}
-              >
-                {f.label}
-              </button>
-            ))}
-          </div>
-        </Section>
-        <Section title="Style">
-          <div className="space-y-4">
-            <Slider label="Size" value={item.size ?? 24} min={12} max={160} onChange={(n) => patchLive({ size: n })} burst={burst} />
-            <Segmented
-              value={item.align ?? 'center'}
-              onChange={(v) => patch({ align: v })}
-              options={[
-                { id: 'left', label: <AlignLeft className="size-4" />, aria: 'Align left' },
-                { id: 'center', label: <AlignCenter className="size-4" />, aria: 'Align center' },
-                { id: 'right', label: <AlignRight className="size-4" />, aria: 'Align right' },
-              ]}
-            />
-            <div className="flex flex-wrap items-center gap-2" role="group" aria-label="Text colour">
-              {['#2a2623', '#ffffff', '#c0553a', '#2f6bff', '#2f7a4f', '#d9a21b'].map((c) => (
-                <button
-                  key={c}
-                  type="button"
-                  aria-label={`Colour ${c}`}
-                  onClick={() => patch({ color: c })}
-                  className={cn('size-8 rounded-full ring-offset-2 ring-offset-card', item.color === c ? 'ring-2 ring-accent' : 'ring-1 ring-foreground/20')}
-                  style={{ background: c }}
-                />
-              ))}
-              <input type="color" aria-label="Custom colour" value={item.color?.length === 7 ? item.color : '#2a2623'} onChange={(e) => patch({ color: e.target.value })} className="size-8 cursor-pointer rounded-full border-0 bg-transparent p-0" />
-            </div>
-          </div>
-        </Section>
-      </div>
-    )
+    return <TextEditor spread={spread} item={item} onAdded={onAddedItem ?? (() => {})} />
   }
 
   // sticker

@@ -131,7 +131,7 @@ export function Hero() {
             {/* Clean Official Google Rating Badge in Hero */}
             <li className="flex items-center gap-2">
               <a
-                href="https://www.icreativetechnologies.com/"
+                href="https://www.google.com/search?q=Pixovo&stick=H4sIAAAAAAAA_-NgU1I1qLAwSElKSzJKTUs1MUszM7C0MqgwMjU3NjFKSTIySjI3skw1X8TKFpBZkV-WDwBRDVDCMgAAAA&hl=en&mat=CQk0NxzWu7hcElcBzAmVZgQcmLTQ9588wX0dgKmZtkzqmi7c250ZVxgyArbiP9uGuvyaK9I1c4VfLseEMozg3ssjRs4hYU41lpPiOmfZ4o1KzJsuvHT0hBVKEkxtnRk-Rsc&authuser=0&ved=1t:350944"
                 target="_blank"
                 rel="noopener noreferrer"
                 title="View Google Customer Reviews"

@@ -76,10 +76,15 @@ export const ItemBox = memo(function ItemBox({
           className="size-full whitespace-pre-wrap break-words leading-[1.15]"
           style={{
             fontFamily: fontCss(item.font),
-            fontWeight: item.font === 'sans' || !item.font ? 600 : 400,
+            fontWeight: item.bold ? 700 : item.font === 'sans' || !item.font ? 500 : 400,
+            fontStyle: item.italic ? 'italic' : undefined,
             color: item.color,
             textAlign: item.align,
             fontSize: `calc(${item.size ?? 24} * 0.1cqw)`,
+            background: item.fill ?? undefined,
+            border: item.border ? `max(1px, 0.25cqw) solid ${item.color ?? 'currentColor'}` : undefined,
+            padding: item.fill || item.border ? '0.6cqw' : undefined,
+            boxSizing: 'border-box',
           }}
         >
           {item.text}

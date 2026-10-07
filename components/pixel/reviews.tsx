@@ -138,7 +138,7 @@ export function Reviews() {
       <div className="mx-auto max-w-6xl px-5 md:px-6 text-center flex flex-col items-center">
         {/* Official Google Reviews Badge Button with Referral Link */}
         <a
-          href="https://www.icreativetechnologies.com/"
+          href="https://www.google.com/search?q=Pixovo&stick=H4sIAAAAAAAA_-NgU1I1qLAwSElKSzJKTUs1MUszM7C0MqgwMjU3NjFKSTIySjI3skw1X8TKFpBZkV-WDwBRDVDCMgAAAA&hl=en&mat=CQk0NxzWu7hcElcBzAmVZgQcmLTQ9588wX0dgKmZtkzqmi7c250ZVxgyArbiP9uGuvyaK9I1c4VfLseEMozg3ssjRs4hYU41lpPiOmfZ4o1KzJsuvHT0hBVKEkxtnRk-Rsc&authuser=0&ved=1t:350944"
           target="_blank"
           rel="noopener noreferrer"
           className="mb-6 inline-flex items-center gap-2.5 rounded-full bg-card px-5 py-2 text-xs font-semibold shadow-md ring-1 ring-foreground/10 hover:shadow-lg hover:ring-foreground/20 hover:scale-105 transition-all group cursor-pointer"
@@ -175,7 +175,7 @@ export function Reviews() {
       {/* Official Google Rating Banner Footer Card */}
       <div className="mt-8 mx-auto max-w-xl px-5 text-center">
         <a
-          href="https://www.icreativetechnologies.com/"
+          href="https://www.google.com/search?q=Pixovo&stick=H4sIAAAAAAAA_-NgU1I1qLAwSElKSzJKTUs1MUszM7C0MqgwMjU3NjFKSTIySjI3skw1X8TKFpBZkV-WDwBRDVDCMgAAAA&hl=en&mat=CQk0NxzWu7hcElcBzAmVZgQcmLTQ9588wX0dgKmZtkzqmi7c250ZVxgyArbiP9uGuvyaK9I1c4VfLseEMozg3ssjRs4hYU41lpPiOmfZ4o1KzJsuvHT0hBVKEkxtnRk-Rsc&authuser=0&ved=1t:350944"
           target="_blank"
           rel="noopener noreferrer"
           className="flex flex-col sm:flex-row items-center justify-between gap-3 p-4 rounded-2xl bg-card border border-foreground/10 shadow-sm hover:shadow-md transition-all group"
