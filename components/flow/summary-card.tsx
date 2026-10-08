@@ -1,8 +1,10 @@
 'use client'
 
-import Image from 'next/image'
 import { BookOpen, FileText, Layers, ShieldCheck, Truck } from 'lucide-react'
-import { COVERS, MATERIALS, SIZES, money } from '@/lib/flow/catalog'
+import { COVERS, PACKAGING, SIZES, checkPromo, money, salePrice } from '@/lib/flow/catalog'
+import { useFlow } from '@/lib/flow/store'
+import { OfferBadge, OfferStrip } from './offer-ui'
+import { BookPreviewWithPackaging } from './packaging'
 import { extraPagesPrice, unitPrice } from '@/lib/flow/pricing'
 import type { BookConfig } from '@/lib/flow/types'
 
@@ -26,8 +28,11 @@ function Row({ icon, label, value, onEdit }: { icon: React.ReactNode; label: str
 export function SummaryCard({ config, onEdit }: { config: BookConfig; onEdit?: () => void }) {
   const size = SIZES.find((s) => s.id === config.size)!
   const cover = COVERS.find((c) => c.id === config.cover)!
-  const material = MATERIALS.find((m) => m.id === config.material)!
+  const pack = PACKAGING.find((x) => x.id === config.packaging)
   const total = unitPrice(config)
+  const { promo } = useFlow()
+  const check = promo ? checkPromo(promo) : null
+  const withCode = check && check.ok ? salePrice(total, check.percent) : null
   const extra = extraPagesPrice(config)
 
   return (
@@ -42,15 +47,7 @@ export function SummaryCard({ config, onEdit }: { config: BookConfig; onEdit?: (
         </div>
       </div>
 
-      <div className="relative mt-4 aspect-[4/3] overflow-hidden rounded-2xl bg-secondary">
-        <Image src={size.image} alt={`${size.label} photo book`} fill sizes="320px" className="object-contain p-3" />
-        <span
-          aria-hidden
-          className="absolute bottom-2.5 right-2.5 size-5 rounded-full ring-2 ring-card"
-          style={{ background: material.color }}
-          title={material.label}
-        />
-      </div>
+      <BookPreviewWithPackaging config={config} />
 
       <div className="mt-3 divide-y divide-foreground/6">
         <Row icon={<Layers className="size-4" />} label="Size" value={size.label} onEdit={onEdit} />
@@ -75,14 +72,30 @@ export function SummaryCard({ config, onEdit }: { config: BookConfig; onEdit?: (
             <dt className="text-muted-foreground">Extra pages</dt>
             <dd>{extra ? money(extra) : '–'}</dd>
           </div>
+          {pack && (
+            <div className="flex justify-between">
+              <dt className="text-muted-foreground">{pack.label}</dt>
+              <dd>{pack.price ? money(pack.price) : 'Included'}</dd>
+            </div>
+          )}
         </dl>
-        <div className="mt-3 flex items-baseline justify-between border-t border-foreground/8 pt-3">
-          <span className="font-semibold">Total</span>
-          <span className="text-2xl font-semibold tracking-tight" aria-live="polite">
-            {money(total)}
-          </span>
+        <div className="mt-3 border-t border-foreground/8 pt-3">
+          <div className="flex items-baseline justify-between">
+            <span className="font-semibold">{withCode !== null ? 'Price' : 'Total'}</span>
+            <span className={withCode !== null ? 'text-sm text-muted-foreground line-through' : 'text-2xl font-semibold tracking-tight'} aria-live="polite">
+              {money(total)}
+            </span>
+          </div>
+          {withCode !== null && (
+            <div className="mt-1 flex items-baseline justify-between text-accent">
+              <span className="inline-flex items-center gap-2 text-sm font-semibold">With {promo}{check && check.ok && <OfferBadge percent={check.percent} />}</span>
+              <span className="text-2xl font-semibold tracking-tight">{money(withCode)}</span>
+            </div>
+          )}
         </div>
       </div>
+
+      <OfferStrip compact className="mt-3" />
 
       <ul className="mt-3 space-y-2 text-xs">
         <li className="flex items-center gap-2.5 rounded-xl bg-[oklch(0.95_0.04_150)] px-3 py-2.5 text-[oklch(0.35_0.08_150)]">

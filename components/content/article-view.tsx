@@ -6,6 +6,7 @@ import { SITE_URL, faqJsonLd, type Article } from '@/lib/content'
 import { coverOf, formatDate, relatedCards, topicOf } from '@/lib/content/blog'
 import { CtaBand, JsonLd, MarketingShell, Reassurance } from './blocks'
 import { FaqAccordion } from './faq-accordion'
+import { OfferStrip } from '../flow/offer-ui'
 import { PostCardView, ReadingProgress, ShareButtons } from './blog-ui'
 import { TocNav } from './toc-nav'
 
@@ -111,8 +112,9 @@ export function ArticleView({ article }: { article: Article }) {
           </aside>
 
           <div id="article-body" className="min-w-0">
+            <OfferStrip className="mb-8" />
             {article.parts.map((part, i) => {
-              if (part.type === 'html') return <div key={i} className="prose-pixovo" dangerouslySetInnerHTML={{ __html: part.html }} />
+              if (part.type === 'html') return <div key={i} className="prose-pixovo" dangerouslySetInnerHTML={{ __html: part.html.split(`src="${cover}"`).length > 1 ? part.html.replace(new RegExp(`<img[^>]*src="${cover}"[^>]*>`, 'g'), '') : part.html }} />
               if (part.type === 'cta') return <InlineCta key={i} title={part.title} text={part.text} />
               return (
                 <section key={i} id={faqHeading ? undefined : 'faq'} className="scroll-mt-28 py-2">

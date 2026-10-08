@@ -136,33 +136,12 @@ export function Reviews() {
   return (
     <section aria-labelledby="reviews-title" className="py-10 md:py-16">
       <div className="mx-auto max-w-6xl px-5 md:px-6 text-center flex flex-col items-center">
-        {/* Official Google Reviews Badge Button with Referral Link */}
-        <a
-          href="https://www.google.com/search?q=Pixovo&stick=H4sIAAAAAAAA_-NgU1I1qLAwSElKSzJKTUs1MUszM7C0MqgwMjU3NjFKSTIySjI3skw1X8TKFpBZkV-WDwBRDVDCMgAAAA&hl=en&mat=CQk0NxzWu7hcElcBzAmVZgQcmLTQ9588wX0dgKmZtkzqmi7c250ZVxgyArbiP9uGuvyaK9I1c4VfLseEMozg3ssjRs4hYU41lpPiOmfZ4o1KzJsuvHT0hBVKEkxtnRk-Rsc&authuser=0&ved=1t:350944"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="mb-6 inline-flex items-center gap-2.5 rounded-full bg-card px-5 py-2 text-xs font-semibold shadow-md ring-1 ring-foreground/10 hover:shadow-lg hover:ring-foreground/20 hover:scale-105 transition-all group cursor-pointer"
-        >
-          <GoogleLogo className="size-4 shrink-0" />
-          <span className="font-bold text-foreground">Google Reviews</span>
-          <div className="flex items-center gap-1 text-amber-500">
-            <span className="font-extrabold text-slate-900 dark:text-white ml-0.5">4.9</span>
-            <div className="flex gap-0.5">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} className="size-3.5 fill-amber-400 text-amber-400" />
-              ))}
-            </div>
-          </div>
-          <span className="text-muted-foreground hidden sm:inline">| 1,280+ Verified Ratings</span>
-          <ExternalLink className="size-3 text-muted-foreground group-hover:text-accent transition-colors" />
-        </a>
-
         <SectionHeading
           align="center"
           eyebrow="Verified Customer Reviews"
           title={
             <span id="reviews-title">
-              Loved by <span className="text-accent">50,000+</span> memory makers across the USA.
+              Loved by <span className="text-accent">thousands</span> of memory makers across the USA.
             </span>
           }
         />
@@ -187,7 +166,6 @@ export function Reviews() {
             <div className="text-left">
               <div className="flex items-center gap-1.5">
                 <span className="font-extrabold text-sm text-foreground">Official Google Customer Rating</span>
-                <span className="text-xs font-bold text-amber-500">4.9 / 5.0</span>
               </div>
               <p className="text-xs text-muted-foreground">Read verified client testimonials & reviews</p>
             </div>

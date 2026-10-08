@@ -15,9 +15,21 @@ const poppins = Poppins({
 const introScript = `try{if(sessionStorage.getItem('pixovo-intro')||matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.dataset.introSeen='1'}catch(e){}`
 
 export const metadata: Metadata = {
-  title: 'Pixovo Custom Photo Book Maker for Square Photo Books',
+  metadataBase: new URL('https://pixovo.com'),
+  title: {
+    default: 'Premium Custom Photo Books Made in the USA | Pixovo',
+    template: '%s',
+  },
   description:
-    'Upload your photos and let Pixovo design a custom square photo book in minutes. Loved by 50,000+ customers. Printed in the USA. Start free.',
+    'Design a premium custom photo book with smart auto-layout. Design free, pay only to print. Printed and shipped from our California factory.',
+  applicationName: 'Pixovo',
+  openGraph: {
+    type: 'website',
+    siteName: 'Pixovo',
+    locale: 'en_US',
+    images: [{ url: '/images/main-banner.png', alt: 'Pixovo custom photo books' }],
+  },
+  twitter: { card: 'summary_large_image' },
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: 'any' },

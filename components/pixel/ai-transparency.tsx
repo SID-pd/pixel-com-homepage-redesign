@@ -17,8 +17,8 @@ const features = [
   },
   {
     icon: Clock,
-    title: '60-Second Draft',
-    text: 'Generates a complete, beautiful initial album layout in under a minute so you never start from a blank page.',
+    title: 'Draft in About a Minute',
+    text: 'Generates a complete initial album layout in about a minute so you never start from a blank page.',
   },
   {
     icon: UserCheck,

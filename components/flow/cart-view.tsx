@@ -4,11 +4,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { Lock, Minus, Pencil, Plus, ShieldCheck, ShoppingBag, Trash2, Truck } from 'lucide-react'
-import { COVERS, SHIPPING, SIZES, money } from '@/lib/flow/catalog'
+import { COVERS, PACKAGING, SHIPPING, SIZES, money } from '@/lib/flow/catalog'
 import { cartTotals } from '@/lib/flow/pricing'
 import { flow, useFlow } from '@/lib/flow/store'
 import { FlowButton, FlowLink } from './flow-button'
 import { FlowHeader, FlowShell } from './flow-shell'
+import { LinePrice, OfferStrip } from './offer-ui'
 import { PromoBox, TotalsBlock } from './totals'
 
 export function CartView() {
@@ -65,10 +66,11 @@ export function CartView() {
                       <h2 className="truncate font-semibold">{item.title || 'Untitled book'}</h2>
                       <p className="mt-0.5 text-sm text-muted-foreground">
                         {size.label} · {item.config.pages} pages · {cover.label}
+                        {item.config.packaging && ` · ${PACKAGING.find((x) => x.id === item.config.packaging)?.label}`}
                       </p>
                       <p className="text-xs text-muted-foreground">{item.photoCount} photos</p>
                     </div>
-                    <p className="font-semibold">{money(item.unitPrice * item.qty)}</p>
+                    <p className="text-right font-semibold"><LinePrice amount={item.unitPrice * item.qty} /></p>
                   </div>
 
                   <div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-2 pt-3">
@@ -120,6 +122,7 @@ export function CartView() {
 
         <aside className="h-fit space-y-4 rounded-3xl border border-foreground/8 bg-card p-5 shadow-xs lg:sticky lg:top-24">
           <h2 className="font-semibold">Order summary</h2>
+          <OfferStrip compact />
           <PromoBox promo={promo} />
           <TotalsBlock totals={totals} shippingNote={ship.label} />
           {freeLeft > 0 && totals.shipping > 0 && (

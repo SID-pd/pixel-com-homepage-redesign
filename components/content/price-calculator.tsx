@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { COVERS, SIZES, money, type CoverId, type SizeId } from '@/lib/flow/catalog'
 import { unitPrice } from '@/lib/flow/pricing'
 import { cn } from '@/lib/utils'
-import { CtaLink } from '@/components/pixel/cta-link'
+import { OfferCtaLink, PriceTag } from '@/components/flow/offer-ui'
 
 /** Lets people price their exact book before committing. Same numbers as the checkout (lib/flow/pricing). */
 export function PriceCalculator() {
@@ -81,17 +81,17 @@ export function PriceCalculator() {
           <p className="mt-1 text-sm">
             {SIZES.find((s) => s.id === size)!.label} · {pages} pages · {COVERS.find((c) => c.id === cover)!.label}
           </p>
-          <p className="mt-6 font-serif text-5xl tracking-tight" aria-live="polite">
-            {money(price)}
-          </p>
+          <div className="mt-6" aria-live="polite">
+            <PriceTag list={price} size="lg" onDark />
+          </div>
           <p className="mt-2 text-sm text-ink-foreground/70">
             {perPage ? `Extra pages cost about ${money(perPage)} each.` : 'Includes 20 premium silk pages.'} Shipping calculated at checkout.
           </p>
         </div>
         <div className="mt-8 space-y-3">
-          <CtaLink href={`/photo-book/?size=${size}`} variant="accent" size="lg" className="w-full">
+          <OfferCtaLink href={`/photo-book/?size=${size}`} variant="accent" size="lg" className="w-full">
             Start with this book
-          </CtaLink>
+          </OfferCtaLink>
           <p className="text-center text-xs text-ink-foreground/65">Design free. You only pay when you order.</p>
         </div>
       </div>

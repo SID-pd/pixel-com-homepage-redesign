@@ -122,8 +122,14 @@ const stripAll = (h) => h.replace(/<style[\s\S]*?<\/style>/gi, '').replace(/<scr
 
 // ---------- blog articles ----------
 const articles = []
+// Not Pixovo's own editorial: a competitor comparison (breaks the no-competitor-claims rule agreed with the owner).
+const EXCLUDED_ARTICLES = new Set(['best-online-photo-book-services'])
 for (const p of pages) {
   if (!p.content || !p.content.includes('art-body-inner')) continue
+  if (EXCLUDED_ARTICLES.has(p.slug)) {
+    note(`${p.slug}: excluded (not Pixovo editorial)`)
+    continue
+  }
   const html = stripAll(p.content)
   const jsonLd = [...p.content.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/gi)]
     .map((m) => {
@@ -136,7 +142,7 @@ for (const p of pages) {
     })
     .filter(Boolean)
 
-  const title = text(/<h1[^>]*>([\s\S]*?)<\/h1>/i.exec(html)?.[1] ?? p.title).replace(/\s*testing\s*$/i, '')
+  const title = (text(/<h1[^>]*>([\s\S]*?)<\/h1>/i.exec(html)?.[1] ?? '') || text(p.title ?? '')).replace(/\s*testing\s*$/i, '')
   const tag = text(/class="tag"[^>]*>([\s\S]*?)<\/span>/i.exec(html)?.[1] ?? 'Guides')
   const metaSpans = [...(/class="art-meta">([\s\S]*?)<\/div>/i.exec(html)?.[1] ?? '').matchAll(/<span(?![^>]*(?:avatar|dot))[^>]*>([\s\S]*?)<\/span>/gi)].map((m) => text(m[1])).filter(Boolean)
   const hero = /class="art-hero-img"[\s\S]*?<img[^>]*src="([^"]+)"[^>]*alt="([^"]*)"/i.exec(html)
@@ -186,7 +192,7 @@ for (const p of pages) {
     createdAt: p.created_at?.$date ?? p.created_at ?? null,
     updatedAt: p.updated_at?.$date ?? p.updated_at ?? null,
     metaTitle: (p.meta_title || seo.meta_title || title).replace(/\s*testing\s*$/i, ''),
-    metaDescription: p.meta_description || seo.meta_description || '',
+    metaDescription: (p.meta_description || seo.meta_description || '').replace(/\s*testing\s*$/i, ''),
     ogImage: p.og_image || '',
     subtitle: /placeholder|Create your photobook in 3 easy steps/i.test(p.subtitle ?? '') || p.subtitle === p.meta_title ? '' : (p.subtitle ?? ''),
     heroImage: heroFile && publicImages.has(heroFile) ? `/images/${heroFile}` : '',

@@ -138,13 +138,7 @@ export function Hero() {
                 className="inline-flex items-center gap-2.5 rounded-full bg-card/90 px-3.5 py-1.5 ring-1 ring-foreground/10 shadow-xs hover:shadow-md hover:scale-105 transition-all text-xs text-foreground group cursor-pointer"
               >
                 <GoogleLogo className="size-4 shrink-0" />
-                <div className="flex gap-0.5" aria-label="5 out of 5 stars">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="size-3.5 fill-amber-400 text-amber-400" aria-hidden />
-                  ))}
-                </div>
-                <span className="font-bold text-foreground">4.8/5</span>
-                <span className="text-muted-foreground">from 50,000+ customers</span>
+                <span className="font-semibold text-foreground">Read our reviews on Google</span>
               </a>
             </li>
 
@@ -248,7 +242,7 @@ export function Hero() {
             </span>
             <span className="flex flex-col">
               <span className="text-sm font-medium leading-tight">Smart Auto-Layout</span>
-              <span className="text-xs text-muted-foreground">50,000+ Happy Customers</span>
+              <span className="text-xs text-muted-foreground">Your book designed in about a minute</span>
             </span>
           </motion.div>
         </motion.div>

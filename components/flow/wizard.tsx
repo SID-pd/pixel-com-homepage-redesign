@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { AlertTriangle, ArrowLeft, Check, Pencil, ShoppingBag } from 'lucide-react'
-import { SIZES, TEMPLATES, money, type SizeId, type TemplateId } from '@/lib/flow/catalog'
+import { SIZES, TEMPLATES, checkPromo, money, type SizeId, type TemplateId } from '@/lib/flow/catalog'
 import { countPlaced, spreadCount } from '@/lib/flow/layouts'
 import { unitPrice } from '@/lib/flow/pricing'
 import { flow, useFlow } from '@/lib/flow/store'
@@ -12,7 +12,10 @@ import { BookPreview } from './book-preview'
 import { BookSetup } from './book-setup'
 import { FlowButton } from './flow-button'
 import { FlowHeader, FlowShell } from './flow-shell'
+import { OfferStrip } from './offer-ui'
+import { PackagingPicker } from './packaging'
 import { PhotoUploader } from './photo-uploader'
+import { StoryModeBanner, StoryModeButton, StoryModePanel } from './story-mode'
 import { Stepper } from './stepper'
 import { SummaryCard } from './summary-card'
 
@@ -33,7 +36,13 @@ export function Wizard() {
     const validSize = SIZES.some((s) => s.id === size) ? (size as SizeId) : undefined
     const validTpl = TEMPLATES.some((t) => t.id === template) ? (template as TemplateId) : undefined
     flow.openDraft({ size: validSize, templateId: validTpl })
-    if (size || template) window.history.replaceState(null, '', '/photo-book/')
+    // ?promo=FALL50 (banner and product-card links): applied only if the code is valid today.
+    const promoParam = params.get('promo')
+    if (promoParam && checkPromo(promoParam).ok) flow.setPromo(promoParam.toUpperCase())
+    // ?story=1 (navbar Story Mode button): jump to the upload step, where the Story Mode panel is.
+    const story = params.get('story')
+    if (story) flow.setStep(2)
+    if (size || template || promoParam || story) window.history.replaceState(null, '', '/photo-book/')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hydrated])
 
@@ -84,7 +93,8 @@ export function Wizard() {
     router.push(goTo)
   }
 
-  const canContinue = step === 2 ? photos.length > 0 : true
+  // packaging is a mandatory choice on the final step
+  const canContinue = step === 2 ? photos.length > 0 : step === 3 ? !!config.packaging : true
   const primaryLabel = step === 1 ? 'Continue' : step === 2 ? 'Build my book' : 'Add to cart'
 
   return (
@@ -101,7 +111,16 @@ export function Wizard() {
             <Stepper steps={labels} current={shown} onGo={(n) => flow.setStep(templateMode ? n + 1 : n)} />
           </div>
 
-          {step === 1 && <BookSetup config={config} />}
+          <OfferStrip />
+
+          {step === 1 && (
+            <>
+              <StoryModeBanner>
+                <StoryModeButton label="Start Story Mode" onClick={() => flow.setStep(2)} />
+              </StoryModeBanner>
+              <BookSetup config={config} />
+            </>
+          )}
 
           {step === 2 && (
             <>
@@ -128,6 +147,7 @@ export function Wizard() {
                 </details>
               )}
               <PhotoUploader photos={photos} recommended={config.pages} />
+              <StoryModePanel photoCount={photos.length} onDone={() => flow.setStep(3)} />
             </>
           )}
 
@@ -141,6 +161,7 @@ export function Wizard() {
                 </p>
               </div>
               <BookPreview spreads={draft.spreads} photos={photos} />
+              <PackagingPicker packaging={config.packaging} />
               {placed.empty > 0 && (
                 <div className="flex items-start gap-3 rounded-2xl bg-[oklch(0.96_0.05_85)] p-4 text-sm text-[oklch(0.4_0.08_70)]">
                   <AlertTriangle className="mt-0.5 size-4 shrink-0" />
@@ -172,7 +193,7 @@ export function Wizard() {
             )}
             <div className="flex items-center gap-3">
               {step === 3 && (
-                <FlowButton variant="secondary" size="lg" loading={adding} onClick={() => addToCart('/checkout/')}>
+                <FlowButton variant="secondary" size="lg" disabled={!canContinue} loading={adding} onClick={() => addToCart('/checkout/')}>
                   Checkout now
                 </FlowButton>
               )}

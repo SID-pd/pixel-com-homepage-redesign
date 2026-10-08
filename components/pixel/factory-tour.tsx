@@ -87,7 +87,7 @@ export function FactoryTour() {
           <div className="flex items-center gap-3 rounded-2xl bg-background p-4 border border-foreground/[0.06] shadow-sm">
             <Factory className="size-5 text-blue-500 shrink-0" />
             <div>
-              <h4 className="text-xs font-bold text-foreground">Fast 3–5 Day Shipping</h4>
+              <h4 className="text-xs font-bold text-foreground">Ships Out in 3–5 Business Days</h4>
               <p className="text-[11px] text-muted-foreground">Direct from USA Facility</p>
             </div>
           </div>

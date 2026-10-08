@@ -15,14 +15,12 @@ const links = [
   { label: 'How It Works', href: '/how-it-works/' },
   { label: 'Pricing', href: '/pricing/' },
   {
-    label: 'Blog',
+    label: 'Resources',
     href: '/blog/',
     subLinks: [
-      { label: 'All Articles', href: '/blog/' },
-      { label: 'Photobook Ideas', href: '/blog/ideas/' },
-      { label: 'Reels & Video Guides', href: '/blog/reels/' },
-      { label: 'Stories & Articles', href: '/blog/text/' },
-      { label: 'How-To Guides', href: '/blog/how-to/' },
+      { label: 'Blogs', href: '/blog/' },
+      { label: 'FAQ’s Page', href: '/faq/' },
+      { label: 'Reel & Video Guide', href: '/blog/reels/' },
     ],
   },
   { label: 'About Us', href: '/about-us/' },
@@ -34,7 +32,7 @@ export function SiteNav() {
   const [scrolled, setScrolled] = useState(false)
   const [hidden, setHidden] = useState(false)
   const [open, setOpen] = useState(false)
-  const [blogDropdownOpen, setBlogDropdownOpen] = useState(false)
+  const [resourcesDropdownOpen, setResourcesDropdownOpen] = useState(false)
 
   useMotionValueEvent(scrollY, 'change', (latest) => {
     const prev = scrollY.getPrevious() ?? 0
@@ -70,19 +68,19 @@ export function SiteNav() {
                   <li
                     key={link.label}
                     className="relative"
-                    onMouseEnter={() => setBlogDropdownOpen(true)}
-                    onMouseLeave={() => setBlogDropdownOpen(false)}
+                    onMouseEnter={() => setResourcesDropdownOpen(true)}
+                    onMouseLeave={() => setResourcesDropdownOpen(false)}
                   >
                     <Link
                       href={link.href}
                       className="inline-flex items-center gap-1 rounded-full px-3 py-2 text-xs font-medium text-foreground/80 transition-colors hover:bg-foreground/5 hover:text-foreground"
                     >
                       <span>{link.label}</span>
-                      <ChevronDown className={cn("size-3.5 transition-transform duration-200", blogDropdownOpen && "rotate-180")} />
+                      <ChevronDown className={cn("size-3.5 transition-transform duration-200", resourcesDropdownOpen && "rotate-180")} />
                     </Link>
 
                     <AnimatePresence>
-                      {blogDropdownOpen && (
+                      {resourcesDropdownOpen && (
                         <motion.div
                           initial={{ opacity: 0, y: 6, scale: 0.97 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}

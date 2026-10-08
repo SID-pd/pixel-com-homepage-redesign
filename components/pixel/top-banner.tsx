@@ -2,17 +2,23 @@
 
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
+import { useRouter } from 'next/navigation'
 import { Sparkles, ChevronRight, X } from 'lucide-react'
+import { formatEnd } from '@/lib/flow/catalog'
+import { flow } from '@/lib/flow/store'
+import { useCampaign } from '@/lib/flow/use-campaign'
 
 const messages = [
-  'Made in California | 20+ Years Precision Manufacturing',
-  'Lowest Prices USA | Buy Direct from Our Factory',
-  'Fast Turnaround | Order Today, Ship 3–5 Days',
-  'Professional Design Team | Free AI Layout Design',
-  'Huge Production Capacity | Trusted by Brands Nationwide',
+  'Made in California | 20+ Years of Printing Experience',
+  'Factory-Direct Pricing | Buy from the Printer',
+  'Ships Out Within 3–5 Business Days',
+  'Free Smart Auto-Layout | Design Free, Pay Only to Print',
+  '100% Happiness Guarantee | We’ll Make It Right',
 ]
 
 export function TopBanner() {
+  const router = useRouter()
+  const campaign = useCampaign()
   const [index, setIndex] = useState(0)
   const [isHovered, setIsHovered] = useState(false)
   const [isDismissed, setIsDismissed] = useState(false)
@@ -41,7 +47,7 @@ export function TopBanner() {
             Factory Direct
           </span>
 
-          <div className="relative h-5 overflow-hidden flex-1 min-w-[200px] sm:min-w-[340px]">
+          <div className="relative hidden h-5 flex-1 overflow-hidden min-w-[200px] sm:block sm:min-w-[340px]">
             <AnimatePresence mode="wait">
               <motion.div
                 key={index}
@@ -57,15 +63,29 @@ export function TopBanner() {
           </div>
         </div>
 
-        {/* Right Side Actions: Claim 50% OFF CTA + Dismiss Cross Button */}
+        {/* Right side: the active sale (auto-applies its code) + dismiss */}
         <div className="flex items-center gap-2.5 shrink-0">
-          <a
-            href="/photo-book/"
-            className="inline-flex items-center gap-1 text-xs font-semibold text-accent hover:underline shrink-0"
-          >
-            <span>Claim 50% OFF</span>
-            <ChevronRight className="size-3.5" />
-          </a>
+          {campaign ? (
+            // The real deadline from the sale calendar; the code stops working on this date.
+            <button
+              type="button"
+              onClick={() => {
+                flow.setPromo(campaign.code)
+                router.push('/photo-book/')
+              }}
+              className="inline-flex items-center gap-1 text-xs font-semibold text-accent hover:underline shrink-0"
+            >
+              <span>
+                {campaign.name}: {campaign.percent}% off · ends {formatEnd(campaign.end)}
+              </span>
+              <ChevronRight className="size-3.5" />
+            </button>
+          ) : (
+            <a href="/photo-book/" className="inline-flex items-center gap-1 text-xs font-semibold text-accent hover:underline shrink-0">
+              <span>Create Your Photo Book</span>
+              <ChevronRight className="size-3.5" />
+            </a>
+          )}
 
           {/* Close / Dismiss Cross (X) Button */}
           <button

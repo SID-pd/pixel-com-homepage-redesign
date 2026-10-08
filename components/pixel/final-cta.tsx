@@ -54,7 +54,7 @@ export function FinalCta() {
         </RevealItem>
         <RevealItem>
           <p className="max-w-md text-pretty text-lg text-muted-foreground">
-            Join over 50,000 happy customers who have transformed their memories into beautiful, lasting photo books.
+            Join thousands of happy customers who have transformed their memories into beautiful, lasting photo books.
           </p>
         </RevealItem>
         <RevealItem className="flex flex-wrap justify-center gap-3">
@@ -148,6 +148,25 @@ export function SiteFooter() {
                 <Link href="/pricing/" className="transition-all duration-300 hover:text-white hover:translate-x-1 inline-block">
                   Pricing
                 </Link>
+              </li>
+              <li className="flex flex-col gap-1">
+                <Link href="/themes/" className="transition-all duration-300 hover:text-white hover:translate-x-1 inline-block font-semibold text-white/90">
+                  Themes
+                </Link>
+                <div className="pl-3 flex flex-col gap-1 border-l border-neutral-800">
+                  <Link href="/themes/wedding-photo-book/" className="text-[11px] text-neutral-400 transition-all duration-300 hover:text-amber-400 hover:translate-x-1 inline-block">
+                    • Wedding &amp; Love
+                  </Link>
+                  <Link href="/themes/baby-first-year-photo-book/" className="text-[11px] text-neutral-400 transition-all duration-300 hover:text-amber-400 hover:translate-x-1 inline-block">
+                    • Baby &amp; Family
+                  </Link>
+                  <Link href="/themes/travel-photo-book/" className="text-[11px] text-neutral-400 transition-all duration-300 hover:text-amber-400 hover:translate-x-1 inline-block">
+                    • Travel &amp; Vacations
+                  </Link>
+                  <Link href="/themes/year-in-review-photo-book/" className="text-[11px] text-neutral-400 transition-all duration-300 hover:text-amber-400 hover:translate-x-1 inline-block">
+                    • Year in Review
+                  </Link>
+                </div>
               </li>
               {/* Blog with subcategories (Text Based & Reel Based) */}
               <li className="flex flex-col gap-1">

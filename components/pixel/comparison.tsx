@@ -8,18 +8,18 @@ import { CtaLink } from './cta-link'
 const comparisonPoints = [
   {
     feature: 'Manufacturing & Fulfillment',
-    traditional: 'Overseas factories (2–3 week shipping)',
-    pixovo: '100% USA California factory (3–5 day shipping)',
+    traditional: 'Often printed overseas, with longer shipping',
+    pixovo: '100% USA California factory (ships out in 3–5 business days)',
   },
   {
     feature: 'Starting Price',
-    traditional: 'High middleman markups ($50–$60)',
-    pixovo: 'Direct factory pricing $39.99 ($19.99 with 50% OFF)',
+    traditional: 'Retail markups on top of production costs',
+    pixovo: 'Factory-direct pricing from $39.99 (50% off during our seasonal sales)',
   },
   {
     feature: 'Design Process',
-    traditional: '10+ hours manual drag-and-drop templates',
-    pixovo: '60-second smart AI layout generator',
+    traditional: 'Hours of manual drag-and-drop layout work',
+    pixovo: 'Smart auto-layout in about a minute',
   },
   {
     feature: 'Quality Assurance',
@@ -67,7 +67,7 @@ export function ComparisonSection() {
               Traditional Photo Books vs. <em className="text-accent">The Pixovo Standard</em>
             </span>
           }
-          description="See why over 50,000 memory makers switched from legacy photo book services."
+          description="See what you get when you buy a photo book straight from the factory."
         />
 
         {/* Comparison Table / Card View */}

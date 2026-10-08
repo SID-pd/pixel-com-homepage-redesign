@@ -13,7 +13,7 @@ export default function BlogPage() {
       featured
       title={
         <>
-          Ideas and guides for <em className="text-accent">better</em> photo books
+          Photo book blog
         </>
       }
       description="Practical advice from our team: what size to pick, how to turn a trip into a book, and the mistakes worth avoiding."

@@ -8,7 +8,7 @@ import { LAYOUTS, uid } from '@/lib/flow/layouts'
 import { flow } from '@/lib/flow/store'
 import type { Item, Photo, Spread } from '@/lib/flow/types'
 import { cn } from '@/lib/utils'
-import { ops } from './ops'
+import { ops, pageBox } from './ops'
 import { TextEditor } from './text-tools'
 
 function PanelTitle({ children, hint }: { children: React.ReactNode; hint?: string }) {
@@ -215,11 +215,11 @@ export function BackgroundsPanel({ spread }: { spread: Spread }) {
   )
 }
 
-export function TextPanel({ spread, onAdded }: { spread: Spread; onAdded: (id: string) => void }) {
-  return <TextEditor spread={spread} item={null} onAdded={onAdded} />
+export function TextPanel({ spread, onAdded, activeSide }: { spread: Spread; onAdded: (id: string) => void; activeSide?: 'left' | 'right' }) {
+  return <TextEditor spread={spread} item={null} onAdded={onAdded} activeSide={activeSide} />
 }
 
-export function StickersPanel({ spread, onAdded }: { spread: Spread; onAdded: (id: string) => void }) {
+export function StickersPanel({ spread, onAdded, activeSide = 'left' }: { spread: Spread; onAdded: (id: string) => void; activeSide?: 'left' | 'right' }) {
   return (
     <div>
       <PanelTitle hint="Tap to add, then resize and rotate.">Stickers</PanelTitle>
@@ -230,7 +230,8 @@ export function StickersPanel({ spread, onAdded }: { spread: Spread; onAdded: (i
               type="button"
               aria-label={`Add ${s}`}
               onClick={() => {
-                const item: Item = { id: uid('e'), type: 'sticker', x: 42, y: 36, w: 14, h: 28, rotation: 0, emoji: s }
+                const box = pageBox(spread, activeSide)
+                const item: Item = { id: uid('e'), type: 'sticker', x: box.x0 + box.w * 0.5 - 7, y: 36, w: 14, h: 28, rotation: 0, emoji: s }
                 ops.add(spread.id, item)
                 onAdded(item.id)
               }}

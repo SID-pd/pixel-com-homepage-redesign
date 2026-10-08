@@ -6,7 +6,7 @@ import { FONTS } from '@/lib/flow/catalog'
 import { uid } from '@/lib/flow/layouts'
 import type { Item, Spread } from '@/lib/flow/types'
 import { cn } from '@/lib/utils'
-import { createBurst, ops } from './ops'
+import { createBurst, ops, pageBox } from './ops'
 
 const SIZES = [12, 14, 16, 18, 20, 24, 28, 32, 36, 42, 48, 56, 64, 72, 96, 120, 160]
 const COLORS = ['#2a2623', '#ffffff', '#c0553a', '#2f6bff', '#2f7a4f', '#d9a21b']
@@ -36,7 +36,7 @@ function Collapsible({ title, children, defaultOpen = true }: { title: string; c
 const iconBtn = (on: boolean) =>
   cn('grid size-11 place-items-center rounded-xl transition', on ? 'bg-accent text-accent-foreground' : 'bg-secondary text-foreground/70 hover:bg-foreground/10')
 
-export function TextEditor({ spread, item, onAdded }: { spread: Spread; item: Item | null; onAdded: (id: string) => void }) {
+export function TextEditor({ spread, item, onAdded, activeSide = 'left' }: { spread: Spread; item: Item | null; onAdded: (id: string) => void; activeSide?: 'left' | 'right' }) {
   const burst = useMemo(() => createBurst(), [])
   const [captionTab, setCaptionTab] = useState<'popular' | 'topic'>('popular')
   const [topic, setTopic] = useState('Travel')
@@ -46,8 +46,9 @@ export function TextEditor({ spread, item, onAdded }: { spread: Spread; item: It
 
   function addText(content = 'Your text here') {
     const dark = spread.bg === '#2a2623'
+    const box = pageBox(spread, activeSide)
     const it: Item = {
-      id: uid('t'), type: 'text', x: 20, y: 40, w: 60, h: 12, rotation: 0,
+      id: uid('t'), type: 'text', x: box.x0 + box.w * 0.1, y: 40, w: box.w * 0.8, h: 12, rotation: 0,
       text: content, font: 'sans', color: dark ? '#ffffff' : '#2a2623', size: 36, align: 'center',
     }
     ops.add(spread.id, it)

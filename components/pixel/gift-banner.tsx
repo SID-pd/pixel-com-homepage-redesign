@@ -4,7 +4,9 @@ import { useRef } from 'react'
 import Image from 'next/image'
 import { motion, useReducedMotion, useScroll, useTransform } from 'motion/react'
 import { Sparkles, ArrowRight } from 'lucide-react'
-import { CtaLink } from './cta-link'
+import { useRouter } from 'next/navigation'
+import { formatEnd, type Campaign } from '@/lib/flow/catalog'
+import { flow } from '@/lib/flow/store'
 import { Reveal, RevealItem } from './reveal'
 
 /* 1. Realistic SVG Leaf Components with Gradients & Vein Details */
@@ -79,7 +81,8 @@ const floatingLeaves = [
   { type: 'birch', id: 'b2', top: '-4%', left: '30%', size: 'w-14 h-14 md:w-20 md:h-20', startColor: '#facc15', endColor: '#ca8a04', delay: 1.2, duration: 8, rotate: -10 },
 ]
 
-export function GiftBanner() {
+export function GiftBanner({ campaign }: { campaign: Campaign }) {
+  const router = useRouter()
   const ref = useRef<HTMLDivElement>(null)
   const reduceMotion = useReducedMotion()
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start end', 'end start'] })
@@ -159,7 +162,7 @@ export function GiftBanner() {
             <RevealItem>
               <div className="inline-flex items-center gap-2 rounded-full bg-amber-100 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-amber-900 border border-amber-300 shadow-sm">
                 <Sparkles className="size-3.5 text-amber-700" />
-                Special Autumn Offer · Up to 50% Off
+                {campaign.name} · {campaign.percent}% off · ends {formatEnd(campaign.end)}
               </div>
             </RevealItem>
 
@@ -184,22 +187,23 @@ export function GiftBanner() {
 
             {/* Call to Action Button & Promo Code */}
             <RevealItem className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-3 w-full">
-              <CtaLink
-                href="/photo-book/"
-                size="lg"
-                magnetic={false}
-                showArrow={false}
-                className="w-full sm:w-auto bg-amber-900 hover:bg-amber-800 text-white font-medium px-8 py-3.5 rounded-full shadow-lg transition-all duration-300 hover:scale-105"
+              <button
+                type="button"
+                onClick={() => {
+                  flow.setPromo(campaign.code)
+                  router.push('/photo-book/')
+                }}
+                className="inline-flex w-full items-center justify-center rounded-full bg-amber-900 px-8 py-3.5 text-base font-medium text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-amber-800 sm:w-auto"
               >
                 Create Your Autumn Gift Book <ArrowRight className="ml-2 inline size-4" />
-              </CtaLink>
+              </button>
 
               <div className="flex items-center gap-2 text-xs font-semibold text-amber-950 bg-amber-50 px-4 py-2.5 rounded-full border border-amber-200 shadow-xs">
-                <span>Use promo code</span>
+                <span>Code</span>
                 <strong className="font-mono text-amber-900 bg-amber-200/80 px-2 py-0.5 rounded border border-amber-300">
-                  FALL50
+                  {campaign.code}
                 </strong>
-                <span>for 50% OFF</span>
+                <span>{campaign.percent}% off, applied for you</span>
               </div>
             </RevealItem>
 

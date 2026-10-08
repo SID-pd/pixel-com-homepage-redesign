@@ -5,6 +5,7 @@ import { PAGE_COUNTS, TEMPLATES, type ShippingId, type TemplateId } from './cata
 import { loadPhotoData, deletePhotoData, makeThumb } from './images'
 import { autoBuild, blankSpread, spreadCount, uid } from './layouts'
 import { unitPrice } from './pricing'
+import { captionsFor, orderPhotos, storyTitle, withCaptions } from './story'
 import type { BookConfig, CartItem, Contact, Draft, MockUser, Order, Photo, Spread } from './types'
 
 // One external store for the whole workflow (draft book, cart, orders, mock user).
@@ -262,6 +263,20 @@ export const flow = {
     past = []
     future = []
     set({ draft: touch({ ...d, spreads: autoBuild(d.config, d.photos, d.config.templateId) }) })
+  },
+
+  /** Story Mode: order the photos, title the book from the customer's words, lay out every page and add captions. */
+  buildStory(description: string) {
+    const d = getState().draft
+    if (!d) return
+    const photos = orderPhotos(d.photos)
+    const title = storyTitle(description, d.config.title)
+    const config = { ...d.config, title }
+    const built = autoBuild(config, photos, config.templateId)
+    const filled = built.filter((s) => s.kind !== 'cover' && s.items.some((i) => i.type === 'photo' && i.photoId)).length
+    past = []
+    future = []
+    set({ draft: touch({ ...d, config, photos, spreads: withCaptions(built, captionsFor(description, filled)) }) })
   },
 
   // ---- editor history ------------------------------------------------------

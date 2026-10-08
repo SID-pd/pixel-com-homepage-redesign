@@ -23,6 +23,9 @@ export function EditorCanvas({
   onRequestPhotos,
   compact,
   side,
+  activeSide,
+  onActiveSide,
+  pan,
 }: {
   spread: Spread
   photos: Photo[]
@@ -32,6 +35,11 @@ export function EditorCanvas({
   onRequestPhotos: () => void
   compact?: boolean
   side: PageSide
+  /** which page of a two-page spread is outlined as the one being worked on */
+  activeSide?: 'left' | 'right'
+  onActiveSide?: (s: 'left' | 'right') => void
+  /** hand tool: drag to scroll instead of moving items */
+  pan?: boolean
 }) {
   const wrap = useRef<HTMLDivElement>(null)
   const canvas = useRef<HTMLDivElement>(null)
@@ -53,6 +61,7 @@ export function EditorCanvas({
     return () => ro.disconnect()
   }, [])
 
+  const panRef = useRef<{ x: number; y: number; left: number; top: number } | null>(null)
   const pad = compact ? 16 : 40
   const fitW = Math.max(0, Math.min(avail.w - pad * 2, (avail.h - pad * 2) * aspect))
   const width = fitW * zoom
@@ -62,6 +71,7 @@ export function EditorCanvas({
     e.stopPropagation()
     if (mode !== 'rotate' && e.button !== 0 && e.pointerType === 'mouse') return
     onSelect(item.id)
+    if (!single && spread.kind === 'spread') onActiveSide?.(item.x + item.w / 2 < 50 ? 'left' : 'right')
     if (item.locked && mode === 'move') return
     const rect = canvas.current!.getBoundingClientRect()
     const sx = e.clientX
@@ -138,13 +148,36 @@ export function EditorCanvas({
   const selectedVisible = !!selected && boxLeft + boxWidth > 0 && boxLeft < 100
 
   return (
-    <div ref={wrap} className="relative size-full overflow-auto">
+    <div
+      ref={wrap}
+      className={cn('relative size-full overflow-auto', pan && 'cursor-grab active:cursor-grabbing')}
+      onPointerDown={(e) => {
+        if (!pan || !wrap.current) return
+        panRef.current = { x: e.clientX, y: e.clientY, left: wrap.current.scrollLeft, top: wrap.current.scrollTop }
+        wrap.current.setPointerCapture(e.pointerId)
+      }}
+      onPointerMove={(e) => {
+        const st = panRef.current
+        if (!st || !wrap.current) return
+        wrap.current.scrollLeft = st.left - (e.clientX - st.x)
+        wrap.current.scrollTop = st.top - (e.clientY - st.y)
+      }}
+      onPointerUp={() => { panRef.current = null }}
+      onPointerCancel={() => { panRef.current = null }}
+    >
       <div className="grid min-h-full min-w-full place-items-center" style={{ padding: pad }}>
         <div
           className="relative shrink-0"
           style={{ width, aspectRatio: String(aspect) }}
           onPointerDown={(e) => {
-            if (e.target === e.currentTarget || (e.target as HTMLElement).dataset.bg) onSelect(null)
+            if (pan) return
+            if (e.target === e.currentTarget || (e.target as HTMLElement).dataset.bg) {
+              onSelect(null)
+              if (!single && spread.kind === 'spread') {
+                const r = e.currentTarget.getBoundingClientRect()
+                onActiveSide?.(e.clientX - r.left < r.width / 2 ? 'left' : 'right')
+              }
+            }
           }}
           onDragOver={(e) => e.preventDefault()}
           onDrop={onDrop}
@@ -168,11 +201,20 @@ export function EditorCanvas({
                   key={it.id}
                   item={it}
                   photo={it.photoId ? photoMap.get(it.photoId) : undefined}
+                  className={pan ? 'pointer-events-none' : undefined}
                   onPointerDown={(e) => begin(e, it, 'move')}
                   style={{ touchAction: 'none', cursor: it.locked ? 'default' : 'grab' }}
                 />
               ))}
             </div>
+            {!single && spread.kind === 'spread' && activeSide && (
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-y-0 w-1/2 border-[3px] border-accent"
+                style={{ left: activeSide === 'left' ? 0 : '50%' }}
+              />
+            )}
+            {spread.kind === 'cover' && <div aria-hidden className="pointer-events-none absolute inset-0 border-[3px] border-accent" />}
             {(single || spread.kind === 'cover') && (
               <div aria-hidden className="pointer-events-none absolute inset-[3%] border border-dashed border-rose-300/70" />
             )}
@@ -184,7 +226,7 @@ export function EditorCanvas({
             )}
           </div>
 
-          {selected && selectedVisible && (
+          {selected && selectedVisible && !pan && (
             <SelectionLayer
               item={selected}
               boxLeft={boxLeft}

@@ -8,6 +8,7 @@ import { unitPrice } from '@/lib/flow/pricing'
 import { flow } from '@/lib/flow/store'
 import type { BookConfig } from '@/lib/flow/types'
 import { cn } from '@/lib/utils'
+import { PriceTag } from './offer-ui'
 import { RadioCard, RadioDot } from './radio-card'
 
 function Section({
@@ -92,7 +93,7 @@ export function BookSetup({ config, showTemplates = true }: { config: BookConfig
         <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
           {PAGE_COUNTS.map((p) => {
             const checked = config.pages === p
-            const price = unitPrice({ ...config, pages: p })
+            const price = unitPrice({ ...config, packaging: undefined, pages: p })
             return (
               <RadioCard
                 key={p}
@@ -106,7 +107,7 @@ export function BookSetup({ config, showTemplates = true }: { config: BookConfig
                   <RadioDot checked={checked} />
                   <div>
                     <p className="text-sm font-semibold">{p} Pages</p>
-                    <p className={cn('text-xs', checked ? 'font-semibold text-accent' : 'text-muted-foreground')}>{money(price)}</p>
+                    <PriceTag list={price} size="sm" className={cn(checked ? 'font-semibold' : '')} />
                   </div>
                 </div>
               </RadioCard>

@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useRef, useState, type ReactNode } from 'react'
 import { CreditCard, Lock, ShieldCheck, Smartphone, Wallet } from 'lucide-react'
 import { openAuth } from '@/lib/flow/auth'
-import { SHIPPING, SIZES, money, type ShippingId } from '@/lib/flow/catalog'
+import { PACKAGING, SHIPPING, SIZES, money, type ShippingId } from '@/lib/flow/catalog'
 import { placeOrder, type PaymentInput } from '@/lib/flow/mock-api'
 import { cartTotals, shippingCost } from '@/lib/flow/pricing'
 import { flow, useFlow } from '@/lib/flow/store'
@@ -15,6 +15,7 @@ import { cn } from '@/lib/utils'
 import { FlowButton, FlowLink } from './flow-button'
 import { FlowHeader, FlowShell } from './flow-shell'
 import { RadioCard, RadioDot } from './radio-card'
+import { LinePrice, OfferStrip } from './offer-ui'
 import { PromoBox, TotalsBlock } from './totals'
 
 const STATES = 'AL AK AZ AR CA CO CT DE DC FL GA HI ID IL IN IA KS KY LA ME MD MA MI MN MS MO MT NE NV NH NJ NM NY NC ND OH OK OR PA RI SC SD TN TX UT VT VA WA WV WI WY'.split(' ')
@@ -334,12 +335,14 @@ export function CheckoutView() {
                   <p className="truncate text-sm font-medium">{i.title}</p>
                   <p className="text-xs text-muted-foreground">
                     {SIZES.find((s) => s.id === i.config.size)!.label} · {i.config.pages} pp
+                    {i.config.packaging && ` · ${PACKAGING.find((x) => x.id === i.config.packaging)?.label}`}
                   </p>
                 </div>
-                <p className="text-sm font-medium">{money(i.unitPrice * i.qty)}</p>
+                <p className="text-right text-sm font-medium"><LinePrice amount={i.unitPrice * i.qty} /></p>
               </li>
             ))}
           </ul>
+          <OfferStrip compact />
           <PromoBox promo={promo} />
           <TotalsBlock totals={totals} shippingNote={SHIPPING.find((s) => s.id === shipping)!.label} />
           <FlowButton type="submit" variant="accent" size="lg" className="w-full max-lg:hidden" loading={placing}>

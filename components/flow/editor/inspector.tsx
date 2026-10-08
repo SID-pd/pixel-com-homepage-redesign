@@ -11,6 +11,7 @@ import type { Adjust, Item, Photo, Spread } from '@/lib/flow/types'
 import { cn } from '@/lib/utils'
 import { SpreadView, itemFilter } from '../spread-view'
 import { BackgroundsPanel } from './panels'
+import { LinePrice } from '../offer-ui'
 import { createBurst, ops } from './ops'
 import { TextEditor } from './text-tools'
 
@@ -83,7 +84,7 @@ function Segmented<T extends string>({ value, options, onChange }: { value: T; o
 }
 
 export function InspectorBody({
-  tab, spread, item, photos, onRequestPhotos, onDeselect, aspect, onAddedItem,
+  tab, spread, item, photos, onRequestPhotos, onDeselect, aspect, onAddedItem, activeSide,
 }: {
   tab: Exclude<InspectorTab, 'pages'>
   spread: Spread
@@ -93,6 +94,7 @@ export function InspectorBody({
   onDeselect: () => void
   aspect: number
   onAddedItem?: (id: string) => void
+  activeSide?: 'left' | 'right'
 }) {
   const burst = useMemo(() => createBurst(), [])
 
@@ -210,7 +212,7 @@ export function InspectorBody({
   }
 
   if (item.type === 'text') {
-    return <TextEditor spread={spread} item={item} onAdded={onAddedItem ?? (() => {})} />
+    return <TextEditor spread={spread} item={item} onAdded={onAddedItem ?? (() => {})} activeSide={activeSide} />
   }
 
   // sticker
@@ -288,7 +290,7 @@ export function PagesPanel({
     <div>
       <div className="mb-4 flex items-center justify-between text-sm">
         <span className="font-semibold">{config.pages} pages</span>
-        <span className="text-muted-foreground">{money(unitPrice(config))}</span>
+        <LinePrice amount={unitPrice(config)} className="text-muted-foreground" />
       </div>
 
       <ul className={cn('grid gap-4', overview && 'sm:grid-cols-2 lg:grid-cols-3')} aria-label="All pages">

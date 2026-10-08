@@ -1,8 +1,8 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Check, Tag, X } from 'lucide-react'
-import { PROMOS, money } from '@/lib/flow/catalog'
+import { activeCampaign, checkPromo, formatEnd, money, salePrice } from '@/lib/flow/catalog'
 import { applyPromo } from '@/lib/flow/mock-api'
 import { flow } from '@/lib/flow/store'
 import type { OrderTotals } from '@/lib/flow/types'
@@ -13,12 +13,18 @@ export function PromoBox({ promo }: { promo: string | null }) {
   const [error, setError] = useState('')
   const [busy, setBusy] = useState(false)
 
-  if (promo) {
+  // A saved code can lapse (e.g. the sale ended while the cart sat open): drop it instead of showing a discount that won't apply.
+  const check = promo ? checkPromo(promo) : null
+  useEffect(() => {
+    if (promo && check && !check.ok) flow.setPromo(null)
+  }, [promo, check])
+
+  if (promo && check?.ok) {
     return (
       <div className="flex items-center justify-between rounded-2xl bg-[oklch(0.95_0.04_150)] px-3.5 py-2.5 text-sm text-[oklch(0.35_0.08_150)]">
         <span className="flex items-center gap-2">
           <Check className="size-4" />
-          <strong className="font-semibold">{promo}</strong> · {PROMOS[promo]?.label}
+          <strong className="font-semibold">{promo}</strong> · {check.label}
         </span>
         <button type="button" onClick={() => flow.setPromo(null)} aria-label="Remove promo code" className="grid size-7 place-items-center rounded-full hover:bg-black/5">
           <X className="size-4" />

@@ -9,7 +9,6 @@ const META: Record<string, { topic: Topic; cover: string }> = {
   'make-photo-book-from-phone-photos': { topic: 'How-To', cover: '/images/how_to_make_photo_book_outer.png' },
   'ai-photo-book-vs-traditional-photo-book': { topic: 'Guides', cover: '/images/ai_photo_book_vs_traditional_photobook_outer.png' },
   'photo-book-sizes-guide': { topic: 'How-To', cover: '/images/12x12-inches-photobook.png' },
-  'best-online-photo-book-services': { topic: 'Guides', cover: '/images/best_online_photo_book_outer.png' },
   'wedding-photo-book-ideas': { topic: 'Ideas', cover: '/images/wedding-elegance.png' },
   'what-is-an-ai-photo-book-maker-how-it-works-and-whether-its-worth-it': { topic: 'Guides', cover: '/images/what_is_ai_photo_book_outer.png' },
   'photo-book-gifts-every-occasion': { topic: 'Ideas', cover: '/images/product-photobook.png' },
@@ -51,7 +50,8 @@ export function toCard(a: Article): PostCard {
   }
 }
 
-export const allCards = (): PostCard[] => articles.map(toCard).sort((a, b) => b.isoDate.localeCompare(a.isoDate))
+// Newest first = last entry in the CMS export on top (the export is in publishing order; the dates in it are not reliable).
+export const allCards = (): PostCard[] => [...articles].reverse().map(toCard)
 
 export function relatedCards(slug: string, n = 3): PostCard[] {
   const me = articles.find((a) => a.slug === slug)

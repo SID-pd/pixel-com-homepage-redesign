@@ -55,27 +55,42 @@ export function CoverStudio() {
             viewport={{ once: true }}
             className="relative h-[62%] w-[46%] transform-gpu [transform-style:preserve-3d]"
           >
-            <div
-              className="absolute inset-y-0 left-0 w-full rounded-r-md bg-[repeating-linear-gradient(90deg,#f6f1e8_0px,#f6f1e8_2px,#e6dfd2_3px)]"
-              style={{ transform: 'translateZ(-14px) translateX(4px)' }}
-            />
+            {/* back cover */}
             <motion.div
+              aria-hidden
               animate={{ backgroundColor: material.spine }}
               transition={{ duration: 0.6 }}
-              className="absolute inset-y-0 left-0 w-7 origin-left"
-              style={{ transform: 'rotateY(-90deg)' }}
+              className="absolute inset-0 rounded-r-lg rounded-l-sm"
+              style={{ transform: 'translateZ(-13px)' }}
+            />
+            {/* fore-edge: stacked pages, set just inside the covers */}
+            <div
+              aria-hidden
+              className="absolute inset-y-[1.2%] right-[0.8%] w-[26px] origin-right bg-[repeating-linear-gradient(0deg,#fbf8f1_0px,#fbf8f1_1px,#e4dccb_1.6px,#fbf8f1_2.4px)] shadow-[inset_8px_0_10px_-6px_rgba(0,0,0,0.25)]"
+              style={{ transform: 'translateZ(-13px) rotateY(90deg)' }}
+            />
+            {/* spine */}
+            <motion.div
+              aria-hidden
+              animate={{ backgroundColor: material.spine }}
+              transition={{ duration: 0.6 }}
+              className="absolute inset-y-0 left-0 w-[26px] origin-left rounded-l-sm"
+              style={{ transform: 'translateZ(-13px) rotateY(-90deg)' }}
             />
             <motion.div
               animate={{ backgroundColor: material.color }}
               transition={{ duration: 0.6 }}
-              className="absolute inset-0 flex flex-col items-center justify-between overflow-hidden rounded-r-lg rounded-l-sm p-[9%] shadow-[inset_6px_0_10px_-6px_rgba(0,0,0,0.35)]"
-              style={{ transform: 'translateZ(14px)' }}
+              className="absolute inset-0 flex flex-col items-center justify-between overflow-hidden rounded-r-lg rounded-l-sm p-[9%] pl-[12%] shadow-[inset_-1px_0_0_rgba(255,255,255,0.18)]"
+              style={{ transform: 'translateZ(13px)' }}
             >
+              {/* hinge groove + soft light falloff so the cover reads as a bound board, not a flat card */}
+              <div aria-hidden className="pointer-events-none absolute inset-y-0 left-[5%] w-[3px] bg-black/20 shadow-[1px_0_0_rgba(255,255,255,0.25)]" />
+              <div aria-hidden className="pointer-events-none absolute inset-0 bg-[linear-gradient(100deg,rgba(0,0,0,0.22)_0%,rgba(255,255,255,0.1)_9%,transparent_30%,rgba(0,0,0,0.1)_100%)]" />
               <div
                 aria-hidden
                 className="pointer-events-none absolute inset-0 opacity-30 mix-blend-overlay [background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.25)_0_1px,transparent_1px_3px)]"
               />
-              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-sm shadow-md">
+              <div className="relative aspect-[4/5] w-full overflow-hidden rounded-[2px] shadow-md ring-1 ring-black/10">
                 <Image
                   src="/images/photo-travel.png"
                   alt=""
@@ -87,9 +102,9 @@ export function CoverStudio() {
               <motion.span
                 animate={{ color: material.text }}
                 transition={{ duration: 0.6 }}
-                className="relative font-serif text-[clamp(1rem,2.4vw,1.6rem)]"
+                className="relative w-full text-center font-serif text-[clamp(1rem,2.4vw,1.6rem)]"
               >
-                Summer in Amalfi
+                Our Story
               </motion.span>
             </motion.div>
           </motion.div>

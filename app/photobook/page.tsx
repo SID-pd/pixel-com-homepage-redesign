@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { ArrowRight, Flag, Lock, Monitor, Sparkles, Wand2 } from 'lucide-react'
 import { CtaBand, IconTile, JsonLd, MarketingShell, PageHero, Reassurance, Section } from '@/components/content/blocks'
 import { FaqAccordion } from '@/components/content/faq-accordion'
+import { OfferStrip, PriceTag } from '@/components/flow/offer-ui'
 import { CtaLink } from '@/components/pixel/cta-link'
 import { faqData, faqJsonLd } from '@/lib/content'
 import { SIZES, money } from '@/lib/flow/catalog'
@@ -92,6 +93,7 @@ export default function PhotobookLandingPage() {
       </Section>
 
       <Section eyebrow="Simple, transparent pricing" title="One price, no surprises at checkout" description="The price you see is the price you pay, with no hidden fees at checkout.">
+        <OfferStrip className="mx-auto mb-8 max-w-2xl" />
         <ul className="grid gap-5 md:grid-cols-3">
           {SIZES.map((s) => {
             const popular = s.id === '10x10'
@@ -100,7 +102,7 @@ export default function PhotobookLandingPage() {
                 {popular && <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-accent px-3 py-1 text-xs font-semibold text-accent-foreground">Most popular</span>}
                 <h3 className="font-serif text-2xl">{s.id === '8x8' ? 'Small' : s.id === '10x10' ? 'Standard' : 'Large'} Photobook</h3>
                 <p className="mt-1 text-sm text-muted-foreground">{s.label.replace(/"/g, ' in')} starting at</p>
-                <p className="mt-3 font-serif text-4xl">{money(unitPrice({ size: s.id, pages: 20, cover: 'softcover' }))}</p>
+                <div className="mt-3 flex justify-center"><PriceTag list={unitPrice({ size: s.id, pages: 20, cover: 'softcover' })} size="lg" /></div>
               </li>
             )
           })}

@@ -4,12 +4,12 @@ import { motion } from 'motion/react'
 import { CheckCircle2, Clock, DollarSign, ShieldCheck, Sparkles, Star, Trophy, Users } from 'lucide-react'
 
 const metrics = [
-  { icon: Users, label: '50,000+ Happy Customers' },
+  { icon: Users, label: 'Loved by Thousands of Customers' },
   { icon: Sparkles, label: '1,000,000+ Books Printed' },
   { icon: Star, label: '2,000+ 5-Star Reviews / Mo' },
-  { icon: Clock, label: '3.5x Faster Than Manual Design' },
-  { icon: Trophy, label: '60-Second AI Draft Generation' },
-  { icon: DollarSign, label: '67% Cheaper Direct Pricing' },
+  { icon: Clock, label: 'Design Free, Pay Only to Print' },
+  { icon: Trophy, label: 'Smart Auto-Layout in About a Minute' },
+  { icon: DollarSign, label: 'Factory-Direct Pricing' },
   { icon: CheckCircle2, label: '98.5% Delivery On-Time Rate' },
   { icon: ShieldCheck, label: '99.2% Customer Satisfaction Score' },
 ]

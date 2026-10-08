@@ -27,7 +27,7 @@ const steps = [
   {
     icon: Truck,
     title: 'Print & Get Delivered',
-    text: 'Your custom photo book is printed in our California factory and delivered right to your door in 3–5 days.',
+    text: 'Your custom photo book is printed in our California factory, ships out within 3–5 business days, and is delivered right to your door.',
   },
 ]
 
@@ -87,7 +87,7 @@ function EditorPreview({ active }: { active: number }) {
           <span className="size-2.5 rounded-full bg-ink-foreground/20" />
           <span className="size-2.5 rounded-full bg-ink-foreground/20" />
         </div>
-        <span className="text-xs text-ink-foreground/50">Summer in Amalfi · 48 pages</span>
+        <span className="text-xs text-ink-foreground/50">Our Story · 48 pages</span>
         <div className="flex gap-1" aria-hidden>
           {steps.map((_, i) => (
             <span
@@ -282,7 +282,7 @@ export function HowItWorks() {
               </h4>
             </div>
             <span className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-3 py-1.5 text-xs font-semibold text-emerald-400 border border-emerald-500/20">
-              <Check className="size-3.5" /> 60-Second Draft Guaranteed
+              <Check className="size-3.5" /> Design Free, Pay Only to Print
             </span>
           </div>
 

@@ -6,14 +6,15 @@ import { cn } from '@/lib/utils'
 import { Reveal, RevealItem } from './reveal'
 import { SectionHeading } from './section-heading'
 import { CtaLink } from './cta-link'
+import { money, salePrice, type Campaign } from '@/lib/flow/catalog'
+import { unitPrice } from '@/lib/flow/pricing'
+import { useCampaign } from '@/lib/flow/use-campaign'
 
 const products = [
   {
+    size: '8x8' as const,
     title: '8x8 Square Book',
     copy: 'Perfect for everyday moments, trip highlights, and short stories.',
-    price: '$19.99',
-    originalPrice: '$39.99',
-    discount: '50% OFF',
     href: '/photo-book/?size=8x8',
     image: '/images/choose_your_size_1.webp',
     badge: 'Popular',
@@ -21,11 +22,9 @@ const products = [
     maxW: 'max-w-[230px]',
   },
   {
+    size: '10x10' as const,
     title: '10x10 Square Book',
     copy: 'Our most popular size for all of life’s big moments and family albums.',
-    price: '$29.99',
-    originalPrice: '$59.99',
-    discount: '50% OFF',
     href: '/photo-book/?size=10x10',
     image: '/images/choose_your_size_2.webp',
     badge: 'Most Popular',
@@ -33,11 +32,9 @@ const products = [
     maxW: 'max-w-[255px]',
   },
   {
+    size: '12x12' as const,
     title: '12x12 Square Book',
     copy: 'More room for your favorite photos and unforgettable milestone memories.',
-    price: '$39.99',
-    originalPrice: '$79.99',
-    discount: '50% OFF',
     href: '/photo-book/?size=12x12',
     image: '/images/choose_your_size_3.webp',
     badge: 'Deluxe',
@@ -46,7 +43,11 @@ const products = [
   },
 ]
 
-function ProductCard({ product }: { product: (typeof products)[number] }) {
+function ProductCard({ product, campaign }: { product: (typeof products)[number]; campaign: Campaign | null }) {
+  // List price always; the sale price only while a campaign is running, and the link carries its code so the price shown is the price paid.
+  const list = unitPrice({ size: product.size, pages: 20, cover: 'softcover' })
+  const sale = campaign ? salePrice(list, campaign.percent) : null
+  const href = campaign ? `${product.href}&promo=${campaign.code}` : product.href
   return (
     <div className="group relative flex h-full flex-col items-center justify-between rounded-3xl bg-card/50 p-5 border border-foreground/[0.08] text-center shadow-xs transition-all duration-300 hover:shadow-float hover:border-foreground/15 hover:-translate-y-1">
       {/* Top Badge & Arrow Link */}
@@ -59,7 +60,7 @@ function ProductCard({ product }: { product: (typeof products)[number] }) {
           <span />
         )}
         <Link
-          href={product.href}
+          href={href}
           aria-label={`Configure ${product.title}`}
           className="grid size-9 place-items-center rounded-full bg-background text-foreground ring-1 ring-foreground/10 shadow-xs transition-all duration-300 group-hover:rotate-45 group-hover:bg-accent group-hover:text-accent-foreground"
         >
@@ -69,7 +70,7 @@ function ProductCard({ product }: { product: (typeof products)[number] }) {
 
       {/* Book Graphic Container with Equal Height */}
       <div className="panel__image panel__image--book my-4 flex h-60 w-full items-center justify-center">
-        <Link href={product.href} className="books__book__image flex items-center justify-center w-full">
+        <Link href={href} className="books__book__image flex items-center justify-center w-full">
           <div className={cn("books__book__img mx-auto", product.maxW)}>
             <img
               src={product.image}
@@ -84,14 +85,21 @@ function ProductCard({ product }: { product: (typeof products)[number] }) {
       <div className="mt-auto flex w-full flex-col items-center text-center gap-1.5 pt-2">
         <h3 className="font-serif text-2xl font-bold text-foreground tracking-tight">{product.title}</h3>
         
-        {/* Pricing Row: Original Price, Deal Price, 50% OFF Tag */}
-        <div className="flex items-center justify-center gap-2">
-          <span className="text-xs text-muted-foreground line-through font-semibold">{product.originalPrice}</span>
-          <span className="text-lg font-bold text-accent">{product.price}</span>
-          <span className="rounded-md bg-emerald-500/15 px-2 py-0.5 text-[10px] font-extrabold text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
-            {product.discount}
-          </span>
+        {/* Pricing: list price, plus the sale price while a campaign is running */}
+        <div className="flex items-center justify-center gap-2" aria-label={sale !== null ? `List price ${money(list)}, sale price ${money(sale)}` : `Price ${money(list)}`}>
+          {sale !== null ? (
+            <>
+              <span className="text-xs text-muted-foreground line-through font-semibold">{money(list)}</span>
+              <span className="text-lg font-bold text-accent">{money(sale)}</span>
+              <span className="rounded-md bg-emerald-500/15 px-2 py-0.5 text-[10px] font-extrabold text-emerald-600 border border-emerald-500/20">
+                {campaign!.percent}% OFF
+              </span>
+            </>
+          ) : (
+            <span className="text-lg font-bold text-accent">from {money(list)}</span>
+          )}
         </div>
+        {campaign && <p className="text-[11px] text-muted-foreground">With code {campaign.code}, applied for you</p>}
 
         {/* Description Text */}
         <p className="max-w-xs text-xs sm:text-sm text-muted-foreground leading-relaxed font-normal min-h-[40px] flex items-center justify-center">
@@ -149,6 +157,7 @@ function ProductCard({ product }: { product: (typeof products)[number] }) {
 }
 
 export function Products() {
+  const campaign = useCampaign()
   return (
     <section id="products" aria-labelledby="products-title" className="scroll-mt-24 px-5 py-10 md:px-6 md:py-16 overflow-hidden">
       <div className="mx-auto max-w-6xl">
@@ -170,7 +179,7 @@ export function Products() {
         <Reveal className="mt-12 grid gap-6 md:gap-8 lg:grid-cols-12" staggerChildren={0.1}>
           {products.map((product) => (
             <RevealItem key={product.title} className={product.span}>
-              <ProductCard product={product} />
+              <ProductCard product={product} campaign={campaign} />
             </RevealItem>
           ))}
         </Reveal>

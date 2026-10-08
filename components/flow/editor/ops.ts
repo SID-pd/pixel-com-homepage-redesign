@@ -11,6 +11,12 @@ type Fn = (items: Item[]) => Item[]
 const onSpread = (spreadId: string, fn: Fn) => (spreads: Spread[]) =>
   spreads.map((s) => (s.id === spreadId ? { ...s, items: fn(s.items) } : s))
 
+/** Horizontal extent (percent of the spread) of the page being worked on, so new items land on that page. */
+export function pageBox(spread: Spread, side: 'left' | 'right'): { x0: number; w: number } {
+  if (spread.kind === 'cover') return { x0: 0, w: 100 }
+  return side === 'left' ? { x0: 0, w: 50 } : { x0: 50, w: 50 }
+}
+
 export const ops = {
   /** Live update (no history push). Call flow.checkpoint() once before a burst. */
   patchLive(spreadId: string, itemId: string, patch: Partial<Item>) {

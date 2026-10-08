@@ -1,4 +1,4 @@
-import { PROMOS, type ShippingId } from './catalog'
+import { checkPromo, type ShippingId } from './catalog'
 import { registerAccount, verifyAccount, type AuthResult } from './auth'
 import { uid } from './layouts'
 import { cartTotals } from './pricing'
@@ -14,13 +14,22 @@ import type { CartItem, Contact, Order } from './types'
 
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms))
 
+/**
+ * Story Mode: description + photos in, a finished draft out (title, ordered photos, layouts, captions).
+ * Local for now; replace the body with the AI endpoint later and nothing in the UI changes.
+ */
+export async function generateStory(description: string): Promise<void> {
+  await wait(1600)
+  flow.buildStory(description)
+}
+
 export async function applyPromo(code: string): Promise<{ ok: true; label: string } | { ok: false; error: string }> {
   await wait(450)
   const key = code.trim().toUpperCase()
-  const promo = PROMOS[key]
-  if (!promo) return { ok: false, error: 'That code isn’t valid. Try PIXOVO10.' }
+  const res = checkPromo(key) // validates against the dated campaign calendar: an expired code is rejected
+  if (!res.ok) return res
   flow.setPromo(key)
-  return { ok: true, label: promo.label }
+  return { ok: true, label: res.label }
 }
 
 export type PaymentInput = { method: 'card' | 'apple' | 'google' | 'paypal'; last4?: string }

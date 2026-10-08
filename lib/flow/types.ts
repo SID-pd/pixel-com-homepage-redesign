@@ -1,4 +1,4 @@
-import type { CoverId, MaterialId, PageCount, ShippingId, SizeId, TemplateId } from './catalog'
+import type { CoverId, MaterialId, PackagingId, PageCount, ShippingId, SizeId, TemplateId } from './catalog'
 
 export type BookConfig = {
   size: SizeId
@@ -7,6 +7,8 @@ export type BookConfig = {
   material: MaterialId
   title: string
   templateId?: TemplateId
+  /** chosen on the final step; undefined until the customer picks (older saved drafts/carts have none = basic) */
+  packaging?: PackagingId
 }
 
 export type Photo = {
