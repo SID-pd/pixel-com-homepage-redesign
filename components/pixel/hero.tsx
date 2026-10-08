@@ -116,7 +116,7 @@ export function Hero() {
               <CtaLink href="/photo-book/" size="lg" magnetic>
                 Create Your Photo Book
               </CtaLink>
-              <CtaLink href="#products" size="lg" variant="secondary" showArrow={false}>
+              <CtaLink href="/pricing/" size="lg" variant="secondary" showArrow={false}>
                 Explore sizes & pricing
               </CtaLink>
             </div>

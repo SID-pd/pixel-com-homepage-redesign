@@ -170,8 +170,8 @@ export function Products() {
           }
           description="Custom square photo books designed automatically in minutes from your uploaded photos, printed and shipped from the USA."
           action={
-            <CtaLink href="/photo-book/" variant="secondary" showArrow>
-              Create Photo Book
+            <CtaLink href="/about-us/" variant="secondary" showArrow>
+              About Us
             </CtaLink>
           }
         />
