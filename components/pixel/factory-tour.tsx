@@ -10,19 +10,19 @@ const factoryHighlights = [
     title: 'California Printing Facility',
     subtitle: 'State-of-the-Art Printing',
     text: 'Located in California, our factory houses high-definition HP Indigo commercial photo presses delivering true color depth and museum fidelity.',
-    image: '/images/photo-wedding.png',
+    image: '/images/factory-printing-facility.png',
   },
   {
     title: 'Strict Quality Control',
     subtitle: 'Hand-Inspected Every Page',
     text: 'Every single album undergoes a 12-point manual inspection for binding tightness, color alignment, and paper spine durability.',
-    image: '/images/photo-travel.png',
+    image: '/images/factory-quality-control.png',
   },
   {
     title: '20+ Years of Craftsmanship',
     subtitle: 'Built by Photobook Experts',
     text: 'Our master bookbinders have perfected archival layflat binding and premium cover leather crafting since 2003.',
-    image: '/images/product-photobook.png',
+    image: '/images/factory-craftsmanship.png',
   },
 ]
 

@@ -29,7 +29,7 @@ export function StoryModeButton({
       disabled={disabled || loading}
       className={cn(
         'group relative inline-flex h-12 shrink-0 items-center justify-center gap-2 overflow-hidden rounded-full px-6 text-sm font-semibold text-white shadow-float transition active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50',
-        'bg-[linear-gradient(110deg,#c4553a,#e08a3c_45%,#c4553a)] bg-[length:200%_100%] hover:bg-right focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
+        'bg-[linear-gradient(110deg,var(--accent),var(--brand-teal-dark)_45%,var(--accent))] bg-[length:200%_100%] hover:bg-right focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent',
         className,
       )}
     >

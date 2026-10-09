@@ -33,6 +33,13 @@
   --color-background: var(--background);
   --color-ink: var(--ink);
   --color-ink-foreground: var(--ink-foreground);
+  --color-brand-teal-dark: var(--brand-teal-dark);
+  --color-brand-cta: var(--brand-cta);
+  --color-brand-story: var(--brand-story);
+  --color-brand-cream-2: var(--brand-cream-2);
+  --color-brand-pink: var(--brand-pink);
+  --color-brand-star: var(--brand-star);
+  --color-brand-star-empty: var(--brand-star-empty);
 
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
@@ -60,31 +67,79 @@
 :root {
   color-scheme: light;
   --radius: 1rem;
-  --background: oklch(0.975 0.008 80);
-  --foreground: oklch(0.2 0.015 55);
-  --card: oklch(0.99 0.004 80);
-  --card-foreground: oklch(0.2 0.015 55);
-  --popover: oklch(0.99 0.004 80);
-  --popover-foreground: oklch(0.2 0.015 55);
-  --primary: oklch(0.2 0.015 55);
-  --primary-foreground: oklch(0.975 0.008 80);
+  /* Exact pixovo.com brand colors (live demo.css --demo-* tokens). */
+  --background: #f7f4f0;
+  --foreground: #16324f;
+  --card: #ffffff;
+  --card-foreground: #16324f;
+  --popover: #ffffff;
+  --popover-foreground: #16324f;
+  --primary: #16324f;
+  --primary-foreground: #f7f4f0;
   --secondary: oklch(0.94 0.012 75);
-  --secondary-foreground: oklch(0.2 0.015 55);
+  --secondary-foreground: #16324f;
   --muted: oklch(0.94 0.012 75);
-  --muted-foreground: oklch(0.47 0.015 55);
-  --accent: oklch(0.63 0.14 42);
-  --accent-foreground: oklch(0.99 0.004 80);
+  --muted-foreground: #5a6b7b;
+  --accent: #0ba28d;
+  --accent-foreground: #ffffff;
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.2 0.015 55 / 0.1);
-  --input: oklch(0.2 0.015 55 / 0.15);
-  --ring: oklch(0.63 0.14 42);
+  --border: #ece4d6;
+  --input: #e3dccd;
+  --ring: #0ba28d;
   --ink: oklch(0.19 0.012 55);
   --ink-foreground: oklch(0.96 0.01 80);
-  --mint: oklch(0.88 0.07 160);
-  --butter: oklch(0.92 0.1 100);
-  --sky: oklch(0.86 0.06 230);
-  --rose: oklch(0.73 0.12 15);
+  --mint: #d6e7d2;
+  --butter: #f6e2a8;
+  --sky: #cfe3ec;
+  --rose: #d98a86;
+  /* Other named live-site colors. Not --pix-*: that prefix belongs to the Pixie chat widget. */
+  --brand-teal-dark: #166358;
+  --brand-cta: #17998a;
+  --brand-story: #f8efe7;
+  --brand-cream-2: #f6efe1;
+  --brand-pink: #f3d6d6;
+  --brand-star: #f5b100;
+  --brand-star-empty: #e2ddd0;
   --logo-ink: oklch(0.28 0.03 255);
+}
+
+/* pixovo.com hero bubbles (demo.css hero circles): coral top-left, yellow, blue top-right, green bottom-right. */
+.bg-hero-bubbles {
+  background-color: var(--background);
+  background-image:
+    radial-gradient(circle at 60px 130px, rgb(242 204 212 / 0.6) 135px, transparent 136px),
+    radial-gradient(circle at 265px 145px, rgb(246 230 173 / 0.85) 37px, transparent 38px),
+    radial-gradient(circle at calc(100% - 70px) 155px, rgb(203 230 242 / 0.55) 135px, transparent 136px),
+    radial-gradient(circle at calc(100% - 310px) calc(100% - 30px), rgb(216 232 204 / 0.7) 44px, transparent 45px),
+    linear-gradient(135deg, #f7f4f0 0%, #f6f7f3 100%);
+}
+
+@media (max-width: 767px) {
+  .bg-hero-bubbles {
+    background-image:
+      radial-gradient(circle at 10px 70px, rgb(242 204 212 / 0.6) 70px, transparent 71px),
+      radial-gradient(circle at calc(100% - 20px) 90px, rgb(203 230 242 / 0.55) 60px, transparent 61px),
+      radial-gradient(circle at calc(100% - 60px) calc(100% - 20px), rgb(216 232 204 / 0.7) 26px, transparent 27px);
+  }
+}
+
+/* pixovo.com CTA band (demo.css .demo-cta): translucent circles over teal #17998a. */
+.bg-cta-bubbles {
+  background-color: var(--brand-cta);
+  background-image:
+    radial-gradient(circle at 8% 68%, rgba(255, 255, 255, 0.09) 0 42px, transparent 43px),
+    radial-gradient(circle at 15% 30%, rgba(255, 255, 255, 0.06) 0 26px, transparent 27px),
+    radial-gradient(circle at 90% 22%, rgba(255, 255, 255, 0.08) 0 55px, transparent 56px),
+    radial-gradient(circle at 82% 78%, rgba(255, 255, 255, 0.06) 0 34px, transparent 35px),
+    radial-gradient(circle at 68% 12%, rgba(0, 0, 0, 0.05) 0 20px, transparent 21px);
+}
+
+/* Content pages: top-level sections alternate cream / white like pixovo.com, whatever their tone prop. */
+.alt-sections > section:nth-of-type(odd) {
+  background-color: var(--background);
+}
+.alt-sections > section:nth-of-type(even) {
+  background-color: var(--card);
 }
 
 [data-intro-seen] .intro-overlay {

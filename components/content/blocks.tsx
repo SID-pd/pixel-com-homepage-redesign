@@ -11,7 +11,7 @@ export function MarketingShell({ children }: { children: ReactNode }) {
   return (
     <>
       <SiteNav />
-      <main id="main" className="bg-background">
+      <main id="main" className="alt-sections bg-background">
         {children}
       </main>
       <SiteFooter />
@@ -59,8 +59,7 @@ export function PageHero({
 }) {
   const center = align === 'center'
   return (
-    <section className="relative overflow-hidden px-5 pb-12 pt-32 sm:pt-40 md:px-6 md:pb-20">
-      <div aria-hidden className="pointer-events-none absolute -right-24 top-10 size-[28rem] rounded-full bg-accent/10 blur-3xl" />
+    <section className="bg-hero-bubbles relative overflow-hidden px-5 pb-12 pt-32 sm:pt-40 md:px-6 md:pb-20">
       <div
         className={cn(
           'relative mx-auto grid max-w-6xl items-center gap-10',
@@ -127,10 +126,10 @@ export function Reassurance({ className, tone = 'light' }: { className?: string;
     { icon: ShieldCheck, label: '100% Happiness Guarantee' },
   ]
   return (
-    <ul className={cn('flex flex-wrap items-center gap-x-5 gap-y-2 text-sm', tone === 'dark' ? 'text-ink-foreground/75' : 'text-muted-foreground', className)}>
+    <ul className={cn('flex flex-wrap items-center gap-x-5 gap-y-2 text-sm', tone === 'dark' ? 'text-white/90' : 'text-muted-foreground', className)}>
       {items.map(({ icon: Icon, label }) => (
         <li key={label} className="inline-flex items-center gap-1.5">
-          <Icon className="size-4 text-accent" aria-hidden /> {label}
+          <Icon className={cn('size-4', tone === 'dark' ? 'text-white' : 'text-accent')} aria-hidden /> {label}
         </li>
       ))}
     </ul>
@@ -150,13 +149,12 @@ export function CtaBand({
 }) {
   return (
     <section className="px-5 pb-16 pt-6 md:px-6 md:pb-24">
-      <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[2.5rem] bg-ink px-6 py-14 text-center text-ink-foreground md:px-16 md:py-20">
-        <div aria-hidden className="pointer-events-none absolute -top-24 left-1/2 size-[26rem] -translate-x-1/2 rounded-full bg-accent/25 blur-3xl" />
+      <div className="bg-cta-bubbles relative mx-auto max-w-6xl overflow-hidden rounded-[2.5rem] px-6 py-14 text-center text-white shadow-float md:px-16 md:py-20">
         <div className="relative">
-          <h2 className="mx-auto max-w-2xl text-balance font-serif text-3xl leading-tight md:text-5xl">{title}</h2>
-          <p className="mx-auto mt-4 max-w-xl text-pretty text-lg text-ink-foreground/75">{description}</p>
+          <h2 className="mx-auto max-w-2xl text-balance font-serif text-3xl leading-tight text-white md:text-5xl">{title}</h2>
+          <p className="mx-auto mt-4 max-w-xl text-pretty text-lg text-white/90">{description}</p>
           <div className="mt-8 flex justify-center">
-            <CtaLink href={href} variant="accent" size="lg" magnetic>
+            <CtaLink href={href} variant="primary" size="lg" magnetic>
               {cta}
             </CtaLink>
           </div>

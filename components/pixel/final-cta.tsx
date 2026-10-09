@@ -35,7 +35,7 @@ function InstagramIcon(props: React.SVGProps<SVGSVGElement>) {
 export function FinalCta() {
   return (
     <section id="start" aria-labelledby="start-title" className="scroll-mt-24 px-5 pb-10 pt-8 md:px-6">
-      <Reveal className="relative mx-auto flex max-w-6xl flex-col items-center gap-7 overflow-hidden rounded-[2.5rem] bg-secondary px-6 py-20 text-center md:py-28">
+      <Reveal className="relative mx-auto flex max-w-6xl flex-col items-center gap-7 overflow-hidden rounded-[2.5rem] bg-cta-bubbles px-6 py-20 text-center text-white shadow-float md:py-28">
         <div aria-hidden className="pointer-events-none absolute -left-10 top-10 hidden w-40 -rotate-12 rounded-2xl bg-card p-2 pb-6 shadow-float md:block">
           <div className="relative aspect-[4/5] overflow-hidden rounded-lg">
             <Image src="/images/photo-wedding.png" alt="" fill sizes="160px" className="object-cover" />
@@ -48,12 +48,12 @@ export function FinalCta() {
         </div>
 
         <RevealItem>
-          <h2 id="start-title" className="text-balance font-serif text-5xl leading-[0.95] md:text-7xl">
-            Start Creating Your <br /><em className="text-accent">Photo Book Today</em>
+          <h2 id="start-title" className="text-balance font-serif text-5xl text-white leading-[0.95] md:text-7xl">
+            Start Creating Your <br /><em className="text-white">Photo Book Today</em>
           </h2>
         </RevealItem>
         <RevealItem>
-          <p className="max-w-md text-pretty text-lg text-muted-foreground">
+          <p className="max-w-md text-pretty text-lg text-white/90">
             Join thousands of happy customers who have transformed their memories into beautiful, lasting photo books.
           </p>
         </RevealItem>
@@ -80,16 +80,16 @@ export function SiteFooter() {
   }
 
   return (
-    <footer className="w-full bg-black text-white pt-10 pb-8 rounded-t-[2.5rem] md:rounded-t-[3.5rem] overflow-hidden font-sans">
+    <footer className="w-full bg-card text-foreground border-t border-border pt-10 pb-8 overflow-hidden font-sans">
       <div className="mx-auto max-w-[1280px] px-6 md:px-10 lg:px-12">
         {/* 4-Column Responsive Grid based on dev.pixovo.com (Brand, Quick Links, Support, Stay Inspired) */}
-        <div className="grid gap-8 py-6 md:py-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr] border-b border-neutral-800">
+        <div className="grid gap-8 py-6 md:py-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr] border-b border-border">
           {/* Brand Column */}
           <div className="flex flex-col gap-4 sm:col-span-2 md:col-span-1">
-            <Link href="/" aria-label="Pixovo Home" className="inline-block text-white">
+            <Link href="/" aria-label="Pixovo Home" className="inline-block text-foreground">
               <PixovoLogo />
             </Link>
-            <p className="text-xs font-medium leading-relaxed text-neutral-400 max-w-sm">
+            <p className="text-xs font-medium leading-relaxed text-muted-foreground max-w-sm">
               Transform your memories into beautiful photo books using our AI-powered design platform. Creating lasting memories has never been easier.
             </p>
             {/* Social Icons */}
@@ -100,7 +100,7 @@ export function SiteFooter() {
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Facebook"
-                  className="grid size-9 place-items-center rounded-xl bg-neutral-900 border border-neutral-800 text-neutral-300 transition-all duration-300 ease-[cubic-bezier(0.3,1,0.3,1)] hover:bg-white hover:text-black hover:-translate-y-0.5"
+                  className="grid size-9 place-items-center rounded-xl bg-card border border-border text-foreground transition-all duration-300 ease-[cubic-bezier(0.3,1,0.3,1)] hover:bg-accent hover:border-accent hover:text-accent hover:-translate-y-0.5"
                 >
                   <FacebookIcon className="size-3.5" />
                 </a>
@@ -111,7 +111,7 @@ export function SiteFooter() {
                   target="_blank"
                   rel="noreferrer"
                   aria-label="X (Twitter)"
-                  className="grid size-9 place-items-center rounded-xl bg-neutral-900 border border-neutral-800 text-neutral-300 transition-all duration-300 ease-[cubic-bezier(0.3,1,0.3,1)] hover:bg-white hover:text-black hover:-translate-y-0.5"
+                  className="grid size-9 place-items-center rounded-xl bg-card border border-border text-foreground transition-all duration-300 ease-[cubic-bezier(0.3,1,0.3,1)] hover:bg-accent hover:border-accent hover:text-accent hover:-translate-y-0.5"
                 >
                   <TwitterXIcon className="size-3.5" />
                 </a>
@@ -122,7 +122,7 @@ export function SiteFooter() {
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Instagram"
-                  className="grid size-9 place-items-center rounded-xl bg-neutral-900 border border-neutral-800 text-neutral-300 transition-all duration-300 ease-[cubic-bezier(0.3,1,0.3,1)] hover:bg-white hover:text-black hover:-translate-y-0.5"
+                  className="grid size-9 place-items-center rounded-xl bg-card border border-border text-foreground transition-all duration-300 ease-[cubic-bezier(0.3,1,0.3,1)] hover:bg-accent hover:border-accent hover:text-accent hover:-translate-y-0.5"
                 >
                   <InstagramIcon className="size-3.5" />
                 </a>
@@ -132,58 +132,58 @@ export function SiteFooter() {
 
           {/* Quick Links Column */}
           <div className="flex flex-col gap-3">
-            <h4 className="text-xs font-bold tracking-wider text-white uppercase">Quick Links</h4>
-            <ul className="flex flex-col gap-2 text-xs font-medium text-neutral-400">
+            <h4 className="text-xs font-bold tracking-wider text-foreground uppercase">Quick Links</h4>
+            <ul className="flex flex-col gap-2 text-xs font-medium text-muted-foreground">
               <li>
-                <Link href="/about-us/" className="transition-all duration-300 hover:text-white hover:translate-x-1 inline-block">
+                <Link href="/about-us/" className="transition-all duration-300 hover:text-accent hover:translate-x-1 inline-block">
                   About Us
                 </Link>
               </li>
               <li>
-                <Link href="/how-it-works/" className="transition-all duration-300 hover:text-white hover:translate-x-1 inline-block">
+                <Link href="/how-it-works/" className="transition-all duration-300 hover:text-accent hover:translate-x-1 inline-block">
                   How It Works
                 </Link>
               </li>
               <li>
-                <Link href="/pricing/" className="transition-all duration-300 hover:text-white hover:translate-x-1 inline-block">
+                <Link href="/pricing/" className="transition-all duration-300 hover:text-accent hover:translate-x-1 inline-block">
                   Pricing
                 </Link>
               </li>
               <li className="flex flex-col gap-1">
-                <Link href="/themes/" className="transition-all duration-300 hover:text-white hover:translate-x-1 inline-block font-semibold text-white/90">
+                <Link href="/themes/" className="transition-all duration-300 hover:text-accent hover:translate-x-1 inline-block font-semibold text-foreground">
                   Themes
                 </Link>
-                <div className="pl-3 flex flex-col gap-1 border-l border-neutral-800">
-                  <Link href="/themes/wedding-photo-book/" className="text-[11px] text-neutral-400 transition-all duration-300 hover:text-amber-400 hover:translate-x-1 inline-block">
+                <div className="pl-3 flex flex-col gap-1 border-l border-border">
+                  <Link href="/themes/wedding-photo-book/" className="text-[11px] text-muted-foreground transition-all duration-300 hover:text-accent hover:translate-x-1 inline-block">
                     • Wedding &amp; Love
                   </Link>
-                  <Link href="/themes/baby-first-year-photo-book/" className="text-[11px] text-neutral-400 transition-all duration-300 hover:text-amber-400 hover:translate-x-1 inline-block">
+                  <Link href="/themes/baby-first-year-photo-book/" className="text-[11px] text-muted-foreground transition-all duration-300 hover:text-accent hover:translate-x-1 inline-block">
                     • Baby &amp; Family
                   </Link>
-                  <Link href="/themes/travel-photo-book/" className="text-[11px] text-neutral-400 transition-all duration-300 hover:text-amber-400 hover:translate-x-1 inline-block">
+                  <Link href="/themes/travel-photo-book/" className="text-[11px] text-muted-foreground transition-all duration-300 hover:text-accent hover:translate-x-1 inline-block">
                     • Travel &amp; Vacations
                   </Link>
-                  <Link href="/themes/year-in-review-photo-book/" className="text-[11px] text-neutral-400 transition-all duration-300 hover:text-amber-400 hover:translate-x-1 inline-block">
+                  <Link href="/themes/year-in-review-photo-book/" className="text-[11px] text-muted-foreground transition-all duration-300 hover:text-accent hover:translate-x-1 inline-block">
                     • Year in Review
                   </Link>
                 </div>
               </li>
               {/* Blog with subcategories (Text Based & Reel Based) */}
               <li className="flex flex-col gap-1">
-                <Link href="/blog/" className="transition-all duration-300 hover:text-white hover:translate-x-1 inline-block font-semibold text-white/90">
+                <Link href="/blog/" className="transition-all duration-300 hover:text-accent hover:translate-x-1 inline-block font-semibold text-foreground">
                   Blog
                 </Link>
-                <div className="pl-3 flex flex-col gap-1 border-l border-neutral-800">
-                  <Link href="/blog/text/" className="text-[11px] text-neutral-400 transition-all duration-300 hover:text-amber-400 hover:translate-x-1 inline-block">
+                <div className="pl-3 flex flex-col gap-1 border-l border-border">
+                  <Link href="/blog/text/" className="text-[11px] text-muted-foreground transition-all duration-300 hover:text-accent hover:translate-x-1 inline-block">
                     • Text Based
                   </Link>
-                  <Link href="/blog/reels/" className="text-[11px] text-neutral-400 transition-all duration-300 hover:text-amber-400 hover:translate-x-1 inline-block">
+                  <Link href="/blog/reels/" className="text-[11px] text-muted-foreground transition-all duration-300 hover:text-accent hover:translate-x-1 inline-block">
                     • Reel Based
                   </Link>
                 </div>
               </li>
               <li>
-                <Link href="/help-center/" className="transition-all duration-300 hover:text-white hover:translate-x-1 inline-block">
+                <Link href="/help-center/" className="transition-all duration-300 hover:text-accent hover:translate-x-1 inline-block">
                   Help Center
                 </Link>
               </li>
@@ -192,25 +192,25 @@ export function SiteFooter() {
 
           {/* Support Column */}
           <div className="flex flex-col gap-3">
-            <h4 className="text-xs font-bold tracking-wider text-white uppercase">Support</h4>
-            <ul className="flex flex-col gap-2 text-xs font-medium text-neutral-400">
+            <h4 className="text-xs font-bold tracking-wider text-foreground uppercase">Support</h4>
+            <ul className="flex flex-col gap-2 text-xs font-medium text-muted-foreground">
               <li>
-                <Link href="/contact-us/" className="transition-all duration-300 hover:text-white hover:translate-x-1 inline-block">
+                <Link href="/contact-us/" className="transition-all duration-300 hover:text-accent hover:translate-x-1 inline-block">
                   Contact Us
                 </Link>
               </li>
               <li>
-                <Link href="/shipping-info/" className="transition-all duration-300 hover:text-white hover:translate-x-1 inline-block">
+                <Link href="/shipping-info/" className="transition-all duration-300 hover:text-accent hover:translate-x-1 inline-block">
                   Shipping Info
                 </Link>
               </li>
               <li>
-                <Link href="/privacy-policy/" className="transition-all duration-300 hover:text-white hover:translate-x-1 inline-block">
+                <Link href="/privacy-policy/" className="transition-all duration-300 hover:text-accent hover:translate-x-1 inline-block">
                   Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="/terms/" className="transition-all duration-300 hover:text-white hover:translate-x-1 inline-block">
+                <Link href="/terms/" className="transition-all duration-300 hover:text-accent hover:translate-x-1 inline-block">
                   Terms and Conditions
                 </Link>
               </li>
@@ -219,12 +219,12 @@ export function SiteFooter() {
 
           {/* Stay Inspired Column (Newsletter) */}
           <div className="flex flex-col gap-3">
-            <h4 className="text-xs font-bold tracking-wider text-white uppercase">Stay Inspired</h4>
-            <p className="text-xs text-neutral-400 leading-relaxed">
+            <h4 className="text-xs font-bold tracking-wider text-foreground uppercase">Stay Inspired</h4>
+            <p className="text-xs text-muted-foreground leading-relaxed">
               Get ideas, special offers and tips for your next photo book.
             </p>
             <form onSubmit={handleSubmit} className="flex flex-col gap-2 pt-1 w-full max-w-sm">
-              <div className="relative flex items-center rounded-full bg-white p-1 shadow-sm overflow-hidden border border-white/20 focus-within:ring-2 focus-within:ring-white/40 transition-all duration-300">
+              <div className="relative flex items-center rounded-full bg-card p-1 shadow-sm overflow-hidden border border-border focus-within:ring-2 focus-within:ring-accent/30 transition-all duration-300">
                 <input
                   type="email"
                   value={email}
@@ -232,18 +232,18 @@ export function SiteFooter() {
                   placeholder="Enter your email"
                   aria-label="Email"
                   required
-                  className="min-w-0 flex-1 bg-transparent px-3.5 py-1 text-xs font-medium text-neutral-900 outline-none placeholder:text-neutral-500"
+                  className="min-w-0 flex-1 bg-transparent px-3.5 py-1 text-xs font-medium text-foreground outline-none placeholder:text-muted-foreground"
                 />
                 <button
                   type="submit"
                   aria-label="Subscribe"
-                  className="grid size-8 shrink-0 place-items-center rounded-full bg-black text-white transition-all duration-300 hover:scale-105 active:scale-95 hover:bg-neutral-800"
+                  className="grid size-8 shrink-0 place-items-center rounded-full bg-accent text-white transition-all duration-300 hover:scale-105 active:scale-95 hover:bg-brand-teal-dark"
                 >
                   <Send className="size-3.5" />
                 </button>
               </div>
               {subscribed && (
-                <span className="px-2 text-[11px] font-semibold text-emerald-400">
+                <span className="px-2 text-[11px] font-semibold text-accent">
                   ✓ Thank you for subscribing!
                 </span>
               )}
@@ -252,7 +252,7 @@ export function SiteFooter() {
         </div>
 
         {/* Bottom Copyright Bar */}
-        <div className="pt-4 text-center text-xs font-medium text-neutral-400">
+        <div className="pt-4 text-center text-xs font-medium text-muted-foreground">
           © 2026 Pixovo. All rights reserved. Made with ❤ for memory makers.
         </div>
       </div>

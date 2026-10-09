@@ -68,18 +68,38 @@ export default function Page() {
       <JsonLd data={[organization, website, ...products]} />
       <IntroSplash />
       <SiteNav />
-      <main className="space-y-8 md:space-y-12">
-        <Hero />
-        <ValueStrip />
-        <Products />
-        <SeasonalSection />
-        <HowItWorks />
-        <FactoryTour />
-        <CoverStudio />
-        <Templates />
-        <AppPromo />
-        <Reviews />
-        <FinalCta />
+      {/* Full-width bands alternate like pixovo.com: cream hero, mostly white sections, a cream and a
+          warm story band in between, teal CTA band. flow-root keeps section margins inside each band. */}
+      <main>
+        <div className="flow-root bg-hero-bubbles pb-8 md:pb-12">
+          <Hero />
+        </div>
+        <div className="flow-root bg-card py-4 md:py-6">
+          <ValueStrip />
+          <Products />
+        </div>
+        <div className="flow-root bg-background py-8 md:py-12">
+          <SeasonalSection />
+        </div>
+        <div className="flow-root bg-card py-8 md:py-12">
+          <HowItWorks />
+        </div>
+        <div className="flow-root bg-brand-story py-8 md:py-12">
+          <FactoryTour />
+          <CoverStudio />
+        </div>
+        <div className="flow-root bg-card py-8 md:py-12">
+          <Templates />
+        </div>
+        <div className="flow-root bg-background py-8 md:py-12">
+          <AppPromo />
+        </div>
+        <div className="flow-root bg-card py-8 md:py-12">
+          <Reviews />
+        </div>
+        <div className="flow-root bg-background py-8 md:py-12">
+          <FinalCta />
+        </div>
       </main>
       <SiteFooter />
     </>

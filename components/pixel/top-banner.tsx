@@ -11,7 +11,7 @@ import { useCampaign } from '@/lib/flow/use-campaign'
 // Evergreen messages only — the active sale (if any) already has its own persistent slot on the right,
 // so it never needs to repeat here too.
 const messages = [
-  'Made in California | 20+ years of printing since 2003',
+  '20+ Years of Printing Experience',
   'Design free | Pay only when you print',
   'Factory direct | No middlemen, fair prices',
   'Ships in 3–5 business days | From our USA facility',
@@ -40,15 +40,15 @@ export function TopBanner() {
       onMouseLeave={() => setIsHovered(false)}
       className="relative z-50 w-full bg-neutral-950 px-3 py-1.5 text-neutral-100 shadow-xs border-b border-neutral-800 transition-all duration-300"
     >
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-2 text-xs md:text-sm font-medium">
+      <div className="mx-auto flex max-w-6xl items-center gap-2 text-xs md:text-sm font-medium">
         {/* Left Side Message Carousel */}
-        <div className="flex items-center gap-2 overflow-hidden py-0.5">
+        <div className="flex min-w-0 flex-1 items-center gap-2 overflow-hidden py-0.5">
           <span className="inline-flex shrink-0 items-center gap-1 rounded-full bg-accent/20 px-2 py-0.5 text-[11px] font-bold text-accent tracking-wide uppercase">
             <Sparkles className="size-3" />
             Factory Direct
           </span>
 
-          <div className="relative hidden h-5 flex-1 overflow-hidden min-w-[200px] sm:block sm:min-w-[340px]">
+          <div className="relative hidden h-5 min-w-0 flex-1 overflow-hidden sm:block">
             <AnimatePresence mode="wait">
               <motion.div
                 key={index}
@@ -56,9 +56,9 @@ export function TopBanner() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -12 }}
                 transition={{ duration: 0.35, ease: 'easeOut' }}
-                className="absolute inset-0 flex items-center gap-2 truncate font-sans text-neutral-200"
+                className="absolute inset-0 flex items-center"
               >
-                <span>{messages[index]}</span>
+                <span className="min-w-0 truncate font-sans text-neutral-200">{messages[index]}</span>
               </motion.div>
             </AnimatePresence>
           </div>
@@ -77,7 +77,8 @@ export function TopBanner() {
               className="inline-flex items-center gap-1 text-xs font-semibold text-accent hover:underline shrink-0"
             >
               <span>
-                {campaign.name}: {campaign.percent}% off · ends {formatEnd(campaign.end)}
+                {campaign.name}: {campaign.percent}% off
+                <span className="hidden sm:inline"> · ends {formatEnd(campaign.end)}</span>
               </span>
               <ChevronRight className="size-3.5" />
             </button>

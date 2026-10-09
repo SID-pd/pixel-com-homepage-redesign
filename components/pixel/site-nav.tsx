@@ -48,7 +48,7 @@ function StoryModeNavButton() {
       href={STORY_HREF}
       aria-label="Story Mode: let AI build your photo book"
       title="Story Mode: let AI build your photo book"
-      className="group relative inline-flex h-9 shrink-0 items-center justify-center gap-1.5 overflow-hidden rounded-full bg-[linear-gradient(110deg,#c4553a,#e08a3c_45%,#c4553a)] bg-[length:200%_100%] px-2.5 text-xs font-semibold text-white shadow-sm transition-all duration-300 hover:bg-right hover:shadow-md active:scale-95 xl:px-3.5"
+      className="group relative inline-flex h-9 shrink-0 items-center justify-center gap-1.5 overflow-hidden rounded-full bg-[linear-gradient(110deg,var(--accent),var(--brand-teal-dark)_45%,var(--accent))] bg-[length:200%_100%] px-2.5 text-xs font-semibold text-white shadow-sm transition-all duration-300 hover:bg-right hover:shadow-md active:scale-95 xl:px-3.5"
     >
       <Sparkles className="size-4" aria-hidden />
       <span className="hidden xl:inline">Story Mode</span>
@@ -206,7 +206,7 @@ export function SiteNav() {
               <Link
                 href={STORY_HREF}
                 onClick={() => setOpen(false)}
-                className="flex items-center gap-3 rounded-2xl bg-[linear-gradient(110deg,#c4553a,#e08a3c)] px-4 py-2.5 text-white shadow-sm"
+                className="flex items-center gap-3 rounded-2xl bg-[linear-gradient(110deg,var(--accent),var(--brand-teal-dark))] px-4 py-2.5 text-white shadow-sm"
               >
                 <Sparkles className="size-4 shrink-0" aria-hidden />
                 <span className="min-w-0 flex-1 truncate text-sm font-semibold">Story Mode</span>
