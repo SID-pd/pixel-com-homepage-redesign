@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { Award, CheckCircle2, Factory, MapPin, ShieldCheck, Sparkles } from 'lucide-react'
+import { CheckCircle2, DollarSign, Factory, MapPin, Sparkles } from 'lucide-react'
 import { Reveal, RevealItem } from './reveal'
 import { SectionHeading } from './section-heading'
 
@@ -71,17 +71,17 @@ export function FactoryTour() {
         {/* Certifications & Badges Row */}
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <div className="flex items-center gap-3 rounded-2xl bg-background p-4 border border-foreground/[0.06] shadow-sm">
-            <Award className="size-5 text-amber-500 shrink-0" />
+            <DollarSign className="size-5 text-emerald-500 shrink-0" />
             <div>
-              <h4 className="text-xs font-bold text-foreground">Best Quality 2026</h4>
-              <p className="text-[11px] text-muted-foreground">Voted #1 Photo Book Brand</p>
+              <h4 className="text-xs font-bold text-foreground">Factory Direct Pricing</h4>
+              <p className="text-[11px] text-muted-foreground">No middlemen, buy from the printer</p>
             </div>
           </div>
           <div className="flex items-center gap-3 rounded-2xl bg-background p-4 border border-foreground/[0.06] shadow-sm">
-            <ShieldCheck className="size-5 text-emerald-500 shrink-0" />
+            <Sparkles className="size-5 text-purple-500 shrink-0" />
             <div>
-              <h4 className="text-xs font-bold text-foreground">ISO 9001 Certified</h4>
-              <p className="text-[11px] text-muted-foreground">Certified Quality Manufacturing</p>
+              <h4 className="text-xs font-bold text-foreground">Design Free</h4>
+              <p className="text-[11px] text-muted-foreground">Pay only when you print</p>
             </div>
           </div>
           <div className="flex items-center gap-3 rounded-2xl bg-background p-4 border border-foreground/[0.06] shadow-sm">
@@ -95,7 +95,7 @@ export function FactoryTour() {
             <CheckCircle2 className="size-5 text-amber-500 shrink-0" />
             <div>
               <h4 className="text-xs font-bold text-foreground">Archival Grade Paper</h4>
-              <p className="text-[11px] text-muted-foreground">100+ Year Fade Resistance</p>
+              <p className="text-[11px] text-muted-foreground">Fade-Resistant Printing</p>
             </div>
           </div>
         </div>

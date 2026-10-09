@@ -122,8 +122,9 @@ const stripAll = (h) => h.replace(/<style[\s\S]*?<\/style>/gi, '').replace(/<scr
 
 // ---------- blog articles ----------
 const articles = []
-// Not Pixovo's own editorial: a competitor comparison (breaks the no-competitor-claims rule agreed with the owner).
-const EXCLUDED_ARTICLES = new Set(['best-online-photo-book-services'])
+// Previously excluded as a competitor comparison (breaks the no-competitor-claims rule agreed with the owner).
+// Re-included on explicit request; keep this set for any future exclusions.
+const EXCLUDED_ARTICLES = new Set([])
 for (const p of pages) {
   if (!p.content || !p.content.includes('art-body-inner')) continue
   if (EXCLUDED_ARTICLES.has(p.slug)) {

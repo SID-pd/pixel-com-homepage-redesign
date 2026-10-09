@@ -40,12 +40,12 @@ export const MATERIALS = [
 export type MaterialId = (typeof MATERIALS)[number]['id']
 
 export const TEMPLATES = [
-  { id: 'gallery', name: 'Gallery', tag: 'Minimal', pages: 40, image: '/images/template-minimal.png', tagBg: '#FFC5C5', bg: '#ffffff', layouts: ['full-right', 'pair', 'duo-stack'] },
-  { id: 'road-trip', name: 'Road Trip', tag: 'Travel', pages: 60, image: '/images/template-collage.png', tagBg: '#BCEEFA', bg: '#f6f1e7', layouts: ['hero-3', 'grid-4', 'pair', 'grid-6'] },
-  { id: 'ever-after', name: 'Ever After', tag: 'Wedding', pages: 80, image: '/images/template-classic.png', tagBg: '#FCF876', bg: '#fbf5ea', layouts: ['pair', 'full-right', 'hero-3'] },
-  { id: 'field-notes', name: 'Field Notes', tag: 'Journal', pages: 40, image: '/images/template-journal.png', tagBg: '#DCD3FF', bg: '#f3efe6', layouts: ['duo-stack', 'grid-4', 'pair'] },
-  { id: 'our-year', name: 'Our Year', tag: 'Family', pages: 60, image: '/images/hero-book.png', tagBg: '#FFC5C5', bg: '#fdf6f0', layouts: ['grid-6', 'hero-3', 'pair'] },
-  { id: 'wide-open', name: 'Wide Open', tag: 'Landscape', pages: 20, image: '/images/product-photobook.png', tagBg: '#BCEEFA', bg: '#eef2f1', layouts: ['full-right', 'duo-stack', 'pair'] },
+  { id: 'gallery', name: 'Gallery', tag: 'Minimal', pages: 40, image: '/images/template-gallery.png', tagBg: '#FFC5C5', bg: '#ffffff', layouts: ['full-right', 'pair', 'duo-stack'] },
+  { id: 'road-trip', name: 'Road Trip', tag: 'Travel', pages: 60, image: '/images/template-road-trip.png', tagBg: '#BCEEFA', bg: '#f6f1e7', layouts: ['hero-3', 'grid-4', 'pair', 'grid-6'] },
+  { id: 'ever-after', name: 'Ever After', tag: 'Wedding', pages: 80, image: '/images/template-ever-after.png', tagBg: '#FCF876', bg: '#fbf5ea', layouts: ['pair', 'full-right', 'hero-3'] },
+  { id: 'field-notes', name: 'Field Notes', tag: 'Journal', pages: 40, image: '/images/template-field-notes.png', tagBg: '#DCD3FF', bg: '#f3efe6', layouts: ['duo-stack', 'grid-4', 'pair'] },
+  { id: 'our-year', name: 'Our Year', tag: 'Family', pages: 60, image: '/images/template-our-year.png', tagBg: '#FFC5C5', bg: '#fdf6f0', layouts: ['grid-6', 'hero-3', 'pair'] },
+  { id: 'wide-open', name: 'Wide Open', tag: 'Gift', pages: 20, image: '/images/template-wide-open.png', tagBg: '#BCEEFA', bg: '#eef2f1', layouts: ['full-right', 'duo-stack', 'pair'] },
 ]
 export type TemplateId = (typeof TEMPLATES)[number]['id']
 

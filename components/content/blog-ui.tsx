@@ -3,13 +3,13 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useMemo, useState } from 'react'
-import { ArrowRight, Check, Clock, Link2, Search, Share2 } from 'lucide-react'
+import { ArrowRight, Calendar, Check, Clock, Link2, Search, Share2 } from 'lucide-react'
 import type { PostCard } from '@/lib/content/blog'
 import { cn } from '@/lib/utils'
 
 export function PostCardView({ post, priority }: { post: PostCard; priority?: boolean }) {
   return (
-    <article className="group relative flex flex-col overflow-hidden rounded-3xl border border-foreground/8 bg-card transition duration-300 hover:-translate-y-1 hover:shadow-float">
+    <article className="group relative flex h-full flex-col overflow-hidden rounded-3xl border border-foreground/8 bg-card transition duration-300 hover:-translate-y-1 hover:shadow-float">
       <div className="relative aspect-[16/10] overflow-hidden bg-secondary">
         <Image
           src={post.cover}
@@ -17,7 +17,7 @@ export function PostCardView({ post, priority }: { post: PostCard; priority?: bo
           fill
           priority={priority}
           sizes="(min-width:1024px) 380px, (min-width:640px) 50vw, 100vw"
-          className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
+          className="object-contain transition-transform duration-700 ease-out group-hover:scale-[1.04]"
         />
         <span className="absolute left-4 top-4 rounded-full bg-background/90 px-3 py-1 text-xs font-semibold backdrop-blur">{post.topic}</span>
       </div>
@@ -29,8 +29,13 @@ export function PostCardView({ post, priority }: { post: PostCard; priority?: bo
         </h3>
         <p className="mt-2 line-clamp-3 text-sm leading-relaxed text-muted-foreground">{post.summary}</p>
         <div className="mt-auto flex items-center justify-between pt-5 text-xs text-muted-foreground">
-          <span className="inline-flex items-center gap-1.5">
-            <Clock className="size-3.5" /> {post.readMinutes} min read
+          <span className="inline-flex items-center gap-3">
+            <span className="inline-flex items-center gap-1.5">
+              <Calendar className="size-3.5" /> {post.date}
+            </span>
+            <span className="inline-flex items-center gap-1.5">
+              <Clock className="size-3.5" /> {post.readMinutes} min read
+            </span>
           </span>
           <span className="inline-flex items-center gap-1 font-medium text-accent">
             Read <ArrowRight className="size-3.5 transition-transform group-hover:translate-x-0.5" />

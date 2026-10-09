@@ -13,7 +13,7 @@ import { PixovoLogo } from './pixovo-logo'
 import { TopBanner } from './top-banner'
 
 const links = [
-  { label: 'Photolook', href: '/photo-book/' },
+  { label: 'Photobook', href: '/photo-book/' },
   { label: 'How It Works', href: '/how-it-works/' },
   { label: 'Pricing', href: '/pricing/' },
   {

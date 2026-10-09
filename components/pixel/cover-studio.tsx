@@ -16,7 +16,7 @@ const materials = [
 ]
 
 const specs = [
-  { value: '200+', label: 'year archival paper' },
+  { value: 'Archival', label: 'grade paper' },
   { value: '180°', label: 'lay-flat binding' },
   { value: '170gsm', label: 'thick, matte pages' },
 ]

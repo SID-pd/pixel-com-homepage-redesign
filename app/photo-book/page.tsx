@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
-import { Wizard } from '@/components/flow/wizard'
+import { PhotoBookGate } from '@/components/flow/photo-book-gate'
 
 export const metadata: Metadata = {
   title: 'Create your photo book | Pixovo',
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 export default function PhotoBookPage() {
   return (
     <Suspense fallback={<div className="min-h-dvh bg-background" />}>
-      <Wizard />
+      <PhotoBookGate />
     </Suspense>
   )
 }

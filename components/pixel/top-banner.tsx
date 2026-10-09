@@ -8,12 +8,13 @@ import { formatEnd } from '@/lib/flow/catalog'
 import { flow } from '@/lib/flow/store'
 import { useCampaign } from '@/lib/flow/use-campaign'
 
+// Evergreen messages only — the active sale (if any) already has its own persistent slot on the right,
+// so it never needs to repeat here too.
 const messages = [
-  'Made in California | 20+ Years of Printing Experience',
-  'Factory-Direct Pricing | Buy from the Printer',
-  'Ships Out Within 3–5 Business Days',
-  'Free Smart Auto-Layout | Design Free, Pay Only to Print',
-  '100% Happiness Guarantee | We’ll Make It Right',
+  'Made in California | 20+ years of printing since 2003',
+  'Design free | Pay only when you print',
+  'Factory direct | No middlemen, fair prices',
+  'Ships in 3–5 business days | From our USA facility',
 ]
 
 export function TopBanner() {

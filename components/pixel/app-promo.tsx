@@ -16,7 +16,6 @@ import {
   Layers,
   Smartphone,
   Sparkles,
-  Star,
   Zap,
 } from 'lucide-react'
 import { easeOutExpo } from '@/lib/motion'
@@ -186,18 +185,6 @@ export function AppPromo() {
                   </div>
                 </div>
               </div>
-
-              {/* Floating 3D Badge Left */}
-              <motion.div
-                style={{ opacity: infoOpacity, y: infoY }}
-                className="absolute -left-10 top-12 z-40 hidden flex-col gap-0.5 rounded-xl bg-card/90 p-2 shadow-float ring-1 ring-foreground/5 backdrop-blur-xl md:flex [transform:translateZ(30px)]"
-              >
-                <div className="flex items-center gap-1 text-[11px] font-semibold text-foreground">
-                  <Star className="size-3 fill-accent text-accent" />
-                  <span>4.9 App Rating</span>
-                </div>
-                <span className="text-[9px] text-muted-foreground">15,000+ Reviews</span>
-              </motion.div>
 
               {/* Floating 3D Badge Right */}
               <motion.div
