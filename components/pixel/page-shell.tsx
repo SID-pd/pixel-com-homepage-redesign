@@ -53,7 +53,7 @@ export function PageShell({
                   </p>
                 </div>
                 <div className="pt-2 border-t flex flex-wrap items-center gap-3">
-                  <CtaLink href="/photo-book/" size="sm">
+                  <CtaLink href="/photo-book/?template=road-trip" size="sm">
                     Start Custom Photo Book
                   </CtaLink>
                   <Link

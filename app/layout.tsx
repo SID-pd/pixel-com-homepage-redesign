@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     template: '%s',
   },
   description:
-    'Design a premium custom photo book with smart auto-layout. Design free, pay only to print. Printed and shipped from our California factory.',
+    'Design a premium custom photo book with smart auto-layout. Design free, pay only to print. Printed and shipped from our USA factory.',
   applicationName: 'Pixovo',
   openGraph: {
     type: 'website',

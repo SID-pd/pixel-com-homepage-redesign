@@ -7,9 +7,9 @@ import { SectionHeading } from './section-heading'
 
 const factoryHighlights = [
   {
-    title: 'California Printing Facility',
+    title: 'USA Printing Facility',
     subtitle: 'State-of-the-Art Printing',
-    text: 'Located in California, our factory houses high-definition HP Indigo commercial photo presses delivering true color depth and museum fidelity.',
+    text: 'Located in the USA, our factory houses high-definition HP Indigo commercial photo presses delivering true color depth and museum fidelity.',
     image: '/images/factory-printing-facility.png',
   },
   {
@@ -21,7 +21,7 @@ const factoryHighlights = [
   {
     title: '20+ Years of Craftsmanship',
     subtitle: 'Built by Photobook Experts',
-    text: 'Our master bookbinders have perfected archival layflat binding and premium cover leather crafting since 2003.',
+    text: 'Our master bookbinders have perfected archival layflat binding and premium cover leather crafting, with 20+ years of printing experience.',
     image: '/images/factory-craftsmanship.png',
   },
 ]
@@ -34,10 +34,10 @@ export function FactoryTour() {
           eyebrow="Manufacturing Transparency"
           title={
             <span id="factory-tour-title">
-              Tour Our California Factory. <em className="text-accent">Made in the USA.</em>
+              Tour Our Factory. <em className="text-accent">Made in the USA.</em>
             </span>
           }
-          description="We don’t outsource to overseas budget factories. Every Pixovo photo book is printed, bound, and hand-checked right here in California."
+          description="We don’t outsource to overseas budget factories. Every Pixovo photo book is printed, bound, and hand-checked right here in the USA."
         />
 
         <Reveal staggerChildren={0.08} className="mt-12 grid gap-6 md:grid-cols-3">
@@ -56,7 +56,7 @@ export function FactoryTour() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 <span className="absolute bottom-3 left-3 inline-flex items-center gap-1.5 rounded-full bg-black/75 px-3 py-1 text-[11px] font-semibold text-white backdrop-blur-md">
-                  <MapPin className="size-3 text-amber-400" /> California Facility
+                  <MapPin className="size-3 text-amber-400" /> USA Facility
                 </span>
               </div>
               <div className="flex flex-col gap-1.5 p-6">

@@ -112,7 +112,7 @@ export function Hero() {
             transition={{ duration: 0.7, delay: base + 0.42, ease: easeOutExpo }}
             className="max-w-lg text-pretty text-sm leading-relaxed text-muted-foreground/80"
           >
-            Pixovo is a custom photo book company that prints in its own California factory. Upload your photos, let the smart auto-layout build your book in about a minute, then edit anything you like. Design is free — you pay only when you order a print. Square books come in 8×8, 10×10, and 12×12 inch sizes, and ship out within 3–5 business days.
+            Pixovo is a custom photo book company that prints in its own USA factory. Upload your photos, let the smart auto-layout build your book in about a minute, then edit anything you like. Design is free — you pay only when you order a print. Square books come in 8×8, 10×10, and 12×12 inch sizes, and ship out within 3–5 business days.
           </motion.p>
 
           <motion.div
@@ -122,7 +122,7 @@ export function Hero() {
             className="flex flex-col gap-2.5"
           >
             <div className="flex flex-wrap items-center gap-3">
-              <CtaLink href="/photo-book/" size="lg" magnetic>
+              <CtaLink href="/photo-book/?template=road-trip" size="lg" magnetic>
                 Create Your Photo Book
               </CtaLink>
               <CtaLink href="/pricing/" size="lg" variant="secondary" showArrow={false}>

@@ -9,16 +9,15 @@ import { Reveal, RevealItem } from './reveal'
 import { CtaLink } from './cta-link'
 
 const materials = [
-  { id: 'oat', name: 'Oat Linen', color: '#d8cab2', spine: '#c4b496', text: '#3b332a' },
-  { id: 'charcoal', name: 'Charcoal Linen', color: '#3b3733', spine: '#2a2724', text: '#efe7da' },
-  { id: 'cognac', name: 'Cognac Leather', color: '#8a573a', spine: '#6f432b', text: '#f4e6d4' },
-  { id: 'sage', name: 'Sage Linen', color: '#97a38b', spine: '#7d8a72', text: '#232a1f' },
+  { id: 'oat', name: 'Oat', color: '#d8cab2', spine: '#c4b496', text: '#3b332a' },
+  { id: 'charcoal', name: 'Charcoal', color: '#3b3733', spine: '#2a2724', text: '#efe7da' },
+  { id: 'cognac', name: 'Cognac', color: '#8a573a', spine: '#6f432b', text: '#f4e6d4' },
+  { id: 'sage', name: 'Sage', color: '#97a38b', spine: '#7d8a72', text: '#232a1f' },
 ]
 
 const specs = [
   { value: 'Archival', label: 'grade paper' },
   { value: '180°', label: 'lay-flat binding' },
-  { value: '170gsm', label: 'thick, matte pages' },
 ]
 
 export function CoverStudio() {
@@ -121,13 +120,13 @@ export function CoverStudio() {
                 Pick a cover you&apos;ll want to <em className="text-accent">touch.</em>
               </span>
             }
-            description="Woven linens and full-grain leathers, debossed with your title. Try a few — the preview updates instantly."
+            description="Rich, premium cover colors, debossed with your title. Try a few — the preview updates instantly."
           />
 
           <Reveal className="flex flex-col gap-4">
             <RevealItem>
               <fieldset>
-                <legend className="mb-3 text-sm font-medium">Cover material</legend>
+                <legend className="mb-3 text-sm font-medium">Cover color</legend>
                 <div className="flex flex-wrap gap-2">
                   {materials.map((m) => {
                     const selected = m.id === materialId
@@ -163,7 +162,7 @@ export function CoverStudio() {
             </RevealItem>
 
             <RevealItem>
-              <dl className="grid grid-cols-3 gap-3 pt-4">
+              <dl className="grid grid-cols-2 gap-3 pt-4">
                 {specs.map((s) => (
                   <div key={s.label} className="rounded-2xl bg-secondary p-4">
                     <dt className="sr-only">{s.label}</dt>

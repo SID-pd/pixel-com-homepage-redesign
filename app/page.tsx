@@ -19,7 +19,7 @@ import { FinalCta, SiteFooter } from '@/components/pixel/final-cta'
 export const metadata: Metadata = {
   title: 'Premium Custom Photo Books Made in the USA | Pixovo',
   description:
-    'Design a premium custom photo book with smart auto-layout. Design free, pay only to print. Printed and shipped from our California factory.',
+    'Design a premium custom photo book with smart auto-layout. Design free, pay only to print. Printed and shipped from our USA factory.',
   alternates: { canonical: '/' },
   openGraph: { url: '/', title: 'Premium Custom Photo Books Made in the USA | Pixovo' },
 }
@@ -34,7 +34,7 @@ const organization = {
   name: 'Pixovo',
   url: SITE,
   logo: `${SITE}/images/pixovo-logo.png`,
-  description: 'Custom photo books designed with smart auto-layout and printed and shipped from our California factory.',
+  description: 'Custom photo books designed with smart auto-layout and printed and shipped from our USA factory.',
   address: { '@type': 'PostalAddress', addressLocality: 'Poway', addressRegion: 'CA', postalCode: '92064', addressCountry: 'US' },
   contactPoint: [
     { '@type': 'ContactPoint', contactType: 'customer support', telephone: '+1-619-701-6222', email: 'hello@pixovo.com', areaServed: 'US', availableLanguage: 'English' },
@@ -48,7 +48,7 @@ const products = SIZES.map((s) => ({
   '@context': 'https://schema.org',
   '@type': 'Product',
   name: `${s.label.replace(/"/g, ' in')} Custom Photo Book`.replace('×', 'x'),
-  description: `A custom ${s.label.replace(/"/g, ' in')} square photo book, printed and shipped from California. Softcover or hardcover, 20 to 100 pages.`,
+  description: `A custom ${s.label.replace(/"/g, ' in')} square photo book, printed and shipped from the USA. Softcover or hardcover, 20 to 100 pages.`,
   image: `${SITE}${s.image}`,
   brand: { '@type': 'Brand', name: 'Pixovo' },
   offers: {

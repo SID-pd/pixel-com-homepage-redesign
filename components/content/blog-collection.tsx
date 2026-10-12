@@ -1,10 +1,11 @@
 import { allCards, TOPICS } from '@/lib/content/blog'
-import { CtaBand, MarketingShell } from './blocks'
+import { CtaBand, MarketingShell, PageHero } from './blocks'
 import { BlogBrowser } from './blog-ui'
 
 export function BlogCollection({
   eyebrow = 'The Pixovo blog',
   title,
+  description,
   topic = 'All',
 }: {
   eyebrow?: string
@@ -17,13 +18,14 @@ export function BlogCollection({
   const scoped = topic === 'All' ? posts : posts.filter((p) => p.topic === topic)
   return (
     <MarketingShell>
-      <header className="px-5 pb-2 pt-28 md:px-6 md:pt-32">
-        <div className="mx-auto max-w-6xl">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-accent">{eyebrow}</p>
-          <h1 className="mt-1 font-serif text-3xl tracking-tight md:text-4xl">{title}</h1>
-        </div>
-      </header>
-      <section className="px-5 pb-16 md:px-6 md:pb-24">
+      <PageHero
+        eyebrow={eyebrow}
+        title={title}
+        description={description}
+        image="/images/hero-book.png"
+        imageAlt="An open Pixovo photo book"
+      />
+      <section className="px-5 pb-16 pt-14 md:px-6 md:pb-24 md:pt-20">
         <div className="mx-auto max-w-6xl space-y-10">
           <BlogBrowser posts={scoped} topics={topic === 'All' ? TOPICS : []} />
         </div>

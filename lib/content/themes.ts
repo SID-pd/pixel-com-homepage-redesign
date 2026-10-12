@@ -77,7 +77,7 @@ export const THEMES: Theme[] = [
     whyTitle: 'Why couples print their wedding photos with Pixovo',
     why: [
       'Big two-page spreads so panoramic and group photos get the room they deserve.',
-      'Printed and bound in the USA by a California factory that has been making photo books since 2003.',
+      'Printed and bound in the USA by a factory with 20+ years of printing experience.',
       'Design free, pay only to print, and love it or we’ll make it right.',
     ],
     faq: [

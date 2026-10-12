@@ -84,37 +84,34 @@ function StartButton({
 export function PhotoBookIntro({ onStart }: { onStart: () => void }) {
   return (
     <>
-      <section className="relative overflow-hidden px-5 pb-12 pt-32 sm:pt-40 md:px-6 md:pb-20">
-        <div aria-hidden className="pointer-events-none absolute -right-24 top-10 size-[28rem] rounded-full bg-accent/10 blur-3xl" />
-        <div className="relative mx-auto max-w-3xl text-center">
-          <Eyebrow>AI photo book maker</Eyebrow>
-          <h1 className="mt-4 font-serif text-4xl leading-[1.05] tracking-tight sm:text-5xl md:text-6xl">
-            Turn your photos into a photo book
-            <br className="hidden sm:block" /> <span className="text-accent">designed by AI</span>
-          </h1>
-          <p className="mx-auto mt-5 max-w-xl text-pretty text-lg leading-relaxed text-muted-foreground">
-            Upload your photos. Watch AI design every page automatically. Order a premium photo book, printed and shipped from the USA.
-          </p>
-          <div className="mt-8 flex justify-center">
-            <StartButton onClick={onStart}>Create your photo book</StartButton>
+      <section className="relative flex min-h-[380px] w-full items-center overflow-hidden sm:min-h-[440px] md:min-h-[520px] lg:min-h-[560px]">
+        <Image
+          src="/images/photo-book-hero-banner.jpg"
+          alt="A finished Pixovo photo book open on a table, surrounded by autumn leaves and warm light"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-[75%_center] sm:object-[65%_center]"
+        />
+        {/* Flat dim layer over the whole photo, plus a stronger gradient behind the text */}
+        <div aria-hidden className="absolute inset-0 bg-black/30" />
+        <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/20 sm:from-black/85 sm:via-black/45 sm:to-black/10" />
+        <div className="relative mx-auto w-full max-w-6xl px-5 pb-12 pt-28 sm:pt-32 md:px-6 md:pb-16">
+          <div className="max-w-xl">
+            <Eyebrow>AI photo book maker</Eyebrow>
+            <h1 className="mt-4 font-serif text-4xl leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl">
+              Turn your photos into a photo book
+              <br className="hidden sm:block" /> <span className="text-accent">designed by AI</span>
+            </h1>
+            <p className="mt-5 max-w-lg text-pretty text-lg leading-relaxed text-white/85">
+              Upload your photos. Watch AI design every page automatically. Order a premium photo book, printed and shipped from the USA.
+            </p>
+            <div className="mt-8">
+              <StartButton onClick={onStart}>Create your photo book</StartButton>
+            </div>
           </div>
         </div>
       </section>
-
-      <Section>
-        <div className="mx-auto max-w-3xl text-center">
-          <Eyebrow>Made to be opened, not just stored</Eyebrow>
-          <h2 className="mt-3 text-balance font-serif text-3xl tracking-tight md:text-5xl">Your photos deserve more than a camera roll</h2>
-          <p className="mt-6 text-pretty text-lg leading-relaxed text-muted-foreground">
-            Somewhere on your phone are hundreds of photos that never get looked at again. A Pixovo photo book turns them into something you actually hold, open, and pass around, without the hours it normally takes to design one yourself. Upload your photos, and the AI does the rest: grouping, laying out, and designing every page automatically, so the hardest part of making a photo book becomes the fastest.
-          </p>
-          <div className="mt-8 flex justify-center">
-            <StartButton onClick={onStart} variant="primary">
-              Start designing free
-            </StartButton>
-          </div>
-        </div>
-      </Section>
 
       <Section tone="soft">
         <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">

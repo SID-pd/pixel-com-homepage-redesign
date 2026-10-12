@@ -27,7 +27,7 @@ const steps = [
   {
     icon: Truck,
     title: 'Print & Get Delivered',
-    text: 'Your custom photo book is printed in our California factory, ships out within 3–5 business days, and is delivered right to your door.',
+    text: 'Your custom photo book is printed in our USA factory, ships out within 3–5 business days, and is delivered right to your door.',
   },
 ]
 

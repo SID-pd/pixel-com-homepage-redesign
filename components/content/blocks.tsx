@@ -140,7 +140,7 @@ export function CtaBand({
   title = 'Ready to create your photo book?',
   description = 'Upload your photos and see your design in minutes. You only pay when you love it.',
   cta = 'Start your photo book',
-  href = '/photo-book/',
+  href = '/photo-book/?template=road-trip',
 }: {
   title?: ReactNode
   description?: ReactNode

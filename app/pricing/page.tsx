@@ -46,7 +46,7 @@ export default function PricingPage() {
         }
         description="Transparent pricing with premium quality, made to last for generations. The price you see is the price you pay."
         actions={
-          <CtaLink href="/photo-book/" variant="accent" size="lg" magnetic>
+          <CtaLink href="/photo-book/?template=road-trip" variant="accent" size="lg" magnetic>
             Start creating
           </CtaLink>
         }

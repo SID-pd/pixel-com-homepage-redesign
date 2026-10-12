@@ -9,7 +9,7 @@ const comparisonPoints = [
   {
     feature: 'Manufacturing & Fulfillment',
     traditional: 'Often printed overseas, with longer shipping',
-    pixovo: '100% USA California factory (ships out in 3–5 business days)',
+    pixovo: '100% USA factory (ships out in 3–5 business days)',
   },
   {
     feature: 'Starting Price',
@@ -130,7 +130,7 @@ export function ComparisonSection() {
 
         {/* Bottom CTA Button */}
         <div className="mt-10 flex justify-center">
-          <CtaLink href="/photo-book/" size="lg" showArrow={false}>
+          <CtaLink href="/photo-book/?template=road-trip" size="lg" showArrow={false}>
             Start Creating Your Photo Book
           </CtaLink>
         </div>

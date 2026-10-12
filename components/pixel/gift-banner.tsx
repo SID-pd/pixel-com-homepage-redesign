@@ -191,7 +191,7 @@ export function GiftBanner({ campaign }: { campaign: Campaign }) {
                 type="button"
                 onClick={() => {
                   flow.setPromo(campaign.code)
-                  router.push('/photo-book/')
+                  router.push('/photo-book/?template=road-trip')
                 }}
                 className="inline-flex w-full items-center justify-center rounded-full bg-amber-900 px-8 py-3.5 text-base font-medium text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-amber-800 sm:w-auto"
               >
@@ -219,7 +219,7 @@ export function GiftBanner({ campaign }: { campaign: Campaign }) {
                 </span>
                 <span className="hidden md:inline text-neutral-300">•</span>
                 <span className="flex items-center gap-1.5 text-amber-900 font-semibold">
-                  ✓ Printed & Shipped from California USA
+                  ✓ Printed & Shipped from the USA
                 </span>
               </div>
             </RevealItem>

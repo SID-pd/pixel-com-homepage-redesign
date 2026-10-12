@@ -50,7 +50,7 @@ export default function HowItWorksPage() {
         imageAlt="A Pixovo photo book being opened"
         actions={
           <>
-            <CtaLink href="/photo-book/" variant="accent" size="lg" magnetic>
+            <CtaLink href="/photo-book/?template=road-trip" variant="accent" size="lg" magnetic>
               Start creating
             </CtaLink>
             <span className="text-sm text-muted-foreground">Takes about 5 minutes. No account needed.</span>
