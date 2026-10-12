@@ -43,7 +43,7 @@ export function SectionHeading({
           </span>
         </RevealItem>
         <RevealItem>
-          <h2 className="text-balance font-serif text-[30px] font-normal leading-[1.1] tracking-tight md:text-[40px]">{title}</h2>
+          <h2 className="text-balance font-serif text-[30px] font-bold leading-[1.1] tracking-tight md:text-[40px]">{title}</h2>
         </RevealItem>
         {description && (
           <RevealItem>
