@@ -7,6 +7,7 @@ import { Check, CloudUpload, Palette, Truck, Wand2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { easeOutExpo } from '@/lib/motion'
 import { SectionHeading } from './section-heading'
+import { CtaLink } from './cta-link'
 
 const steps = [
   {
@@ -17,12 +18,12 @@ const steps = [
   {
     icon: Wand2,
     title: 'Upload Your Photos',
-    text: 'Drag and drop your favorite photos from any phone, laptop, or social media platform in seconds.',
+    text: 'Drag and drop from your phone, laptop, or cloud storage. Upload 50 photos or 500.',
   },
   {
     icon: Palette,
     title: 'Customize Your Layout',
-    text: 'Our smart layout engine automatically builds a personalized layout from your photos; fine-tune colors, text, or theme.',
+    text: 'The smart layout engine builds a first draft. Adjust colors, text, or theme, and move any photo you want.',
   },
   {
     icon: Truck,
@@ -215,7 +216,7 @@ export function HowItWorks() {
               From camera roll to coffee table in <em className="text-accent">four</em> calm steps.
             </span>
           }
-          description="No design skills. No blank pages. Just your photos, arranged beautifully — with you in control of every detail."
+          description="No design skills. No blank pages. You stay in control of every detail."
         />
 
         {/* Mobile View (< lg): Step Selector Tabs & Preview Card (Zero Text Overlap) */}
@@ -280,6 +281,9 @@ export function HowItWorks() {
               <h4 className="mt-1 font-serif text-2xl font-medium text-white">
                 Our AI doesn’t replace you. <em className="text-amber-400">It helps you.</em>
               </h4>
+              <p className="mt-2 max-w-xl text-sm leading-relaxed text-neutral-400">
+                Pixovo’s AI analyzes your photos for image quality, faces, and events, then groups them into chapters and suggests layouts and caption ideas. You make every final decision on photos and layouts.
+              </p>
             </div>
             <span className="inline-flex items-center gap-2 rounded-full bg-emerald-500/10 px-3 py-1.5 text-xs font-semibold text-emerald-400 border border-emerald-500/20">
               <Check className="size-3.5" /> Design Free, Pay Only to Print
@@ -303,6 +307,12 @@ export function HowItWorks() {
               <span className="text-emerald-400 font-bold">✓</span>
               <span><strong>100% User Control:</strong> YOU make all final layout & photo decisions</span>
             </div>
+          </div>
+
+          <div className="mt-6">
+            <CtaLink href="/photo-book/?start=1" variant="accent" size="md">
+              Try the smart layout free
+            </CtaLink>
           </div>
         </div>
       </div>

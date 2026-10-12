@@ -14,7 +14,7 @@ const products = [
   {
     size: '8x8' as const,
     title: '8x8 Square Book',
-    copy: 'Perfect for everyday moments, trip highlights, and short stories.',
+    copy: 'Perfect for everyday moments, trip highlights, and short stories. Small enough to carry, big enough to share. The easiest way to start your first photo book.',
     href: '/photo-book/?size=8x8',
     image: '/images/product-size-8x8.png',
     badge: 'Popular',
@@ -34,7 +34,7 @@ const products = [
   {
     size: '12x12' as const,
     title: '12x12 Square Book',
-    copy: 'More room for your favorite photos and unforgettable milestone memories.',
+    copy: 'More room for your favorite photos and unforgettable milestone memories. Our largest square book, made for weddings, graduations, and anniversaries.',
     href: '/photo-book/?size=12x12',
     image: '/images/product-size-12x12.png',
     badge: 'Deluxe',
@@ -169,7 +169,7 @@ export function Products() {
               Three square sizes. <em className="text-accent">Endless memories.</em>
             </span>
           }
-          description="Custom square photo books designed automatically in minutes from your uploaded photos, printed and shipped from the USA."
+          description="Custom square photo books designed automatically in minutes from your uploaded photos, printed and shipped from the USA. Pick the size that fits the story: 8×8 for trips and short stories, 10×10 for family albums, 12×12 for milestones you want to display."
           action={
             <CtaLink href="/about-us/" variant="secondary" showArrow>
               About Us
@@ -184,6 +184,10 @@ export function Products() {
             </RevealItem>
           ))}
         </Reveal>
+
+        <p className="mt-6 text-center text-xs text-muted-foreground">
+          Sale prices include printing and shipping within the USA. Design is always free.
+        </p>
       </div>
     </section>
   )

@@ -15,7 +15,7 @@ const factoryHighlights = [
   {
     title: 'Strict Quality Control',
     subtitle: 'Hand-Inspected Every Page',
-    text: 'Every single album undergoes a 12-point manual inspection for binding tightness, color alignment, and paper spine durability.',
+    text: 'Every single album undergoes a thorough manual inspection for binding tightness, color alignment, and paper spine durability.',
     image: '/images/factory-quality-control.png',
   },
   {

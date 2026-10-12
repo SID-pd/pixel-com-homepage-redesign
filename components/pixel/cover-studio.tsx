@@ -16,8 +16,8 @@ const materials = [
 ]
 
 const specs = [
-  { value: 'Archival', label: 'grade paper' },
-  { value: '180°', label: 'lay-flat binding' },
+  { value: '4', label: 'cover colors' },
+  { value: 'Custom', label: 'title deboss' },
 ]
 
 export function CoverStudio() {
@@ -165,7 +165,6 @@ export function CoverStudio() {
               <dl className="grid grid-cols-2 gap-3 pt-4">
                 {specs.map((s) => (
                   <div key={s.label} className="rounded-2xl bg-secondary p-4">
-                    <dt className="sr-only">{s.label}</dt>
                     <dd className="font-serif text-3xl leading-none">{s.value}</dd>
                     <dd className="mt-2 text-xs leading-snug text-muted-foreground">{s.label}</dd>
                   </div>

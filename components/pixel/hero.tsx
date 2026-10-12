@@ -103,14 +103,14 @@ export function Hero() {
             transition={{ duration: 0.7, delay: base + 0.3, ease: easeOutExpo }}
             className="max-w-lg text-pretty text-base sm:text-lg leading-relaxed text-muted-foreground"
           >
-            From Sunday family dinners to cross-country road trips, don't let your best moments stay trapped on a screen. Experience seamless AI layout and true American bookbinding quality in minutes.
+            Turn your camera roll into a custom photo book in about a minute, with AI doing the layout and you making every final call.
           </motion.p>
 
           <motion.p
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, delay: base + 0.42, ease: easeOutExpo }}
-            className="max-w-lg text-pretty text-sm leading-relaxed text-muted-foreground/80"
+            className="max-w-lg text-pretty text-base leading-relaxed text-muted-foreground"
           >
             Pixovo is a custom photo book company that prints in its own USA factory. Upload your photos, let the smart auto-layout build your book in about a minute, then edit anything you like. Design is free — you pay only when you order a print. Square books come in 8×8, 10×10, and 12×12 inch sizes, and ship out within 3–5 business days.
           </motion.p>
@@ -153,7 +153,7 @@ export function Hero() {
 
             <li className="flex items-center gap-1.5 text-xs sm:text-sm">
               <Check className="size-4 text-accent" aria-hidden />
-              Factory Direct Since 2003
+              20+ Years of Printing Experience
             </li>
 
             <li className="flex items-center gap-1.5 text-xs sm:text-sm">

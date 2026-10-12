@@ -32,7 +32,7 @@ export function Templates() {
               Designed by editors. <em className="text-accent">Finished</em> by you.
             </span>
           }
-          description="Hundreds of layouts made by real book designers. Pick one, drop in photos, done."
+          description="Ready-made templates for weddings, travel, family, and journals. Pick one, drop in photos, done."
           action={
             <div className="flex gap-2">
               <button
@@ -93,7 +93,7 @@ export function Templates() {
                           <span className="text-xs font-medium text-muted-foreground">{t.pages} pages layout</span>
                         </div>
                         <span className="shrink-0 rounded-xl bg-accent text-accent-foreground px-3 py-1.5 text-xs font-semibold shadow-sm group-hover:bg-accent/90">
-                          Customize
+                          Customize this template
                         </span>
                       </div>
                     </div>
