@@ -2,22 +2,39 @@
 
 No separate design-token doc exists elsewhere — this file summarizes what's defined in code so new pages stay consistent. Source of truth is always `app/globals.css` + `components/content/blocks.tsx`; update this file if those change.
 
-## Colors — `app/globals.css` (`:root`, OKLCH, light mode only)
+## Colors — `app/globals.css` (`:root`, light mode only)
+
+Exact hex values copied from live pixovo.com (`demo.css` `--demo-*` tokens), so the redesign matches the production brand.
 
 | Token | Value | Use |
 |---|---|---|
-| `background` / `foreground` | warm off-white / near-black ink | page bg / body text |
-| `primary` / `primary-foreground` | near-black / off-white | inverse of background |
-| `secondary`, `muted` | warm light tan | alternating section bg, muted UI |
-| `muted-foreground` | mid gray-brown | secondary text |
-| `accent` / `accent-foreground` | **terracotta `oklch(0.63 0.14 42)`** / off-white | brand color — CTAs, links, icons, focus ring |
-| `card`, `popover` | near-white | elevated surfaces |
-| `ink` / `ink-foreground` | dark / off-white | dark panels (CtaBand, footer) |
-| `border`, `input`, `ring` | ink at low opacity | borders / focus |
+| `background` | cream `#f7f4f0` | page bg, cream bands |
+| `card`, `popover` | white `#ffffff` | cards, white bands, footer |
+| `foreground`, `primary` | navy `#16324f` | headings, body text, primary (navy) buttons |
+| `primary-foreground` | cream `#f7f4f0` | text on navy |
+| `secondary`, `muted` | warm light tan | subtle fills, muted UI |
+| `muted-foreground` | `#5a6b7b` | paragraphs, footer links |
+| `accent` / `accent-foreground` | **teal `#0ba28d`** / white | brand color — highlights, links, icons, focus ring |
+| `border` / `input` | `#ece4d6` / `#e3dccd` | borders, inputs |
+| `ring` | teal `#0ba28d` | focus |
+| `ink` / `ink-foreground` | dark / off-white | dark panels (How It Works, blog article CTA box) |
 | `destructive` | red | errors only |
-| `mint`, `butter`, `sky`, `rose` | defined but **not wired into `@theme`** — available as raw CSS vars only, not Tailwind classes |
+| `mint`, `butter`, `sky`, `rose` | `#d6e7d2`, `#f6e2a8`, `#cfe3ec`, `#d98a86` | raw CSS vars (intro splash confetti), not Tailwind classes |
+| `brand-teal-dark` | `#166358` | teal hover |
+| `brand-cta` | `#17998a` | teal CTA cards |
+| `brand-story` | `#f8efe7` | warm story band |
+| `brand-cream-2`, `brand-pink` | `#f6efe1`, `#f3d6d6` | extra live-site surfaces |
+| `brand-star`, `brand-star-empty` | `#f5b100`, `#e2ddd0` | review stars |
 
-Use Tailwind classes (`bg-accent`, `text-muted-foreground`, etc.) — never hardcode hex/oklch in new components.
+`brand-*` tokens are mapped in `@theme inline`, so `bg-brand-cta`, `bg-brand-story` etc. work. Don't name new tokens `--pix-*`: that prefix belongs to the Pixie chat widget (`components/AIOrderChat`).
+
+Use Tailwind classes (`bg-accent`, `text-muted-foreground`, etc.) — never hardcode hex/oklch in new components. No orange/terracotta outside the seasonal autumn section.
+
+### Background utilities (`globals.css`)
+
+- `bg-hero-bubbles` — cream with pixovo.com's pastel hero circles (smaller set under 768px). Used by the homepage hero and `PageHero`.
+- `bg-cta-bubbles` — teal `#17998a` with translucent white circles. Used by the homepage final CTA card and `CtaBand`.
+- `alt-sections` — on a `<main>`, makes its direct `<section>` children alternate cream (odd) / white (even). `MarketingShell` sets it, so content pages alternate automatically.
 
 ## Typography
 
@@ -36,7 +53,7 @@ Use Tailwind classes (`bg-accent`, `text-muted-foreground`, etc.) — never hard
 - Section side padding: `px-5 md:px-6`
 - Section vertical padding: `py-14 md:py-20`
 - Section header block (eyebrow+title+description): `mb-10 md:mb-14`, capped at `max-w-2xl`
-- Alternate section backgrounds with `bg-secondary/50` (the `Section` component's `tone="soft"`) instead of a new color
+- Section backgrounds alternate cream / white like pixovo.com. On content pages this is automatic (`alt-sections` on `MarketingShell`), so `Section`'s `tone` prop no longer changes the color. On the homepage, `app/page.tsx` wraps sections in full-width `flow-root` bands (cream, white, cream, white, story `#f8efe7`, …).
 
 ## Radius & shadow
 
@@ -48,10 +65,10 @@ Use Tailwind classes (`bg-accent`, `text-muted-foreground`, etc.) — never hard
 
 Build new pages out of these instead of hand-rolling markup:
 
-- `MarketingShell` — wraps page content with `SiteNav` (fixed) + `SiteFooter`
-- `PageHero` — `{ eyebrow, title, description, actions, image, imageAlt, align }`
-- `Section` — `{ eyebrow, title, description, tone: 'plain'|'soft', className, id }`
-- `CtaBand` — dark closing CTA band, `{ title, description, cta, href }`
+- `MarketingShell` — wraps page content with `SiteNav` (fixed) + `SiteFooter` (light: white, top border, navy headings, teal hovers)
+- `PageHero` — `{ eyebrow, title, description, actions, image, imageAlt, align }`, on `bg-hero-bubbles`
+- `Section` — `{ eyebrow, title, description, tone, className, id }` (background comes from `alt-sections`)
+- `CtaBand` — teal bubble CTA card (`bg-cta-bubbles`, white text, navy button), `{ title, description, cta, href }`
 - `Eyebrow`, `Reassurance`, `CheckList`, `IconTile` — small recurring pieces (badges, the 3-item trust row, checklists, icon tiles)
 
 Homepage-specific sections (hero, products, reviews, etc.) live in `components/pixel/*` if you want more visual patterns to copy (tilt cards, marquee/scrolling cards, reveal-on-scroll animation via `reveal.tsx`).
@@ -59,4 +76,4 @@ Homepage-specific sections (hero, products, reviews, etc.) live in `components/p
 ## Buttons / CTAs
 
 - `components/ui/button.tsx` — shadcn `class-variance-authority` button, use its variants rather than ad hoc button styling
-- `components/pixel/cta-link.tsx` — `CtaLink` wraps links styled as buttons, has an `accent` variant + `magnetic` hover effect, used for primary CTAs like in `CtaBand`
+- `components/pixel/cta-link.tsx` — `CtaLink` wraps links styled as buttons, variants `primary` (navy), `accent` (teal), `secondary`, `light`, + `magnetic` hover effect; use `primary` on teal backgrounds
