@@ -40,7 +40,7 @@ Use Tailwind classes (`bg-accent`, `text-muted-foreground`, etc.) — never hard
 
 - One family everywhere: **Poppins** (400/500/600/700), loaded in `app/layout.tsx`, exposed as `--font-poppins`.
 - `font-sans`, `font-serif`, `font-display`, `font-heading` all alias Poppins — using any of them is fine, `font-serif` is just a historical name.
-- Headings are forced bold: `h1,h2,h3,.font-serif → font-weight:700; letter-spacing:-0.02em`. `h4-h6 → 600`.
+- Headings are forced bold: `h1,h2,h3,.font-serif → font-weight:700; letter-spacing:-0.02em`. `h4-h6 → 600`. Section headings are bold like the old pixovo.com — don't add `font-normal` to them.
 - Sizes match the old pixovo.com site (smaller than the first redesign):
   - Hero H1 (homepage + `PageHero`): `text-[36px] md:text-[45px] leading-[1.08]`
   - Section H2 (`SectionHeading`, seasonal): `text-[30px] md:text-[40px] leading-[1.1]`; content-page `Section` H2: `text-3xl md:text-4xl`
@@ -74,6 +74,10 @@ Build new pages out of these instead of hand-rolling markup:
 - `Section` — `{ eyebrow, title, description, tone, className, id }` (background comes from `alt-sections`)
 - `CtaBand` — teal bubble CTA card (`bg-cta-bubbles`, white text, navy button), `{ title, description, cta, href }`
 - `Eyebrow`, `Reassurance`, `CheckList`, `IconTile` — small recurring pieces (badges, the 3-item trust row, checklists, icon tiles)
+
+Photo hero pattern (`/photo-book` intro, `components/flow/photo-book-intro.tsx`): a light photo with empty space on the left for copy, navy text, a cream `from-background/80` wash behind the copy only and a dark `from-black/55` fade rising from the bottom. From `md` up the photo fills the section with `object-right-bottom` so the subject stays in view; phones stack the copy above the full, uncropped photo (`aspect-[2170/725]`). Compress hero photos before adding them (the autumn image is ~166 KB).
+
+Product/price cards show a "Starting at" label above the price (20-page softcover from `catalog.ts`).
 
 Homepage-specific sections (hero, products, reviews, etc.) live in `components/pixel/*` if you want more visual patterns to copy (tilt cards, marquee/scrolling cards, reveal-on-scroll animation via `reveal.tsx`).
 
