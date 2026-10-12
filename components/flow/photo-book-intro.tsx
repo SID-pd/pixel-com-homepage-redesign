@@ -84,29 +84,34 @@ function StartButton({
 export function PhotoBookIntro({ onStart }: { onStart: () => void }) {
   return (
     <>
-      <section className="relative flex min-h-[380px] w-full items-center overflow-hidden sm:min-h-[440px] md:min-h-[520px] lg:min-h-[560px]">
-        <Image
-          src="/images/photo-book-hero-banner.jpg"
-          alt="A finished Pixovo photo book open on a table, surrounded by autumn leaves and warm light"
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover object-[75%_center] sm:object-[65%_center]"
-        />
-        {/* Flat dim layer over the whole photo, plus a stronger gradient behind the text */}
-        <div aria-hidden className="absolute inset-0 bg-black/30" />
-        <div aria-hidden className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/20 sm:from-black/85 sm:via-black/45 sm:to-black/10" />
-        <div className="relative mx-auto w-full max-w-6xl px-5 pb-12 pt-28 sm:pt-32 md:px-6 md:pb-16">
-          <div className="max-w-xl">
+      {/* Light photo with empty space on the left for the copy. Phones stack copy above the full,
+          uncropped photo; from md up the photo fills the section anchored bottom-right so the book stays in view. */}
+      <section className="relative flex w-full flex-col overflow-hidden bg-background md:min-h-[440px] md:justify-center lg:min-h-[480px] xl:min-h-[540px]">
+        <div className="relative order-2 aspect-[2170/725] w-full md:absolute md:inset-0 md:order-none md:aspect-auto">
+          <Image
+            src="/images/photo-book-hero-autumn.jpg"
+            alt="An open Pixovo photo book of autumn family photos on a wooden table with pumpkins, leaves and a knit blanket"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-right-bottom"
+          />
+          {/* Soft cream wash behind the copy only; the book on the right stays untouched. */}
+          <div aria-hidden className="absolute inset-0 hidden bg-gradient-to-r from-background/80 via-background/30 to-transparent md:block" />
+          {/* Dark fade rising from the bottom edge to ground the photo. */}
+          <div aria-hidden className="absolute inset-x-0 bottom-0 h-1/2 bg-gradient-to-t from-black/55 via-black/20 to-transparent" />
+        </div>
+        <div className="relative order-1 mx-auto w-full max-w-6xl px-5 pb-8 pt-28 sm:pt-32 md:order-none md:px-6 md:pb-12 md:pt-28">
+          <div className="max-w-md">
             <Eyebrow>AI photo book maker</Eyebrow>
-            <h1 className="mt-4 font-serif text-4xl leading-[1.05] tracking-tight text-white sm:text-5xl md:text-6xl">
+            <h1 className="mt-4 font-serif text-[36px] leading-[1.08] tracking-tight text-foreground md:text-[45px]">
               Turn your photos into a photo book
               <br className="hidden sm:block" /> <span className="text-accent">designed by AI</span>
             </h1>
-            <p className="mt-5 max-w-lg text-pretty text-lg leading-relaxed text-white/85">
+            <p className="mt-4 max-w-md text-pretty text-lg leading-relaxed text-muted-foreground">
               Upload your photos. Watch AI design every page automatically. Order a premium photo book, printed and shipped from the USA.
             </p>
-            <div className="mt-8">
+            <div className="mt-7">
               <StartButton onClick={onStart}>Create your photo book</StartButton>
             </div>
           </div>

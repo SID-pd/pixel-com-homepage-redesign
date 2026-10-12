@@ -85,8 +85,9 @@ function ProductCard({ product, campaign }: { product: (typeof products)[number]
       <div className="mt-auto flex w-full flex-col items-center text-center gap-1.5 pt-2">
         <h3 className="font-serif text-2xl font-bold text-foreground tracking-tight">{product.title}</h3>
         
-        {/* Pricing: list price, plus the sale price while a campaign is running */}
-        <div className="flex items-center justify-center gap-2" aria-label={sale !== null ? `List price ${money(list)}, sale price ${money(sale)}` : `Price ${money(list)}`}>
+        {/* Pricing: list price, plus the sale price while a campaign is running. "Starting at" = 20-page softcover. */}
+        <p className="text-xs font-medium text-muted-foreground">Starting at</p>
+        <div className="flex items-center justify-center gap-2" aria-label={sale !== null ? `Starting at list price ${money(list)}, sale price ${money(sale)}` : `Starting at ${money(list)}`}>
           {sale !== null ? (
             <>
               <span className="text-xs text-muted-foreground line-through font-semibold">{money(list)}</span>
@@ -96,7 +97,7 @@ function ProductCard({ product, campaign }: { product: (typeof products)[number]
               </span>
             </>
           ) : (
-            <span className="text-lg font-bold text-accent">from {money(list)}</span>
+            <span className="text-lg font-bold text-accent">{money(list)}</span>
           )}
         </div>
         {campaign && <p className="text-[11px] text-muted-foreground">With code {campaign.code}, applied for you</p>}

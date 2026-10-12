@@ -174,7 +174,7 @@ export function CoverStudio() {
             </RevealItem>
 
             <RevealItem className="pt-2">
-              <CtaLink href="#start" magnetic>
+              <CtaLink href="/photo-book/" magnetic>
                 Design with {material.name}
               </CtaLink>
             </RevealItem>
