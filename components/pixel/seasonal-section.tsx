@@ -46,8 +46,8 @@ export function SeasonalSection() {
 
   const copy = campaign ? COPY[campaign.id as Exclude<CampaignId, 'fall'>] : null
   return (
-    <section id="gifts" aria-labelledby="gifts-title" className="scroll-mt-24 my-8 px-3 md:px-6">
-      <Reveal className="relative mx-auto max-w-6xl overflow-hidden rounded-[2.5rem] bg-secondary px-6 py-14 text-center md:px-16 md:py-20">
+    <section id="gifts" aria-labelledby="gifts-title" className="scroll-mt-24 px-3 md:px-6">
+      <Reveal className="relative mx-auto max-w-6xl overflow-hidden rounded-[2.5rem] bg-secondary px-6 py-12 text-center md:px-16 md:py-14">
         <RevealItem>
           <span className="inline-flex items-center gap-2 rounded-full bg-accent/12 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-accent">
             {campaign ? <Sparkles className="size-3.5" /> : <Gift className="size-3.5" />}
@@ -55,7 +55,7 @@ export function SeasonalSection() {
           </span>
         </RevealItem>
         <RevealItem>
-          <h2 id="gifts-title" className="mx-auto mt-5 max-w-2xl text-balance font-serif text-4xl leading-tight md:text-5xl">
+          <h2 id="gifts-title" className="mx-auto mt-5 max-w-2xl text-balance font-serif text-[30px] leading-tight md:text-[40px]">
             {copy ? copy.title : 'Give photos a home they’ll be loved in.'}
           </h2>
         </RevealItem>
@@ -66,7 +66,7 @@ export function SeasonalSection() {
               : 'Birthdays, weddings, anniversaries or just because: a printed photo book is a gift people keep. Design is free, and you only pay when you order.'}
           </p>
         </RevealItem>
-        <RevealItem className="mt-7 flex flex-wrap items-center justify-center gap-4">
+        <RevealItem className="mt-6 flex flex-wrap items-center justify-center gap-4">
           {campaign ? (
             <button
               type="button"

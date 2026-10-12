@@ -59,7 +59,7 @@ const trustFactors = [
 
 export function ValueStrip() {
   return (
-    <section aria-label="Why Pixovo" className="px-4 md:px-6 my-10 md:my-16">
+    <section aria-label="Why Pixovo" className="px-4 md:px-6">
       <Reveal staggerChildren={0.08} className="mx-auto grid max-w-6xl grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-5 md:gap-5">
         {trustFactors.map((item) => (
           <RevealItem

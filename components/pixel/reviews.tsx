@@ -134,7 +134,7 @@ function MarqueeRow({ items, reverse = false }: { items: typeof reviews; reverse
 
 export function Reviews() {
   return (
-    <section aria-labelledby="reviews-title" className="py-10 md:py-16">
+    <section aria-labelledby="reviews-title" className="">
       <div className="mx-auto max-w-6xl px-5 md:px-6 text-center flex flex-col items-center">
         <SectionHeading
           align="center"
@@ -147,12 +147,12 @@ export function Reviews() {
         />
       </div>
 
-      <div className="mt-12">
+      <div className="mt-8">
         <MarqueeRow items={reviews} />
       </div>
 
       {/* Official Google Rating Banner Footer Card */}
-      <div className="mt-8 mx-auto max-w-xl px-5 text-center">
+      <div className="mt-6 mx-auto max-w-xl px-5 text-center">
         <a
           href="https://www.google.com/search?q=Pixovo&stick=H4sIAAAAAAAA_-NgU1I1qLAwSElKSzJKTUs1MUszM7C0MqgwMjU3NjFKSTIySjI3skw1X8TKFpBZkV-WDwBRDVDCMgAAAA&hl=en&mat=CQk0NxzWu7hcElcBzAmVZgQcmLTQ9588wX0dgKmZtkzqmi7c250ZVxgyArbiP9uGuvyaK9I1c4VfLseEMozg3ssjRs4hYU41lpPiOmfZ4o1KzJsuvHT0hBVKEkxtnRk-Rsc&authuser=0&ved=1t:350944"
           target="_blank"

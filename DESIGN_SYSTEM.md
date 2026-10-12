@@ -41,18 +41,22 @@ Use Tailwind classes (`bg-accent`, `text-muted-foreground`, etc.) — never hard
 - One family everywhere: **Poppins** (400/500/600/700), loaded in `app/layout.tsx`, exposed as `--font-poppins`.
 - `font-sans`, `font-serif`, `font-display`, `font-heading` all alias Poppins — using any of them is fine, `font-serif` is just a historical name.
 - Headings are forced bold: `h1,h2,h3,.font-serif → font-weight:700; letter-spacing:-0.02em`. `h4-h6 → 600`.
-- Scale used across existing sections:
-  - Hero H1: `text-4xl sm:text-5xl md:text-6xl leading-[1.05] tracking-tight`
-  - Section H2: `text-3xl md:text-4xl leading-tight tracking-tight`
-  - Body: `text-lg text-muted-foreground leading-relaxed`
+- Sizes match the old pixovo.com site (smaller than the first redesign):
+  - Hero H1 (homepage + `PageHero`): `text-[36px] md:text-[45px] leading-[1.08]`
+  - Section H2 (`SectionHeading`, seasonal): `text-[30px] md:text-[40px] leading-[1.1]`; content-page `Section` H2: `text-3xl md:text-4xl`
+  - CTA H2: `md:text-[44px]`
+  - Step titles (How It Works): `text-xl md:text-2xl`
+  - Hero paragraph: `text-lg` (18px); section intro paragraphs: `text-base` (16px), `text-muted-foreground leading-relaxed`
   - Eyebrow label: `text-xs font-semibold uppercase tracking-[0.14em] text-accent`
 
 ## Spacing & layout
 
 - Page content container: `mx-auto max-w-6xl`
 - Section side padding: `px-5 md:px-6`
-- Section vertical padding: `py-14 md:py-20`
-- Section header block (eyebrow+title+description): `mb-10 md:mb-14`, capped at `max-w-2xl`
+- **Homepage:** vertical spacing comes only from the full-width bands in `app/page.tsx` (`py-10 md:py-14`). Section components don't add their own outer `py`/`my`; when two sections share a band, the second adds `pt-12 md:pt-16` (Products, Cover studio).
+- **Content pages:** `Section` is `py-12 md:py-16`; its header block is `mb-8 md:mb-10`, capped at `max-w-2xl`. `PageHero` bottom `pb-10 md:pb-14` (top padding clears the fixed nav). `CtaBand` card `py-12 md:py-16`.
+- Heading block gaps: eyebrow → title → description `gap-3`; hero column `gap-4`.
+- Card grids: `gap-5 md:gap-6`, `mt-8` below the section heading.
 - Section backgrounds alternate cream / white like pixovo.com. On content pages this is automatic (`alt-sections` on `MarketingShell`), so `Section`'s `tone` prop no longer changes the color. On the homepage, `app/page.tsx` wraps sections in full-width `flow-root` bands (cream, white, cream, white, story `#f8efe7`, …).
 
 ## Radius & shadow

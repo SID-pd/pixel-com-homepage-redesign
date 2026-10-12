@@ -89,11 +89,11 @@ export function GiftBanner({ campaign }: { campaign: Campaign }) {
   const imageY = useTransform(scrollYProgress, [0, 1], ['-8%', '8%'])
 
   return (
-    <section id="gifts" aria-labelledby="gifts-title" className="scroll-mt-24 px-3 md:px-6 my-8">
+    <section id="gifts" aria-labelledby="gifts-title" className="scroll-mt-24 px-3 md:px-6">
       {/* Main Outer Division: Rich Terracotta/Warm Walnut Background with Sunbeam Rays */}
       <div
         ref={ref}
-        className="relative mx-auto flex min-h-[580px] max-w-7xl items-center justify-center overflow-hidden rounded-[2.5rem] bg-[#2a1711] p-4 md:p-12 lg:p-16 shadow-2xl border border-amber-900/30"
+        className="relative mx-auto flex min-h-[480px] max-w-7xl items-center justify-center overflow-hidden rounded-[2.5rem] bg-[#2a1711] p-4 md:p-12 lg:p-16 shadow-2xl border border-amber-900/30"
       >
         {/* Editorial Background Image with Warm Sunlight Blend */}
         <motion.div style={{ y: reduceMotion ? 0 : imageY }} className="absolute inset-[-10%_0]">
@@ -157,7 +157,7 @@ export function GiftBanner({ campaign }: { campaign: Campaign }) {
           {/* Subtle Inner Double Border Frame (Inspired by Image 2) */}
           <div className="pointer-events-none absolute inset-3.5 rounded-[1.4rem] border border-amber-800/15" />
 
-          <div className="flex flex-col items-center text-center gap-5 relative z-10">
+          <div className="flex flex-col items-center text-center gap-4 relative z-10">
             {/* Top Tag & Discount Badge */}
             <RevealItem>
               <div className="inline-flex items-center gap-2 rounded-full bg-amber-100 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.2em] text-amber-900 border border-amber-300 shadow-sm">
@@ -172,7 +172,7 @@ export function GiftBanner({ campaign }: { campaign: Campaign }) {
                 <span className="font-serif text-2xl md:text-3xl text-amber-800 tracking-tight">
                   As seasons change,
                 </span>
-                <h2 id="gifts-title" className="mt-1 font-serif text-4xl font-bold leading-[1.05] md:text-6xl tracking-tight text-neutral-900">
+                <h2 id="gifts-title" className="mt-1 font-serif text-[30px] font-bold leading-[1.1] md:text-[40px] tracking-tight text-neutral-900">
                   Some moments stay <span className="text-amber-700 underline decoration-amber-300 underline-offset-8">warm forever.</span>
                 </h2>
               </div>

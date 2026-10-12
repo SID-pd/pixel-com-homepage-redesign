@@ -59,7 +59,7 @@ export function PageHero({
 }) {
   const center = align === 'center'
   return (
-    <section className="bg-hero-bubbles relative overflow-hidden px-5 pb-12 pt-32 sm:pt-40 md:px-6 md:pb-20">
+    <section className="bg-hero-bubbles relative overflow-hidden px-5 pb-10 pt-32 sm:pt-40 md:px-6 md:pb-14">
       <div
         className={cn(
           'relative mx-auto grid max-w-6xl items-center gap-10',
@@ -68,7 +68,7 @@ export function PageHero({
       >
         <div className={cn(center && 'mx-auto max-w-3xl text-center')}>
           {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
-          <h1 className="mt-4 text-balance font-serif text-4xl leading-[1.05] tracking-tight sm:text-5xl md:text-6xl">{title}</h1>
+          <h1 className="mt-4 text-balance font-serif text-[36px] leading-[1.08] tracking-tight md:text-[45px]">{title}</h1>
           {description && (
             <p className={cn('mt-5 max-w-xl text-pretty text-lg leading-relaxed text-muted-foreground', center && 'mx-auto')}>{description}</p>
           )}
@@ -103,13 +103,13 @@ export function Section({
   id?: string
 }) {
   return (
-    <section id={id} className={cn('scroll-mt-28 px-5 py-14 md:px-6 md:py-20', tone === 'soft' && 'bg-secondary/50', className)}>
+    <section id={id} className={cn('scroll-mt-28 px-5 py-12 md:px-6 md:py-16', tone === 'soft' && 'bg-secondary/50', className)}>
       <div className="mx-auto max-w-6xl">
         {(eyebrow || title || description) && (
-          <header className="mb-10 max-w-2xl md:mb-14">
+          <header className="mb-8 max-w-2xl md:mb-10">
             {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
             {title && <h2 className="mt-3 text-balance font-serif text-3xl leading-tight tracking-tight md:text-4xl">{title}</h2>}
-            {description && <p className="mt-4 text-pretty text-lg text-muted-foreground">{description}</p>}
+            {description && <p className="mt-4 text-pretty text-base text-muted-foreground">{description}</p>}
           </header>
         )}
         {children}
@@ -148,10 +148,10 @@ export function CtaBand({
   href?: string
 }) {
   return (
-    <section className="px-5 pb-16 pt-6 md:px-6 md:pb-24">
-      <div className="bg-cta-bubbles relative mx-auto max-w-6xl overflow-hidden rounded-[2.5rem] px-6 py-14 text-center text-white shadow-float md:px-16 md:py-20">
+    <section className="px-5 pb-12 pt-6 md:px-6 md:pb-16">
+      <div className="bg-cta-bubbles relative mx-auto max-w-6xl overflow-hidden rounded-[2.5rem] px-6 py-12 text-center text-white shadow-float md:px-16 md:py-16">
         <div className="relative">
-          <h2 className="mx-auto max-w-2xl text-balance font-serif text-3xl leading-tight text-white md:text-5xl">{title}</h2>
+          <h2 className="mx-auto max-w-2xl text-balance font-serif text-[30px] leading-tight text-white md:text-[44px]">{title}</h2>
           <p className="mx-auto mt-4 max-w-xl text-pretty text-lg text-white/90">{description}</p>
           <div className="mt-8 flex justify-center">
             <CtaLink href={href} variant="primary" size="lg" magnetic>

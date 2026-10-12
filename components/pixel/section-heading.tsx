@@ -25,12 +25,12 @@ export function SectionHeading({
   return (
     <Reveal
       className={cn(
-        'flex flex-col gap-6 md:flex-row md:items-end md:justify-between',
+        'flex flex-col gap-4 md:flex-row md:items-end md:justify-between',
         centered && 'items-center text-center md:flex-col md:items-center',
         className,
       )}
     >
-      <div className={cn('flex max-w-2xl flex-col gap-4', centered && 'items-center')}>
+      <div className={cn('flex max-w-2xl flex-col gap-3', centered && 'items-center')}>
         <RevealItem>
           <span
             className={cn(
@@ -43,13 +43,13 @@ export function SectionHeading({
           </span>
         </RevealItem>
         <RevealItem>
-          <h2 className="text-balance font-serif text-4xl font-normal leading-[1.04] tracking-tight md:text-6xl">{title}</h2>
+          <h2 className="text-balance font-serif text-[30px] font-normal leading-[1.1] tracking-tight md:text-[40px]">{title}</h2>
         </RevealItem>
         {description && (
           <RevealItem>
             <p
               className={cn(
-                'max-w-lg text-pretty text-base leading-relaxed md:text-lg',
+                'max-w-lg text-pretty text-base leading-relaxed',
                 tone === 'dark' ? 'text-ink-foreground/70' : 'text-muted-foreground',
               )}
             >

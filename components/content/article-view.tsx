@@ -84,7 +84,7 @@ export function ArticleView({ article }: { article: Article }) {
             </span>
           </nav>
           <span className="inline-flex rounded-full bg-accent/12 px-3 py-1 text-xs font-semibold text-accent">{topic}</span>
-          <h1 className="mt-4 text-balance font-serif text-3xl leading-[1.1] tracking-tight sm:text-4xl md:text-5xl">{article.title}</h1>
+          <h1 className="mt-4 text-balance font-serif text-3xl leading-[1.1] tracking-tight md:text-[45px]">{article.title}</h1>
           {article.subtitle && <p className="mt-4 text-pretty text-xl text-muted-foreground">{article.subtitle}</p>}
           <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-muted-foreground">
             <span className="inline-flex items-center gap-2">

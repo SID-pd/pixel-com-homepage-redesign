@@ -71,33 +71,33 @@ export default function Page() {
       {/* Full-width bands alternate like pixovo.com: cream hero, mostly white sections, a cream and a
           warm story band in between, teal CTA band. flow-root keeps section margins inside each band. */}
       <main>
-        <div className="flow-root bg-hero-bubbles pb-8 md:pb-12">
+        <div className="flow-root bg-hero-bubbles pb-10 md:pb-14">
           <Hero />
         </div>
-        <div className="flow-root bg-card py-4 md:py-6">
+        <div className="flow-root bg-card py-10 md:py-14">
           <ValueStrip />
           <Products />
         </div>
-        <div className="flow-root bg-background py-8 md:py-12">
+        <div className="flow-root bg-background py-10 md:py-14">
           <SeasonalSection />
         </div>
-        <div className="flow-root bg-card py-8 md:py-12">
+        <div className="flow-root bg-card py-10 md:py-14">
           <HowItWorks />
         </div>
-        <div className="flow-root bg-brand-story py-8 md:py-12">
+        <div className="flow-root bg-brand-story py-10 md:py-14">
           <FactoryTour />
           <CoverStudio />
         </div>
-        <div className="flow-root bg-card py-8 md:py-12">
+        <div className="flow-root bg-card py-10 md:py-14">
           <Templates />
         </div>
-        <div className="flow-root bg-background py-8 md:py-12">
+        <div className="flow-root bg-background py-10 md:py-14">
           <AppPromo />
         </div>
-        <div className="flow-root bg-card py-8 md:py-12">
+        <div className="flow-root bg-card py-10 md:py-14">
           <Reviews />
         </div>
-        <div className="flow-root bg-background py-8 md:py-12">
+        <div className="flow-root bg-background py-10 md:py-14">
           <FinalCta />
         </div>
       </main>

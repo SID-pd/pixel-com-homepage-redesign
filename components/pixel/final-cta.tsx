@@ -34,8 +34,8 @@ function InstagramIcon(props: React.SVGProps<SVGSVGElement>) {
 
 export function FinalCta() {
   return (
-    <section id="start" aria-labelledby="start-title" className="scroll-mt-24 px-5 pb-10 pt-8 md:px-6">
-      <Reveal className="relative mx-auto flex max-w-6xl flex-col items-center gap-7 overflow-hidden rounded-[2.5rem] bg-cta-bubbles px-6 py-20 text-center text-white shadow-float md:py-28">
+    <section id="start" aria-labelledby="start-title" className="scroll-mt-24 px-5 md:px-6">
+      <Reveal className="relative mx-auto flex max-w-6xl flex-col items-center gap-5 overflow-hidden rounded-[2.5rem] bg-cta-bubbles px-6 py-14 text-center text-white shadow-float md:py-16">
         <div aria-hidden className="pointer-events-none absolute -left-10 top-10 hidden w-40 -rotate-12 rounded-2xl bg-card p-2 pb-6 shadow-float md:block">
           <div className="relative aspect-[4/5] overflow-hidden rounded-lg">
             <Image src="/images/photo-wedding.png" alt="" fill sizes="160px" className="object-cover" />
@@ -48,7 +48,7 @@ export function FinalCta() {
         </div>
 
         <RevealItem>
-          <h2 id="start-title" className="text-balance font-serif text-5xl text-white leading-[0.95] md:text-7xl">
+          <h2 id="start-title" className="text-balance font-serif text-[34px] text-white leading-[1.1] md:text-[44px]">
             Start Creating Your <br /><em className="text-white">Photo Book Today</em>
           </h2>
         </RevealItem>
@@ -80,10 +80,10 @@ export function SiteFooter() {
   }
 
   return (
-    <footer className="w-full bg-card text-foreground border-t border-border pt-10 pb-8 overflow-hidden font-sans">
+    <footer className="w-full bg-card text-foreground border-t border-border pt-8 pb-6 overflow-hidden font-sans">
       <div className="mx-auto max-w-[1280px] px-6 md:px-10 lg:px-12">
         {/* 4-Column Responsive Grid based on dev.pixovo.com (Brand, Quick Links, Support, Stay Inspired) */}
-        <div className="grid gap-8 py-6 md:py-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr] border-b border-border">
+        <div className="grid gap-6 py-4 md:py-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-[1.4fr_1fr_1fr_1.2fr] border-b border-border">
           {/* Brand Column */}
           <div className="flex flex-col gap-4 sm:col-span-2 md:col-span-1">
             <Link href="/" aria-label="Pixovo Home" className="inline-block text-foreground">

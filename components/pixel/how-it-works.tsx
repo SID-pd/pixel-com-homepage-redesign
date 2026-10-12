@@ -51,7 +51,7 @@ function StepItem({ index, active, onActive }: { index: number; active: boolean;
   }, [inView, index, onActive])
 
   return (
-    <li ref={ref} className="flex min-h-[38vh] items-center lg:min-h-[52vh]">
+    <li ref={ref} className="flex min-h-[28vh] items-center lg:min-h-[36vh]">
       <div
         className={cn(
           'flex gap-5 transition-opacity duration-500',
@@ -70,7 +70,7 @@ function StepItem({ index, active, onActive }: { index: number; active: boolean;
           <span className="text-xs font-medium uppercase tracking-[0.18em] text-ink-foreground/50">
             Step {String(index + 1).padStart(2, '0')}
           </span>
-          <h3 className="font-serif text-3xl md:text-4xl">{step.title}</h3>
+          <h3 className="font-serif text-xl md:text-2xl">{step.title}</h3>
           <p className="max-w-sm text-pretty leading-relaxed text-ink-foreground/70">{step.text}</p>
         </div>
       </div>
@@ -206,7 +206,7 @@ export function HowItWorks() {
 
   return (
     <section id="how" aria-labelledby="how-title" className="scroll-mt-24 px-3 md:px-6">
-      <div className="mx-auto max-w-7xl rounded-[2.5rem] bg-ink px-5 pb-12 pt-20 text-ink-foreground md:px-12 md:pb-20 md:pt-28">
+      <div className="mx-auto max-w-7xl rounded-[2.5rem] bg-ink px-5 pb-10 pt-12 text-ink-foreground md:px-12 md:pb-14 md:pt-16">
         <SectionHeading
           tone="dark"
           eyebrow="How it works"
@@ -262,7 +262,7 @@ export function HowItWorks() {
 
         {/* Desktop View (lg+): Sticky Preview + Scrollable Step Items */}
         <div className="mt-10 hidden grid-cols-2 gap-16 lg:grid lg:mt-6">
-          <div className="sticky top-[18vh] z-10 self-start rounded-[2rem] bg-ink px-1 py-[6vh] lg:order-2">
+          <div className="sticky top-[18vh] z-10 self-start rounded-[2rem] bg-ink px-1 py-[3vh] lg:order-2">
             <EditorPreview active={active} />
           </div>
           <ol className="lg:order-1">

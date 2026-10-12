@@ -29,7 +29,7 @@ export function PageShell({
           </Link>
 
           <header className="mb-8">
-            <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-foreground">
+            <h1 className="font-serif text-3xl md:text-[45px] font-bold tracking-tight text-foreground">
               {title}
             </h1>
             {subtitle && (

@@ -159,7 +159,7 @@ function ProductCard({ product, campaign }: { product: (typeof products)[number]
 export function Products() {
   const campaign = useCampaign()
   return (
-    <section id="products" aria-labelledby="products-title" className="scroll-mt-24 px-5 py-10 md:px-6 md:py-16 overflow-hidden">
+    <section id="products" aria-labelledby="products-title" className="scroll-mt-24 px-5 pt-12 md:px-6 md:pt-16 overflow-hidden">
       <div className="mx-auto max-w-6xl">
         <SectionHeading
           eyebrow="Choose Your Size"
@@ -176,7 +176,7 @@ export function Products() {
           }
         />
 
-        <Reveal className="mt-12 grid gap-6 md:gap-8 lg:grid-cols-12" staggerChildren={0.1}>
+        <Reveal className="mt-8 grid gap-5 md:gap-6 lg:grid-cols-12" staggerChildren={0.1}>
           {products.map((product) => (
             <RevealItem key={product.title} className={product.span}>
               <ProductCard product={product} campaign={campaign} />

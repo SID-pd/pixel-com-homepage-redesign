@@ -34,8 +34,8 @@ export function CoverStudio() {
   }
 
   return (
-    <section aria-labelledby="studio-title" className="px-5 py-12 md:px-6 md:py-18">
-      <div className="mx-auto grid max-w-6xl items-center gap-14 lg:grid-cols-2 lg:gap-20">
+    <section aria-labelledby="studio-title" className="px-5 pt-12 md:px-6 md:pt-16">
+      <div className="mx-auto grid max-w-6xl items-center gap-10 lg:grid-cols-2 lg:gap-14">
         <div
           onPointerMove={handleMove}
           onPointerLeave={() => px.set(0)}
@@ -112,7 +112,7 @@ export function CoverStudio() {
           </span>
         </div>
 
-        <div className="order-1 flex flex-col gap-10 lg:order-2">
+        <div className="order-1 flex flex-col gap-7 lg:order-2">
           <SectionHeading
             eyebrow="Crafted to last"
             title={

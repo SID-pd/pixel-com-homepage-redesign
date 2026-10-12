@@ -23,7 +23,7 @@ export function Templates() {
   }
 
   return (
-    <section id="templates" aria-labelledby="templates-title" className="scroll-mt-24 py-12 md:py-18">
+    <section id="templates" aria-labelledby="templates-title" className="scroll-mt-24">
       <div className="mx-auto max-w-6xl px-5 md:px-6">
         <SectionHeading
           eyebrow="Start from a template"
@@ -59,7 +59,7 @@ export function Templates() {
       <Reveal staggerChildren={0.07}>
         <ul
           ref={scroller}
-          className="mt-12 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth scroll-px-5 px-5 pb-10 pt-4 [scrollbar-width:none] md:scroll-px-[max(1.5rem,calc((100vw-72rem)/2+1.5rem))] md:px-[max(1.5rem,calc((100vw-72rem)/2+1.5rem))] [&::-webkit-scrollbar]:hidden"
+          className="mt-8 flex snap-x snap-mandatory gap-5 overflow-x-auto scroll-smooth scroll-px-5 px-5 pb-4 pt-4 [scrollbar-width:none] md:scroll-px-[max(1.5rem,calc((100vw-72rem)/2+1.5rem))] md:px-[max(1.5rem,calc((100vw-72rem)/2+1.5rem))] [&::-webkit-scrollbar]:hidden"
         >
           {templates.map((t) => (
             <motion.li key={t.name} variants={fadeUp} className="w-[78vw] shrink-0 snap-start sm:w-[340px]">

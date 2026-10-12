@@ -78,18 +78,18 @@ export function Hero() {
         my.set(0)
       }}
       aria-labelledby="hero-title"
-      className="relative overflow-hidden pt-28 pb-8 sm:pt-32 md:pt-36 md:pb-12"
+      className="relative overflow-hidden pt-28 pb-4 sm:pt-32 md:pt-32 md:pb-6"
     >
       <div
         aria-hidden
         className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[80vh] bg-[radial-gradient(60%_50%_at_70%_30%,oklch(0.9_0.05_60/0.7),transparent_70%),radial-gradient(40%_40%_at_15%_20%,oklch(0.93_0.03_30/0.6),transparent_70%)]"
       />
 
-      <div className="mx-auto grid max-w-6xl items-center gap-14 px-5 md:px-6 lg:grid-cols-[1.05fr_1fr] lg:gap-8">
-        <div className="flex flex-col items-start gap-6">
+      <div className="mx-auto grid max-w-6xl items-center gap-10 px-5 md:px-6 lg:grid-cols-[1.05fr_1fr] lg:gap-8">
+        <div className="flex flex-col items-start gap-4">
           <h1
             id="hero-title"
-            className="font-serif text-[clamp(2.5rem,5.5vw,4.5rem)] leading-[1.05] tracking-[-0.02em] text-foreground max-w-xl"
+            className="font-serif text-[36px] md:text-[45px] leading-[1.08] tracking-[-0.02em] text-foreground max-w-xl"
           >
             Every photo has a heart.{' '}
             <em className="font-serif text-accent block mt-1">

@@ -89,7 +89,7 @@ export function AppPromo() {
       ref={sectionRef}
       id="app"
       aria-labelledby="app-promo-title"
-      className="scroll-mt-24 px-4 py-10 md:px-6 md:py-16"
+      className="scroll-mt-24 px-4 md:px-6"
     >
       <div className="mx-auto max-w-5xl rounded-3xl bg-secondary/80 px-5 py-8 shadow-float ring-1 ring-foreground/5 backdrop-blur-xl md:px-10 md:py-12">
         <SectionHeading
@@ -102,7 +102,7 @@ export function AppPromo() {
           description="Upload photos straight from your camera roll, auto-layout your photo book in seconds, and order directly from iOS or Android."
         />
 
-        <div className="mt-8 grid gap-8 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-10">
+        <div className="mt-6 grid gap-6 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:gap-10">
           {/* Scaled-Down 3D Interactive Rotating Phone Stage */}
           <div
             onPointerMove={handleMouseMove}

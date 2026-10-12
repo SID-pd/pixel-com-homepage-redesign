@@ -11,7 +11,7 @@ export function LegalDocument({ doc, other }: { doc: LegalDoc; other: { href: st
       <section className="px-5 pb-8 pt-32 sm:pt-40 md:px-6">
         <div className="mx-auto max-w-6xl">
           <p className="text-xs font-semibold uppercase tracking-[0.14em] text-accent">{eyebrow}</p>
-          <h1 className="mt-3 font-serif text-4xl tracking-tight md:text-6xl">{doc.title}</h1>
+          <h1 className="mt-3 font-serif text-[36px] tracking-tight md:text-[45px]">{doc.title}</h1>
           <p className="mt-4 max-w-2xl text-lg text-muted-foreground">{doc.intro}</p>
           <p className="mt-6 inline-flex items-center gap-2 rounded-full bg-secondary px-4 py-2 text-sm text-muted-foreground">
             Plain-language summary: you own your photos, we only use them to make your book, and you can always reach a person.

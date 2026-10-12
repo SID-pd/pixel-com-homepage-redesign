@@ -28,8 +28,8 @@ const factoryHighlights = [
 
 export function FactoryTour() {
   return (
-    <section aria-labelledby="factory-tour-title" className="px-3 md:px-6 my-16">
-      <div className="mx-auto max-w-7xl rounded-[2.5rem] bg-secondary/80 px-6 py-16 md:px-12 md:py-24 border border-foreground/5 shadow-sm">
+    <section aria-labelledby="factory-tour-title" className="px-3 md:px-6">
+      <div className="mx-auto max-w-7xl rounded-[2.5rem] bg-secondary/80 px-6 py-10 md:px-12 md:py-14 border border-foreground/5 shadow-sm">
         <SectionHeading
           eyebrow="Manufacturing Transparency"
           title={
@@ -40,7 +40,7 @@ export function FactoryTour() {
           description="We don’t outsource to overseas budget factories. Every Pixovo photo book is printed, bound, and hand-checked right here in the USA."
         />
 
-        <Reveal staggerChildren={0.08} className="mt-12 grid gap-6 md:grid-cols-3">
+        <Reveal staggerChildren={0.08} className="mt-8 grid gap-5 md:grid-cols-3">
           {factoryHighlights.map((item) => (
             <RevealItem
               key={item.title}
@@ -69,7 +69,7 @@ export function FactoryTour() {
         </Reveal>
 
         {/* Certifications & Badges Row */}
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <div className="flex items-center gap-3 rounded-2xl bg-background p-4 border border-foreground/[0.06] shadow-sm">
             <DollarSign className="size-5 text-emerald-500 shrink-0" />
             <div>
