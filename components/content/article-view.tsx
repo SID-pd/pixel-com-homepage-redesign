@@ -16,7 +16,7 @@ function InlineCta({ title, text }: { title: string; text: string }) {
       <p className="font-serif text-2xl leading-snug sm:text-3xl">{title}</p>
       <p className="mt-2 text-ink-foreground/75">{text}</p>
       <div className="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3">
-        <CtaLink href="/photo-book/?template=road-trip" variant="accent">
+        <CtaLink href="/photo-book/?start=1" variant="accent">
           Start your photo book
         </CtaLink>
         <Reassurance tone="dark" className="text-xs" />

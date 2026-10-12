@@ -42,7 +42,7 @@ export function Wizard() {
     // ?story=1 (navbar Story Mode button): jump to the upload step, where the Story Mode panel is.
     const story = params.get('story')
     if (story) flow.setStep(2)
-    if (size || template || promoParam || story) window.history.replaceState(null, '', '/photo-book/')
+    if (size || template || promoParam || story || params.get('start')) window.history.replaceState(null, '', '/photo-book/')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [hydrated])
 

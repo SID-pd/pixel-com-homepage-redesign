@@ -58,7 +58,7 @@ export function FinalCta() {
           </p>
         </RevealItem>
         <RevealItem className="flex flex-wrap justify-center gap-3">
-          <CtaLink href="/photo-book/?template=road-trip" size="lg" magnetic={false} showArrow={false}>
+          <CtaLink href="/photo-book/?start=1" size="lg" magnetic={false} showArrow={false}>
             Create Your Photo Book
           </CtaLink>
           <CtaLink href="/pricing/" size="lg" variant="secondary" magnetic={false} showArrow={false}>

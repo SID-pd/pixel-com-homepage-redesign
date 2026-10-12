@@ -130,7 +130,7 @@ export function ComparisonSection() {
 
         {/* Bottom CTA Button */}
         <div className="mt-10 flex justify-center">
-          <CtaLink href="/photo-book/?template=road-trip" size="lg" showArrow={false}>
+          <CtaLink href="/photo-book/?start=1" size="lg" showArrow={false}>
             Start Creating Your Photo Book
           </CtaLink>
         </div>

@@ -72,7 +72,7 @@ export function TopBanner() {
               type="button"
               onClick={() => {
                 flow.setPromo(campaign.code)
-                router.push('/photo-book/?template=road-trip')
+                router.push('/photo-book/?start=1')
               }}
               className="inline-flex items-center gap-1 text-xs font-semibold text-accent hover:underline shrink-0"
             >
@@ -83,7 +83,7 @@ export function TopBanner() {
               <ChevronRight className="size-3.5" />
             </button>
           ) : (
-            <a href="/photo-book/?template=road-trip" className="inline-flex items-center gap-1 text-xs font-semibold text-accent hover:underline shrink-0">
+            <a href="/photo-book/?start=1" className="inline-flex items-center gap-1 text-xs font-semibold text-accent hover:underline shrink-0">
               <span>Create Your Photo Book</span>
               <ChevronRight className="size-3.5" />
             </a>

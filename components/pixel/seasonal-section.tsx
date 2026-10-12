@@ -72,14 +72,14 @@ export function SeasonalSection() {
               type="button"
               onClick={() => {
                 flow.setPromo(campaign.code)
-                router.push('/photo-book/?template=road-trip')
+                router.push('/photo-book/?start=1')
               }}
               className="inline-flex h-14 items-center gap-2 rounded-full bg-accent px-7 text-base font-medium text-accent-foreground transition hover:brightness-105"
             >
               {copy?.cta} <ArrowRight className="size-4" />
             </button>
           ) : (
-            <CtaLink href="/photo-book/?template=road-trip" variant="accent" size="lg">
+            <CtaLink href="/photo-book/?start=1" variant="accent" size="lg">
               Create a gift photo book
             </CtaLink>
           )}

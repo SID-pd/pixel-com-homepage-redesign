@@ -47,7 +47,7 @@ export default function PhotobookLandingPage() {
         image="/images/hero-book.png"
         imageAlt="A Pixovo photo book"
         actions={
-          <CtaLink href="/photo-book/?template=road-trip" variant="accent" size="lg" magnetic>
+          <CtaLink href="/photo-book/?start=1" variant="accent" size="lg" magnetic>
             Create your photo book
           </CtaLink>
         }
@@ -63,7 +63,7 @@ export default function PhotobookLandingPage() {
             Somewhere on your phone are hundreds of photos that never get looked at again. A Pixovo photo book turns them into something you actually hold, open, and pass around, without the hours it normally takes to design one yourself. Upload your photos, and the AI does the rest: grouping, laying out, and designing every page automatically, so the hardest part of making a photo book becomes the fastest.
           </p>
           <div className="mt-8 flex justify-center">
-            <CtaLink href="/photo-book/?template=road-trip" variant="primary" size="lg">
+            <CtaLink href="/photo-book/?start=1" variant="primary" size="lg">
               Start designing free
             </CtaLink>
           </div>
@@ -157,7 +157,7 @@ export default function PhotobookLandingPage() {
               Pixovo runs entirely in your browser, so you can design a photo book from your phone or computer without installing anything. Upload your photos, and the AI takes it from there.
             </p>
             <div className="mt-6">
-              <CtaLink href="/photo-book/?template=road-trip" variant="accent">
+              <CtaLink href="/photo-book/?start=1" variant="accent">
                 Start your photo book
               </CtaLink>
             </div>

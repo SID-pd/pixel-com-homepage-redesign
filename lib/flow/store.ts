@@ -200,19 +200,25 @@ export const flow = {
       ...(tpl ? { templateId: tpl.id, pages: tpl.pages, title: tpl.name } : {}),
     }
     const asked = !!tpl || !!opts.size
-    if (!cur || (cur.cartItemId && asked)) {
+    // A visit without a template leaves template mode (2 steps) for the full custom flow (3 steps).
+    const dropTemplate = !tpl && !!cur?.config.templateId
+    // A template draft with no photos yet is just a pick, not work in progress: start a custom book.
+    const emptyTemplateDraft = !!cur && dropTemplate && !cur.cartItemId && cur.photos.length === 0
+    if (!cur || (cur.cartItemId && asked) || emptyTemplateDraft) {
       past = []
       future = []
       set({ draft: newDraft(patch) })
       return
     }
     if (!asked) return // resume where the customer left off
-    const changed = (tpl && cur.config.templateId !== tpl.id) || (opts.size && cur.config.size !== opts.size)
+    const changed =
+      (tpl && cur.config.templateId !== tpl.id) || (opts.size && (cur.config.size !== opts.size || dropTemplate))
     if (!changed) return
     past = []
     future = []
     // Keep any photos already added; only the book setup changes.
-    set({ draft: touch({ ...cur, config: { ...cur.config, ...patch }, spreads: [], step: 1 }) })
+    const config = { ...cur.config, ...patch, ...(dropTemplate ? { templateId: undefined } : {}) }
+    set({ draft: touch({ ...cur, config, spreads: [], step: 1 }) })
   },
 
   discardDraft() {

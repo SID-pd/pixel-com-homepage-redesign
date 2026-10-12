@@ -176,7 +176,7 @@ export function SiteNav() {
             <StoryModeNavButton />
 
             {/* Desktop / Tablet CTA Button */}
-            <CtaLink href="/photo-book/?template=road-trip" className="hidden sm:inline-flex h-9 px-3.5 text-xs font-semibold" showArrow={false}>
+            <CtaLink href="/photo-book/?start=1" className="hidden sm:inline-flex h-9 px-3.5 text-xs font-semibold" showArrow={false}>
               Create Your Photo Book
             </CtaLink>
 
@@ -261,7 +261,7 @@ export function SiteNav() {
       {/* Mobile Floating Action Button (FAB) */}
       <div className={cn("fixed bottom-5 right-4 z-40 sm:hidden", open && "hidden")}>
         <Link
-          href="/photo-book/?template=road-trip"
+          href="/photo-book/?start=1"
           className="flex items-center gap-2 rounded-full bg-accent px-4 py-3 text-xs font-bold text-accent-foreground shadow-2xl ring-2 ring-background/20 transition-transform active:scale-95"
         >
           <span>Create Photo Book</span>

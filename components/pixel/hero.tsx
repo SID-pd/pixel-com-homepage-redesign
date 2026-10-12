@@ -122,7 +122,7 @@ export function Hero() {
             className="flex flex-col gap-2.5"
           >
             <div className="flex flex-wrap items-center gap-3">
-              <CtaLink href="/photo-book/?template=road-trip" size="lg" magnetic>
+              <CtaLink href="/photo-book/?start=1" size="lg" magnetic>
                 Create Your Photo Book
               </CtaLink>
               <CtaLink href="/pricing/" size="lg" variant="secondary" showArrow={false}>

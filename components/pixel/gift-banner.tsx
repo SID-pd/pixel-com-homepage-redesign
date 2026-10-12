@@ -191,7 +191,7 @@ export function GiftBanner({ campaign }: { campaign: Campaign }) {
                 type="button"
                 onClick={() => {
                   flow.setPromo(campaign.code)
-                  router.push('/photo-book/?template=road-trip')
+                  router.push('/photo-book/?start=1')
                 }}
                 className="inline-flex w-full items-center justify-center rounded-full bg-amber-900 px-8 py-3.5 text-base font-medium text-white shadow-lg transition-all duration-300 hover:scale-105 hover:bg-amber-800 sm:w-auto"
               >
