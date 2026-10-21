@@ -53,9 +53,8 @@ export function TemplatePicker({ value, picked, onPick }: { value?: TemplateId; 
                     {t.tag}
                   </span>
                   <span className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                  <span className="absolute inset-x-2 bottom-2 rounded-2xl bg-white/92 px-3 py-2 shadow-lg">
+                  <span className="absolute inset-x-2 bottom-2 rounded-2xl bg-white/92 px-3 py-2.5 shadow-lg">
                     <span className="block text-sm font-bold leading-tight text-[#191514]">{t.name}</span>
-                    <span className="block text-[11px] font-medium text-[#16324f]/60">{t.pages} pages layout</span>
                   </span>
                   {on && <Tick />}
                 </span>
