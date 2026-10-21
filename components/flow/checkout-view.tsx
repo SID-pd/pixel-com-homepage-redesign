@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import { useRef, useState, type ReactNode } from 'react'
 import { CreditCard, Lock, ShieldCheck, Smartphone, Wallet } from 'lucide-react'
 import { openAuth } from '@/lib/flow/auth'
-import { PACKAGING, SHIPPING, SIZES, money, type ShippingId } from '@/lib/flow/catalog'
+import { PACKAGING, SHIPPING, SIZES, money, type PackagingId, type ShippingId } from '@/lib/flow/catalog'
 import { placeOrder, type PaymentInput } from '@/lib/flow/mock-api'
 import { cartTotals, shippingCost } from '@/lib/flow/pricing'
 import { flow, useFlow } from '@/lib/flow/store'
@@ -240,6 +240,35 @@ export function CheckoutView() {
                       <p className="text-sm font-semibold">{price === 0 ? 'Free' : money(price)}</p>
                     </div>
                   </RadioCard>
+                )
+              })}
+            </div>
+          </Card>
+
+          <Card title="Packaging">
+            <div className="space-y-5">
+              {cart.map((item) => {
+                const current: PackagingId = item.config.packaging ?? 'basic'
+                return (
+                  <fieldset key={item.id}>
+                    {cart.length > 1 && <legend className="mb-2 text-sm font-medium">{item.title || 'Your book'}</legend>}
+                    <legend className={cn('text-sm text-muted-foreground', cart.length > 1 && 'sr-only')}>How should we pack it?</legend>
+                    <div className="mt-2 grid gap-3 sm:grid-cols-3">
+                      {PACKAGING.map((p) => {
+                        const checked = current === p.id
+                        return (
+                          <RadioCard key={p.id} name={`packaging-${item.id}`} value={p.id} checked={checked} onChange={() => flow.setCartPackaging(item.id, p.id)} className="p-4">
+                            <div className="flex items-start justify-between gap-2">
+                              <p className="font-semibold">{p.label}</p>
+                              <RadioDot checked={checked} />
+                            </div>
+                            <p className="mt-1 text-xs leading-snug text-muted-foreground">{p.blurb}</p>
+                            <p className="mt-2 text-sm font-semibold">{p.price ? `+${money(p.price)}` : 'Free'}</p>
+                          </RadioCard>
+                        )
+                      })}
+                    </div>
+                  </fieldset>
                 )
               })}
             </div>

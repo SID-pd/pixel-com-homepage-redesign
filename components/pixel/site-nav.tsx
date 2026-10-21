@@ -57,7 +57,8 @@ function StoryModeNavButton() {
   )
 }
 
-export function SiteNav() {
+/** `hideFab` drops the floating "Create Photo Book" button on phones, for pages that have their own floating controls. */
+export function SiteNav({ hideFab = false }: { hideFab?: boolean } = {}) {
   const { scrollY } = useScroll()
   const [scrolled, setScrolled] = useState(false)
   const [hidden, setHidden] = useState(false)
@@ -259,7 +260,7 @@ export function SiteNav() {
       </div>
 
       {/* Mobile Floating Action Button (FAB) */}
-      <div className={cn("fixed bottom-5 right-4 z-40 sm:hidden", open && "hidden")}>
+      <div className={cn("fixed bottom-5 right-4 z-40 sm:hidden", (open || hideFab) && "hidden")}>
         <Link
           href="/photo-book/?start=1"
           className="flex items-center gap-2 rounded-full bg-accent px-4 py-3 text-xs font-bold text-accent-foreground shadow-2xl ring-2 ring-background/20 transition-transform active:scale-95"

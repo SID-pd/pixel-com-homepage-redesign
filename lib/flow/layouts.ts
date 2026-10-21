@@ -50,6 +50,16 @@ export function spreadCount(pages: number) {
  * Layouts cycle (or follow the template). Photos are consumed in order, then the
  * remaining spreads are left with empty frames the customer can fill later.
  */
+// Layouts by how many photos they hold, used to spread the photos evenly over the book when no template sets the style.
+const BY_COUNT: Record<number, string[]> = {
+  1: ['wide'],
+  2: ['pair', 'full-right'],
+  3: ['duo-stack'],
+  4: ['hero-3'],
+  5: ['grid-4'],
+  6: ['grid-6'],
+}
+
 export function autoBuild(config: BookConfig, photos: Photo[], templateId?: TemplateId): Spread[] {
   const tpl = templateId ? TEMPLATES.find((t) => t.id === templateId) : undefined
   const bg = tpl?.bg ?? '#ffffff'
@@ -67,7 +77,12 @@ export function autoBuild(config: BookConfig, photos: Photo[], templateId?: Temp
     let id = order[i % order.length]
     // Don't strand a half-empty layout when only a few photos remain.
     const remaining = queue.length
-    if (remaining > 0) {
+    if (!tpl && remaining > 0) {
+      // No template: give every spread its fair share, so 20 photos fill 20 pages instead of leaving the last spreads blank.
+      const target = Math.max(1, Math.min(6, Math.round(remaining / (total - i))))
+      const options = BY_COUNT[target]
+      id = options[i % options.length]
+    } else if (remaining > 0) {
       const need = LAYOUTS.find((l) => l.id === id)!.frames.length
       if (remaining < need) id = remaining >= 2 ? 'pair' : 'wide'
     } else {

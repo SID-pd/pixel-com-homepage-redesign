@@ -7,10 +7,10 @@ import { CtaLink } from '@/components/pixel/cta-link'
 import { cn } from '@/lib/utils'
 
 /** SiteNav + footer around a marketing/content page. The nav is fixed, so content starts below it. */
-export function MarketingShell({ children }: { children: ReactNode }) {
+export function MarketingShell({ children, hideFab }: { children: ReactNode; hideFab?: boolean }) {
   return (
     <>
-      <SiteNav />
+      <SiteNav hideFab={hideFab} />
       <main id="main" className="alt-sections bg-background">
         {children}
       </main>

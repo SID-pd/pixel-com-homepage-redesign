@@ -127,6 +127,48 @@ export function PhotoDock({ photos, status, flags, checking, onOpen, onAdd, onMa
   )
 }
 
+
+/**
+ * Phones and tablets: the right-hand rail would eat a fifth of the screen, so the same information lives in one small pill
+ * in the corner. It shows the newest photos, how many are on the table, and whether anything is still uploading or being
+ * checked. Tap it to open the full overview.
+ */
+export function PhotoPill({ photos, status, checking, onManage, className }: { photos: Photo[]; status: (id: string) => PhotoStatus; checking: { active: boolean; done: number; total: number }; onManage: () => void; className?: string }) {
+  const ready = photos.filter((p) => status(p.id).state === 'ready')
+  const waiting = photos.length - ready.length
+  const recent = ready.slice(-3)
+  return (
+    <AnimatePresence>
+      {photos.length > 0 && (
+        <motion.button
+          type="button"
+          onClick={onManage}
+          initial={{ opacity: 0, y: 16, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: 16 }}
+          transition={SPRING}
+          aria-label={`${photos.length} photos${waiting ? `, ${waiting} still uploading` : ''}. Open all photos`}
+          className={cn('flex h-14 items-center gap-3 rounded-full bg-white/95 py-1.5 pl-2 pr-4 shadow-[0_14px_34px_-14px_rgba(90,55,30,0.7)] ring-1 ring-black/5 active:scale-[0.97]', className)}
+        >
+          <span className="relative flex h-11 w-[3.6rem] shrink-0 items-center">
+            {recent.map((p, i) => (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img key={p.id} src={p.src || undefined} alt="" className="absolute size-10 rounded-lg border-2 border-white object-cover shadow-sm" style={{ left: i * 14, zIndex: i, transform: `rotate(${(i - 1) * 6}deg)` }} />
+            ))}
+          </span>
+          <span className="text-left leading-tight">
+            <span className="block text-sm font-semibold text-[var(--st-ink,#16324f)]">{photos.length} photos</span>
+            <span className={cn('block text-[11px] font-medium', waiting || checking.active ? 'text-[var(--st-lilac-ink,#6a4fc4)]' : 'text-[var(--st-mint-ink,#1f7a5c)]')}>
+              {waiting ? `Uploading ${waiting}…` : checking.active ? 'Checking…' : 'All ready · tap to manage'}
+            </span>
+          </span>
+          {waiting > 0 || checking.active ? <Loader2 className="size-4 animate-spin text-[var(--st-lilac-ink,#6a4fc4)]" /> : <LayoutGrid className="size-4 text-foreground/50" />}
+        </motion.button>
+      )}
+    </AnimatePresence>
+  )
+}
+
 /** Close-up of a single photo: its state, anything Pixie noticed, and a way to remove it. */
 export function PhotoViewer({
   photos,

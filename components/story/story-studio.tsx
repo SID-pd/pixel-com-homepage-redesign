@@ -15,7 +15,7 @@ import { curtain } from '@/components/flow/page-curtain'
 import { BotBubble, Choice, Composer, Reply, TypingBubble, UserBubble } from './chat-ui'
 import { BookStage } from './book-stage'
 import { Companion, type PixieCue } from './companion'
-import { PhotoDock, PhotoViewer } from './photo-dock'
+import { PhotoDock, PhotoPill, PhotoViewer } from './photo-dock'
 import { PhotoManager } from './photo-manager'
 import { PreviewBody, PreviewFooter } from './preview-step'
 import { ReviewBody } from './review-step'
@@ -40,16 +40,6 @@ const PLACEHOLDER: Partial<Record<Kind, string>> = {
 }
 const TEMPLATE_FOR: Partial<Record<StoryOccasion, TemplateId>> = { wedding: 'ever-after', travel: 'road-trip', family: 'our-year', milestone: 'gallery', 'year-in-review': 'our-year' }
 const TAG_OCCASION: Record<string, StoryOccasion> = { Wedding: 'wedding', Travel: 'travel', Family: 'family' }
-const EDITS: { kind: Kind; label: string }[] = [
-  { kind: 'memory', label: 'The story' },
-  { kind: 'tone', label: 'Caption tone' },
-  { kind: 'title', label: 'Title' },
-  { kind: 'template', label: 'Design' },
-  { kind: 'size', label: 'Size' },
-  { kind: 'pages', label: 'Pages' },
-  { kind: 'cover', label: 'Cover' },
-  { kind: 'photos', label: 'Photos' },
-]
 
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms))
 
@@ -592,9 +582,12 @@ function Studio({ draft }: { draft: Draft }) {
         {!showroom ? (
           <motion.div key="chat" initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -26, scale: 0.985 }} transition={{ duration: 0.7, ease: SMOOTH }} className="relative z-10 flex min-h-0 flex-1 flex-col">
             <main className="relative min-h-0 flex-1">
-              <PhotoDock photos={photos} status={pipeline.get} flags={flagSet} checking={checking} onOpen={setViewId} onAdd={() => picker.current?.click()} onManage={() => setManage(true)} />
+              <div className="hidden lg:block">
+                <PhotoDock photos={photos} status={pipeline.get} flags={flagSet} checking={checking} onOpen={setViewId} onAdd={() => picker.current?.click()} onManage={() => setManage(true)} />
+              </div>
+              <PhotoPill photos={photos} status={pipeline.get} checking={checking} onManage={() => setManage(true)} className="absolute bottom-3 right-3 z-20 lg:hidden" />
 
-              <div ref={scroller} className={`relative z-10 h-full overflow-y-auto overscroll-contain px-3 pb-6 pt-6 sm:px-6 ${hasPhotos ? 'max-[1279px]:pr-[5.75rem]' : ''}`}>
+              <div ref={scroller} className={`relative z-10 h-full overflow-y-auto overscroll-contain px-3 pb-6 pt-6 sm:px-6 ${hasPhotos ? 'min-[1024px]:max-[1279px]:pr-[5.75rem] max-lg:pb-20' : ''}`}>
                 <div className="mx-auto flex max-w-4xl flex-col gap-3">
                   {msgs.map((m) => (
                     <div key={m.id} id={`msg-${m.id}`} className="scroll-mt-6 space-y-3">
@@ -623,17 +616,7 @@ function Studio({ draft }: { draft: Draft }) {
                   <PreviewBody reveal config={config} spreads={spreads} photos={photos} onAddPhotos={() => edit('photos', 'Photos')} />
                   <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.1, duration: 0.7, ease: SMOOTH }} className="space-y-5">
                     <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--st-peach)]/60 pt-4">
-                      <PreviewFooter config={config} />
-                    </div>
-                    <div>
-                      <p className="mb-2 text-xs font-semibold uppercase tracking-wider text-foreground/50">Want to change something?</p>
-                      <div className="flex flex-wrap gap-2">
-                        {EDITS.map((e) => (
-                          <Choice key={e.kind} onClick={() => edit(e.kind, e.label)} className="min-h-9 py-1.5 text-xs">
-                            {e.label}
-                          </Choice>
-                        ))}
-                      </div>
+                      <PreviewFooter config={config} onBack={() => edit('photos', 'Photos')} />
                     </div>
                   </motion.div>
                 </div>

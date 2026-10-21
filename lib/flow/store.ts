@@ -405,6 +405,15 @@ export const flow = {
     const q = Math.max(1, Math.min(99, qty))
     set({ cart: getState().cart.map((c) => (c.id === id ? { ...c, qty: q } : c)) })
   },
+  setCartPackaging(id: string, packaging: NonNullable<BookConfig['packaging']>) {
+    set({
+      cart: getState().cart.map((c) => {
+        if (c.id !== id) return c
+        const config = { ...c.config, packaging }
+        return { ...c, config, unitPrice: unitPrice(config) }
+      }),
+    })
+  },
   removeFromCart(id: string) {
     set({ cart: getState().cart.filter((c) => c.id !== id) })
   },
