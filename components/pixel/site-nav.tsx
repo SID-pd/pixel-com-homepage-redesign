@@ -39,7 +39,7 @@ const links = [
   },
 ]
 
-const STORY_HREF = '/photo-book/?story=1'
+const STORY_HREF = '/story-mode/'
 
 /** Dedicated Story Mode entry: icon-only on phones/tablets, icon + label on wide screens so the bar stays uncluttered. */
 function StoryModeNavButton() {

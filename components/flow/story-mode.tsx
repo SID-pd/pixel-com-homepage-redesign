@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import { useState } from 'react'
 import { Sparkles } from 'lucide-react'
 import { generateStory } from '@/lib/flow/mock-api'
@@ -50,7 +51,10 @@ export function StoryModeBanner({ children }: { children: React.ReactNode }) {
         <h2 className="mt-1 text-lg font-semibold tracking-tight">Turn your photos into a complete, personalized book</h2>
         <p className="mt-1 text-sm text-muted-foreground">
           Describe your memory, upload your photos, and Pixovo organizes the moments, builds a natural story flow, writes captions and
-          designs the layouts. Review and customize everything before you save or print.
+          designs the layouts. Or open the dedicated{' '}
+          <Link href="/story-mode/" className="font-semibold text-accent underline-offset-4 hover:underline">
+            Story Mode Studio &rarr;
+          </Link>
         </p>
       </div>
       {children}

@@ -3,6 +3,7 @@ import { registerAccount, verifyAccount, type AuthResult } from './auth'
 import { uid } from './layouts'
 import { cartTotals } from './pricing'
 import { flow, getState } from './store'
+import type { StoryOptions } from './story'
 import type { CartItem, Contact, Order } from './types'
 
 // The seam to the future backend. Each function below mirrors one real endpoint and keeps the
@@ -18,9 +19,18 @@ const wait = (ms: number) => new Promise((r) => setTimeout(r, ms))
  * Story Mode: description + photos in, a finished draft out (title, ordered photos, layouts, captions).
  * Local for now; replace the body with the AI endpoint later and nothing in the UI changes.
  */
-export async function generateStory(description: string): Promise<void> {
+/**
+ * Story Mode companion reply. Today it returns the scripted line after a human-feeling pause; replace the body with the
+ * chat/LLM endpoint later (send the conversation so far, return the reply text). Nothing in the UI changes.
+ */
+export async function askCompanion(reply: string): Promise<string> {
+  await wait(480 + Math.min(reply.length * 9, 900))
+  return reply
+}
+
+export async function generateStory(input: string | StoryOptions): Promise<void> {
   await wait(1600)
-  flow.buildStory(description)
+  flow.buildStory(input)
 }
 
 export async function applyPromo(code: string): Promise<{ ok: true; label: string } | { ok: false; error: string }> {

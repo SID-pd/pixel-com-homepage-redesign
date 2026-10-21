@@ -5,7 +5,7 @@ import { PAGE_COUNTS, TEMPLATES, type ShippingId, type TemplateId } from './cata
 import { loadPhotoData, deletePhotoData, makeThumb } from './images'
 import { autoBuild, blankSpread, spreadCount, uid } from './layouts'
 import { unitPrice } from './pricing'
-import { captionsFor, orderPhotos, storyTitle, withCaptions } from './story'
+import { applyPhotoCaptions, captionsFor, orderPhotos, storyTitle, withCaptions, type StoryOptions } from './story'
 import type { BookConfig, CartItem, Contact, Draft, MockUser, Order, Photo, Spread } from './types'
 
 // One external store for the whole workflow (draft book, cart, orders, mock user).
@@ -262,6 +262,15 @@ export const flow = {
     set({ draft: touch({ ...d, photos: d.photos.filter((p) => p.id !== id), spreads }) })
   },
 
+  clearPhotos() {
+    const d = getState().draft
+    if (!d) return
+    d.photos.forEach((p) => {
+      if (p.kind === 'upload') void deletePhotoData(p.id)
+    })
+    set({ draft: touch({ ...d, photos: [], spreads: [] }) })
+  },
+
   /** Lay all photos out automatically (wizard "Review" step and editor "Auto-fill"). */
   buildBook() {
     const d = getState().draft
@@ -272,17 +281,39 @@ export const flow = {
   },
 
   /** Story Mode: order the photos, title the book from the customer's words, lay out every page and add captions. */
-  buildStory(description: string) {
+  buildStory(input: string | StoryOptions) {
     const d = getState().draft
     if (!d) return
+    const options: StoryOptions = typeof input === 'string' ? { description: input } : input
     const photos = orderPhotos(d.photos)
-    const title = storyTitle(description, d.config.title)
+    const title = options.title?.trim() || storyTitle(options.description, d.config.title, options.occasion)
     const config = { ...d.config, title }
     const built = autoBuild(config, photos, config.templateId)
     const filled = built.filter((s) => s.kind !== 'cover' && s.items.some((i) => i.type === 'photo' && i.photoId)).length
     past = []
     future = []
-    set({ draft: touch({ ...d, config, photos, spreads: withCaptions(built, captionsFor(description, filled)) }) })
+    set({
+      draft: touch({
+        ...d,
+        config,
+        photos,
+        spreads: withCaptions(built, captionsFor(options.description, filled, options.occasion, options.tone)),
+      }),
+    })
+  },
+
+  /** Story Mode studio: rebuild the whole book from an explicit photo order and per-photo captions. */
+  rebuildStory(args: { order: string[]; captions: Record<string, string>; title: string; pages?: number }) {
+    const d = getState().draft
+    if (!d) return
+    const byId = new Map(d.photos.map((p) => [p.id, p]))
+    const ordered = args.order.map((id) => byId.get(id)).filter((p): p is Photo => !!p)
+    const photos = [...ordered, ...d.photos.filter((p) => !args.order.includes(p.id))]
+    const config = { ...d.config, title: args.title, ...(args.pages ? { pages: args.pages } : {}) }
+    const built = autoBuild(config, photos, config.templateId)
+    past = []
+    future = []
+    set({ draft: touch({ ...d, config, photos, spreads: applyPhotoCaptions(built, args.captions) }) })
   },
 
   // ---- editor history ------------------------------------------------------

@@ -6,6 +6,7 @@ import { LoaderProvider } from './context/LoaderContext'
 import { UserProvider } from './context/UserContext'
 import { ModalProvider } from './context/ModalContext'
 import { AuthModal } from '@/components/flow/auth-modal'
+import { TransitionCurtain } from '@/components/flow/page-curtain'
 
 const GOOGLE_CLIENT_ID = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || ''
 
@@ -17,6 +18,7 @@ export function ClientProviders({ children }: { children: React.ReactNode }) {
           <ModalProvider>
             {children}
             <AuthModal />
+            <TransitionCurtain />
           </ModalProvider>
         </LoaderProvider>
       </UserProvider>
