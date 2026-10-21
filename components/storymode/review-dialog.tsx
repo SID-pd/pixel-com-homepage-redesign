@@ -21,6 +21,7 @@ export function ReviewDialog({
   onUploadMore,
   onContinue,
   onBack,
+  inline = false,
 }: {
   photos: Photo[]
   reports: Record<string, PhotoReport>
@@ -31,6 +32,8 @@ export function ReviewDialog({
   onUploadMore: () => void
   onContinue: () => void
   onBack: () => void
+  /** render as a card inside the page (the chat) instead of a modal over it */
+  inline?: boolean
 }) {
   const byId = useMemo(() => new Map(photos.map((p) => [p.id, p])), [photos])
 
@@ -64,11 +67,12 @@ export function ReviewDialog({
 
   const closeRef = useRef<HTMLButtonElement>(null)
   useEffect(() => {
+    if (inline) return
     closeRef.current?.focus()
     const key = (e: KeyboardEvent) => e.key === 'Escape' && onBack()
     window.addEventListener('keydown', key)
     return () => window.removeEventListener('keydown', key)
-  }, [onBack])
+  }, [onBack, inline])
 
   const tile = (p: Photo, best?: boolean) => {
     const remove = marked.has(p.id)
@@ -99,17 +103,17 @@ export function ReviewDialog({
   }
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} className="fixed inset-0 z-[70] grid items-end bg-[rgba(22,50,79,0.5)] sm:place-items-center sm:p-6" onClick={onBack}>
+    <motion.div initial={inline ? false : { opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }} className={inline ? '' : 'fixed inset-0 z-[70] grid items-end bg-[rgba(22,50,79,0.5)] sm:place-items-center sm:p-6'} onClick={inline ? undefined : onBack}>
       <motion.div
         role="dialog"
-        aria-modal="true"
+        aria-modal={!inline}
         aria-labelledby="sm-review-title"
-        initial={{ opacity: 0, y: 48, scale: 0.98 }}
+        initial={inline ? false : { opacity: 0, y: 48, scale: 0.98 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 16, scale: 0.98 }}
         transition={{ type: 'spring', stiffness: 160, damping: 24 }}
         onClick={(e) => e.stopPropagation()}
-        className="mx-auto flex max-h-[92dvh] w-full max-w-3xl flex-col overflow-hidden rounded-t-[1.75rem] bg-white shadow-2xl sm:max-h-full sm:rounded-[1.75rem]"
+        className={inline ? 'flex w-full flex-col overflow-hidden rounded-3xl bg-white/90 ring-1 ring-[#efe7da]' : 'mx-auto flex max-h-[92dvh] w-full max-w-3xl flex-col overflow-hidden rounded-t-[1.75rem] bg-white shadow-2xl sm:max-h-full sm:rounded-[1.75rem]'}
       >
         <div className="min-h-0 flex-1 overflow-y-auto px-5 pb-2 pt-6 sm:px-8 sm:pt-8">
           <h2 id="sm-review-title" className="text-2xl font-bold tracking-tight text-[#16324f]">
@@ -175,9 +179,11 @@ export function ReviewDialog({
                 </button>
               </p>
             )}
-            <button ref={closeRef} type="button" onClick={onBack} className="h-11 rounded-full px-4 text-sm font-semibold text-[#16324f]/70 transition hover:bg-[#f1ece4]">
-              Back
-            </button>
+            {!inline && (
+              <button ref={closeRef} type="button" onClick={onBack} className="h-11 rounded-full px-4 text-sm font-semibold text-[#16324f]/70 transition hover:bg-[#f1ece4]">
+                Back
+              </button>
+            )}
             <button type="button" disabled={short > 0} onClick={onContinue} className="h-12 rounded-full bg-[#d4673f] px-7 text-[15px] font-semibold text-white shadow-[0_10px_24px_-12px_rgba(212,103,63,0.9)] transition enabled:hover:brightness-105 enabled:active:scale-[0.97] disabled:opacity-45">
               Continue
             </button>

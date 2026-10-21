@@ -77,14 +77,13 @@ export function autoBuild(config: BookConfig, photos: Photo[], templateId?: Temp
     let id = order[i % order.length]
     // Don't strand a half-empty layout when only a few photos remain.
     const remaining = queue.length
-    if (!tpl && remaining > 0) {
-      // No template: give every spread its fair share, so 20 photos fill 20 pages instead of leaving the last spreads blank.
+    if (remaining > 0) {
+      // Give every spread its fair share, so 20 photos fill 20 pages instead of leaving the last spreads blank.
+      // A template keeps its own layouts whenever one of them holds exactly that many photos.
       const target = Math.max(1, Math.min(6, Math.round(remaining / (total - i))))
-      const options = BY_COUNT[target]
+      const own = tpl ? tpl.layouts.filter((l) => LAYOUTS.find((x) => x.id === l)?.frames.length === target) : []
+      const options = own.length ? own : BY_COUNT[target]
       id = options[i % options.length]
-    } else if (remaining > 0) {
-      const need = LAYOUTS.find((l) => l.id === id)!.frames.length
-      if (remaining < need) id = remaining >= 2 ? 'pair' : 'wide'
     } else {
       id = 'pair'
     }
