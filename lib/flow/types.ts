@@ -16,6 +16,8 @@ export type Photo = {
   name: string
   /** sample photos keep their public path; uploads are resolved from IndexedDB */
   src: string
+  /** small copy (about 320px) for grids and rails; not persisted in localStorage */
+  thumb?: string
   kind: 'sample' | 'upload' | 'drive'
   w: number
   h: number

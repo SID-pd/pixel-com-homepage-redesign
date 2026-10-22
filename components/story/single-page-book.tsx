@@ -6,15 +6,16 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { SpreadView } from '@/components/flow/spread-view'
 import type { Photo, Spread } from '@/lib/flow/types'
 
-const FLIP = 0.8
+const FLIP = 0.45
 const EASE = [0.45, 0.05, 0.25, 1] as const
 
 type PageRef = { spread: number; side: 'cover' | 'left' | 'right' }
 
 /**
- * Phones: the book is one page at a time, filling the width. Forward, the page you are on turns over its left edge and the
- * next page is waiting underneath. Back, the previous page swings in over the top. Swipe, tap the page, or use the arrows.
- * No view switch, no extras: just the page and the way to turn it.
+ * Phones: the book is one page at a time, filling the width. Forward, the page you are on slides off to the left and the
+ * next page is waiting underneath. Back, the previous page slides in over the top. Swipe, tap the page, or use the arrows.
+ * It is a flat slide (transform and opacity only, no 3D layers): a perspective page turn of two full-size pages is more than
+ * a phone can paint smoothly.
  */
 export function SinglePageBook({ spreads, photos }: { spreads: Spread[]; photos: Photo[] }) {
   const reduce = useReducedMotion()
@@ -25,9 +26,10 @@ export function SinglePageBook({ spreads, photos }: { spreads: Spread[]; photos:
   const turn = useMotionValue(0) // 0 flat, -180 turned over to the left
   const busy = useRef(false)
   const drag = useRef<{ x: number; y: number } | null>(null)
-  const shadeFront = useTransform(turn, [0, -90], [0, 0.45])
-  const shadeBack = useTransform(turn, [-90, -180], [0.35, 0])
-  const cast = useTransform(turn, [0, -90, -180], [0, 0.3, 0])
+  const slide = useTransform(turn, [0, -180], ['0%', '-104%'])
+  const fade = useTransform(turn, [0, -120, -180], [1, 1, 0.4])
+  const under = useTransform(turn, [0, -180], [0.96, 1])
+  const cast = useTransform(turn, [0, -90, -180], [0.25, 0.12, 0])
 
   const go = useCallback(
     (to: number) => {
@@ -85,24 +87,17 @@ export function SinglePageBook({ spreads, photos }: { spreads: Spread[]; photos:
           const dx = e.clientX - d.x
           if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(e.clientY - d.y)) go(index + (dx < 0 ? 1 : -1))
         }}
-        className="relative aspect-square w-full touch-pan-y select-none overflow-x-clip outline-none [perspective:1600px]"
+        className="relative aspect-square w-full touch-pan-y select-none overflow-x-clip outline-none"
       >
-        <div className="absolute inset-0" style={{ transformStyle: 'preserve-3d' }}>
-          <div className={paper} style={{ boxShadow: '0 18px 34px -18px rgba(60,35,20,0.6), 4px 4px 0 -1px #efe5d3, 8px 8px 0 -2px #e4d7c1' }}>
+        <div className="absolute inset-0">
+          <motion.div className={paper} style={{ scale: flip ? under : 1, boxShadow: '0 18px 34px -18px rgba(60,35,20,0.6), 4px 4px 0 -1px #efe5d3, 8px 8px 0 -2px #e4d7c1' }}>
             {base}
-            <motion.span aria-hidden style={{ opacity: cast }} className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/50 via-black/10 to-transparent" />
-          </div>
+            {flip && <motion.span aria-hidden style={{ opacity: cast }} className="pointer-events-none absolute inset-0 bg-black" />}
+          </motion.div>
 
           {flip && (
-            <motion.div style={{ rotateY: turn, transformOrigin: '0% 50%', transformStyle: 'preserve-3d' }} className="absolute inset-0">
-              <div className={paper} style={{ backfaceVisibility: 'hidden' }}>
-                {leaf}
-                <span aria-hidden className="pointer-events-none absolute inset-y-0 left-0 w-6 bg-gradient-to-r from-black/14 to-transparent" />
-                <motion.span aria-hidden style={{ opacity: shadeFront }} className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/70 to-black/10" />
-              </div>
-              <div className={paper + ' bg-[#f3ece0]'} style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
-                <motion.span aria-hidden style={{ opacity: shadeBack }} className="pointer-events-none absolute inset-0 bg-gradient-to-l from-black/60 to-transparent" />
-              </div>
+            <motion.div style={{ x: slide, opacity: fade, boxShadow: '8px 0 24px -10px rgba(60,35,20,0.5)' }} className={paper}>
+              {leaf}
             </motion.div>
           )}
         </div>

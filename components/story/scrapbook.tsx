@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react'
 import { AlertCircle, ArrowLeft, ArrowRight, Check, Loader2, RotateCcw, X } from 'lucide-react'
+import { photoThumb } from '@/lib/flow/images'
 import type { Photo } from '@/lib/flow/types'
 import { cn } from '@/lib/utils'
 
@@ -17,63 +18,70 @@ export type PhotoStatus = { state: PhotoState; progress: number }
 
 const rand = (a: number, b: number) => a + Math.random() * (b - a)
 
+const TICK_MS = 240
+const CONCURRENT = 6
+
+type Job = { progress: number; processingTicks: number }
+
+/**
+ * One shared ticker drives every upload (at most CONCURRENT at a time) and commits all of their changes in a single state
+ * update. A timer per photo meant a hundred re-renders a second for a big batch, which is more than a phone can keep up with.
+ */
 export function usePhotoPipeline(photos: Photo[]) {
-  const initial = useRef<Set<string> | null>(null)
-  if (initial.current === null) initial.current = new Set(photos.map((p) => p.id))
   const [status, setStatus] = useState<Record<string, PhotoStatus>>(() => Object.fromEntries(photos.map((p) => [p.id, { state: 'ready', progress: 100 }])))
-  const seen = useRef<Set<string>>(new Set(initial.current))
-  const timers = useRef<Set<number>>(new Set())
+  const seen = useRef<Set<string>>(new Set(photos.map((p) => p.id)))
+  const waiting = useRef<string[]>([])
+  const active = useRef<Map<string, Job>>(new Map())
+  const timer = useRef<number | null>(null)
   const alive = useRef(true)
 
-  useEffect(() => {
-    alive.current = true
-    const pending = timers.current
-    return () => {
-      alive.current = false
-      pending.forEach((t) => window.clearTimeout(t))
-      pending.clear()
+  const tick = useCallback(() => {
+    const patch: Record<string, PhotoStatus> = {}
+    for (const [id, job] of active.current) {
+      if (job.progress < 100) {
+        job.progress = Math.min(100, job.progress + rand(14, 26))
+        patch[id] = { state: job.progress >= 100 ? 'processing' : 'uploading', progress: job.progress }
+      } else if (--job.processingTicks <= 0) {
+        active.current.delete(id)
+        patch[id] = { state: 'ready', progress: 100 }
+      }
+    }
+    while (active.current.size < CONCURRENT && waiting.current.length) {
+      const id = waiting.current.shift()!
+      active.current.set(id, { progress: 6, processingTicks: Math.round(rand(2, 4)) })
+      patch[id] = { state: 'uploading', progress: 6 }
+    }
+    if (Object.keys(patch).length) setStatus((s) => ({ ...s, ...patch }))
+    if (!active.current.size && !waiting.current.length && timer.current) {
+      window.clearInterval(timer.current)
+      timer.current = null
     }
   }, [])
 
-  const after = useCallback((ms: number, fn: () => void) => {
-    const t = window.setTimeout(() => {
-      timers.current.delete(t)
-      if (alive.current) fn()
-    }, ms)
-    timers.current.add(t)
-  }, [])
-
-  const run = useCallback(
-    (id: string, delay: number) => {
-      const patch = (p: Partial<PhotoStatus>) => setStatus((s) => ({ ...s, [id]: { ...(s[id] ?? { state: 'queued', progress: 0 }), ...p } }))
-      patch({ state: 'queued', progress: 0 })
-      after(delay, () => {
-        let progress = 4
-        patch({ state: 'uploading', progress })
-        const tick = () => {
-          progress = Math.min(100, progress + rand(7, 15))
-          if (progress >= 100) {
-            patch({ state: 'processing', progress: 100 })
-            after(rand(900, 1500), () => patch({ state: 'ready', progress: 100 }))
-          } else {
-            patch({ progress })
-            after(rand(130, 210), tick)
-          }
-        }
-        after(150, tick)
-      })
+  const enqueue = useCallback(
+    (ids: string[]) => {
+      waiting.current.push(...ids)
+      setStatus((s) => ({ ...s, ...Object.fromEntries(ids.map((id) => [id, { state: 'queued', progress: 0 } as PhotoStatus])) }))
+      if (!timer.current) timer.current = window.setInterval(() => alive.current && tick(), TICK_MS)
     },
-    [after],
+    [tick],
   )
+
+  useEffect(() => {
+    alive.current = true
+    return () => {
+      alive.current = false
+      if (timer.current) window.clearInterval(timer.current)
+      timer.current = null
+    }
+  }, [])
 
   useEffect(() => {
     const fresh = photos.filter((p) => !seen.current.has(p.id))
     if (!fresh.length) return
-    fresh.forEach((p, i) => {
-      seen.current.add(p.id)
-      run(p.id, Math.min(i * 260, 4200))
-    })
-  }, [photos, run])
+    fresh.forEach((p) => seen.current.add(p.id))
+    enqueue(fresh.map((p) => p.id))
+  }, [photos, enqueue])
 
   const get = (id: string): PhotoStatus => status[id] ?? { state: 'queued', progress: 0 }
   const counts = photos.reduce(
@@ -84,7 +92,7 @@ export function usePhotoPipeline(photos: Photo[]) {
     },
     { queued: 0, uploading: 0, processing: 0, ready: 0, error: 0 } as Record<PhotoState, number>,
   )
-  return { get, counts, retry: (id: string) => run(id, 0), allReady: photos.length > 0 && counts.ready === photos.length }
+  return { get, counts, retry: (id: string) => enqueue([id]), allReady: photos.length > 0 && counts.ready === photos.length }
 }
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -153,7 +161,7 @@ export function Polaroid({
 
       <div className={cn('relative aspect-square overflow-hidden rounded-[3px] bg-[var(--st-cream)]', onOpen && 'cursor-zoom-in')} onClick={onOpen} role={onOpen ? 'button' : undefined} tabIndex={onOpen ? 0 : undefined} onKeyDown={onOpen ? (e) => (e.key === 'Enter' || e.key === ' ') && onOpen() : undefined} aria-label={onOpen ? `Open ${photo.name}` : undefined}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={photo.src} alt={caption || photo.name} draggable={false} className={cn('size-full object-cover transition duration-500', st.state !== 'ready' && 'scale-105 blur-[1.5px] saturate-50')} />
+        <img src={photoThumb(photo)} alt={caption || photo.name} draggable={false} loading="lazy" decoding="async" className={cn('size-full object-cover transition duration-500', st.state !== 'ready' && 'scale-105 blur-[1.5px] saturate-50')} />
 
         <AnimatePresence>
           {st.state === 'uploading' && (

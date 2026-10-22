@@ -13,6 +13,7 @@ import { PreviewBody, PreviewFooter } from '@/components/story/preview-step'
 import { usePhotoPipeline } from '@/components/story/scrapbook'
 import { PrimaryButton, StageBackdrop } from '@/components/story/stage-parts'
 import { StoryHeader } from '@/components/story/story-header'
+import { useMediaQuery } from '@/components/story/use-media'
 import { DropOverlay, UploadBody, useIngest, useStageDrop } from '@/components/story/upload-step'
 import { COVERS, SIZES, TEMPLATES, type TemplateId } from '@/lib/flow/catalog'
 import { askCompanion } from '@/lib/flow/mock-api'
@@ -68,6 +69,8 @@ export function ChatWizard() {
 function Wizard({ draft }: { draft: Draft }) {
   const router = useRouter()
   const wide = useWide()
+  // phones and tablets: no live mascot, no full-screen build scene, a pill instead of the photo rail
+  const compact = !useMediaQuery('(min-width: 1024px)')
   const { config, photos, spreads } = draft
 
   const [msgs, setMsgs] = useState<Msg[]>([])
@@ -185,9 +188,9 @@ function Wizard({ draft }: { draft: Draft }) {
     const map: Record<string, string> = {}
     lead.forEach((id, i) => (map[id] = lines[i % lines.length]))
     flow.rebuildStory({ order, captions: map, title: bookTitle, pages })
+    setPhase('preview')
     setStage(true)
     setMood('thinking')
-    setPhase('preview')
   }, [answers])
 
   const endStage = useCallback(() => {
@@ -371,9 +374,11 @@ function Wizard({ draft }: { draft: Draft }) {
         <StoryHeader onExit={() => curtain.go(router, '/', 'Heading home…')} />
       </div>
 
-      <div className="pointer-events-none absolute bottom-3 left-3 z-20 sm:left-6">
-        <div className="pointer-events-auto">{pixie(wide ? 132 : 56, true)}</div>
-      </div>
+      {!compact && (
+        <div className="pointer-events-none absolute bottom-3 left-6 z-20">
+          <div className="pointer-events-auto">{pixie(wide ? 132 : 56, true)}</div>
+        </div>
+      )}
 
       <AnimatePresence mode="wait" initial={false}>
         {!showroom ? (
@@ -389,10 +394,11 @@ function Wizard({ draft }: { draft: Draft }) {
             </ol>
 
             <main className="relative min-h-0 flex-1">
-              <div className="hidden lg:block">
+              {compact ? (
+                <PhotoPill photos={photos} status={pipeline.get} checking={checking} onManage={() => setManage(true)} className="absolute bottom-3 right-3 z-20" />
+              ) : (
                 <PhotoDock photos={photos} status={pipeline.get} flags={new Set(photos.filter((p) => reports?.[p.id]?.issues.length).map((p) => p.id))} checking={checking} onOpen={setViewId} onAdd={() => picker.current?.click()} onManage={() => setManage(true)} />
-              </div>
-              <PhotoPill photos={photos} status={pipeline.get} checking={checking} onManage={() => setManage(true)} className="absolute bottom-3 right-3 z-20 lg:hidden" />
+              )}
 
               <div ref={scroller} className={cn('relative z-10 h-full overflow-y-auto overscroll-contain px-3 pb-6 pt-3 sm:px-6', hasPhotos && 'min-[1024px]:max-[1279px]:pr-[5.75rem]', 'max-lg:pb-24')}>
                 <div className="mx-auto flex max-w-4xl flex-col gap-3">
@@ -430,7 +436,7 @@ function Wizard({ draft }: { draft: Draft }) {
         )}
       </AnimatePresence>
 
-      <AnimatePresence>{stage && <BookStage photos={photos} spreads={spreads} title={config.title} onDone={endStage} />}</AnimatePresence>
+      <AnimatePresence>{stage && <BookStage photos={photos} spreads={spreads} title={config.title} onDone={endStage} light={compact} />}</AnimatePresence>
 
       <DropOverlay show={dropping} />
 

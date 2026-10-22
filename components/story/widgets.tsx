@@ -7,6 +7,7 @@ import { COVERS, PAGE_COUNTS, SIZES, TEMPLATES, type CoverId, type SizeId, type 
 import { GENERATING_STEPS } from '@/lib/flow/story-chat'
 import { cn } from '@/lib/utils'
 import { Choice } from './chat-ui'
+import { PrimaryButton } from './stage-parts'
 
 const card = (on: boolean) =>
   cn('relative overflow-hidden rounded-2xl bg-white text-left ring-1 transition active:scale-[0.98]', on ? 'ring-2 ring-[var(--st-peach-ink)]' : 'ring-[var(--st-peach)] hover:ring-[var(--st-peach-ink)]/45')
@@ -22,7 +23,7 @@ function Tick() {
 /** Starting design: a scrollable strip of cards. Pixie highlights the one that fits the story. */
 export function TemplateWidget({ value, recommended, onPick }: { value?: TemplateId; recommended?: TemplateId; onPick: (id: TemplateId | undefined) => void }) {
   return (
-    <div className="-mx-1 flex snap-x gap-3 overflow-x-auto px-1 pb-2 [scrollbar-width:thin]">
+    <div className="-mx-1 flex snap-x gap-3 overflow-x-auto px-1 pb-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
       <button type="button" onClick={() => onPick(undefined)} aria-pressed={!value} className={cn(card(!value), 'w-36 shrink-0 snap-start')}>
         <span className="grid aspect-[4/3] place-items-center bg-[var(--st-cream)] text-[var(--st-peach-ink)]">
           <LayoutTemplate className="size-6" />
@@ -49,9 +50,9 @@ export function TemplateWidget({ value, recommended, onPick }: { value?: Templat
 
 export function SizeWidget({ value, onPick }: { value: SizeId; onPick: (id: SizeId) => void }) {
   return (
-    <div className="grid grid-cols-3 gap-2.5">
+    <div className="grid grid-cols-1 gap-2.5 min-[480px]:grid-cols-3">
       {SIZES.map((s) => (
-        <button key={s.id} type="button" onClick={() => onPick(s.id)} aria-pressed={value === s.id} className={cn(card(value === s.id), 'p-3')}>
+        <button key={s.id} type="button" onClick={() => onPick(s.id)} aria-pressed={value === s.id} className={cn(card(value === s.id), 'min-h-11 p-3 pr-9')}>
           <span className="block text-sm font-semibold">{s.label}</span>
           <span className="mt-0.5 block text-[11px] leading-snug text-foreground/55">{s.blurb}</span>
           {value === s.id && <Tick />}
@@ -61,28 +62,47 @@ export function SizeWidget({ value, onPick }: { value: SizeId; onPick: (id: Size
   )
 }
 
-export function PagesWidget({ value, auto, onPick }: { value: number; auto: boolean; onPick: (n: number | 'auto') => void }) {
+export function PagesWidget({ value, auto, captions, onPages, onCaptions, onContinue }: { value: number; auto: boolean; captions: boolean; onPages: (n: number | 'auto') => void; onCaptions: (on: boolean) => void; onContinue: () => void }) {
   return (
-    <div className="flex flex-wrap gap-2">
-      <Choice on={auto} onClick={() => onPick('auto')}>
-        <span className="inline-flex items-center gap-1.5">
-          <Sparkles className="size-3.5" aria-hidden /> Auto
-        </span>
-      </Choice>
-      {PAGE_COUNTS.map((n) => (
-        <Choice key={n} on={!auto && value === n} onClick={() => onPick(n)} className="tabular-nums">
-          {n} pages
-        </Choice>
-      ))}
+    <div className="space-y-4 rounded-3xl bg-white/70 p-4 ring-1 ring-white">
+      <div>
+        <p className="mb-2 text-xs font-semibold text-foreground/60">Pages</p>
+        <div className="flex flex-wrap gap-2">
+          <Choice on={auto} onClick={() => onPages('auto')}>
+            <span className="inline-flex items-center gap-1.5">
+              <Sparkles className="size-3.5" aria-hidden /> Auto
+            </span>
+          </Choice>
+          {PAGE_COUNTS.map((n) => (
+            <Choice key={n} on={!auto && value === n} onClick={() => onPages(n)} className="tabular-nums">
+              {n} pages
+            </Choice>
+          ))}
+        </div>
+      </div>
+      <div>
+        <p className="mb-2 text-xs font-semibold text-foreground/60">Captions</p>
+        <div className="flex flex-wrap gap-2">
+          <Choice on={captions} onClick={() => onCaptions(true)} hint="Pixie writes one under each page">
+            With captions
+          </Choice>
+          <Choice on={!captions} onClick={() => onCaptions(false)} hint="Photos only">
+            No captions
+          </Choice>
+        </div>
+      </div>
+      <PrimaryButton onClick={onContinue} className="w-full sm:w-auto">
+        Continue
+      </PrimaryButton>
     </div>
   )
 }
 
 export function CoverWidget({ value, onPick }: { value: CoverId; onPick: (id: CoverId) => void }) {
   return (
-    <div className="grid grid-cols-2 gap-2.5">
+    <div className="grid grid-cols-1 gap-2.5 min-[480px]:grid-cols-2">
       {COVERS.map((c) => (
-        <button key={c.id} type="button" onClick={() => onPick(c.id)} aria-pressed={value === c.id} className={cn(card(value === c.id), 'p-3')}>
+        <button key={c.id} type="button" onClick={() => onPick(c.id)} aria-pressed={value === c.id} className={cn(card(value === c.id), 'min-h-11 p-3 pr-9')}>
           <span className="block text-sm font-semibold">{c.label}</span>
           <span className="mt-0.5 block text-[11px] leading-snug text-foreground/55">{c.blurb}</span>
           {value === c.id && <Tick />}

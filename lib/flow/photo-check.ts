@@ -60,7 +60,7 @@ async function measure(p: Photo): Promise<Raw | null> {
   const hit = cache.get(p.id)
   if (hit) return hit
   try {
-    const img = await load(p.src)
+    const img = await load(p.thumb || p.src)
     // difference hash: 9x8 greyscale, one bit per left>right comparison (64 chars of 0/1)
     const g = grey(img, 9, 8)
     let hash = ''

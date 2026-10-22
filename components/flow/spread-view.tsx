@@ -56,6 +56,7 @@ export const ItemBox = memo(function ItemBox({
             src={photo.src}
             alt=""
             draggable={false}
+            decoding="async"
             className="size-full select-none"
             style={{
               objectFit: item.fit === 'fit' ? 'contain' : item.fit === 'stretch' ? 'fill' : 'cover',
@@ -115,7 +116,9 @@ export function SpreadView({
 }) {
   const map = new Map(photos.map((p) => [p.id, p]))
   const cover = spread.kind === 'cover'
-  const items = spread.items.map((it) => (
+  // one page of a spread: only draw what touches that half, so the other page's photos are never decoded
+  const visible = side && !cover ? spread.items.filter((it) => (side === 'left' ? it.x < 50 : it.x + it.w > 50)) : spread.items
+  const items = visible.map((it) => (
     <ItemBox key={it.id} item={it} photo={it.photoId ? map.get(it.photoId) : undefined} />
   ))
 

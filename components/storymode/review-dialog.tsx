@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef } from 'react'
 import { motion } from 'motion/react'
 import { ZoomIn } from 'lucide-react'
 import { ISSUE_LABEL, type PhotoReport } from '@/lib/flow/photo-check'
+import { photoThumb } from '@/lib/flow/images'
 import type { Photo } from '@/lib/flow/types'
 import { cn } from '@/lib/utils'
 
@@ -82,7 +83,7 @@ export function ReviewDialog({
         <div className={cn('relative overflow-hidden rounded-xl bg-white p-1 shadow-sm ring-2 transition', remove ? 'ring-transparent' : 'ring-[#d4673f]')}>
           <div className="relative aspect-square overflow-hidden rounded-lg bg-[#f4efe7]">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={p.src} alt="" draggable={false} className={cn('size-full object-cover transition duration-300', remove && 'opacity-50 saturate-50')} />
+            <img src={photoThumb(p)} alt="" draggable={false} loading="lazy" decoding="async" className={cn('size-full object-cover transition duration-300', remove && 'opacity-50 saturate-50')} />
             {best && <span className="absolute left-1.5 top-1.5 rounded-full bg-[#14a085] px-2 py-0.5 text-[10px] font-bold text-white shadow-sm">Best</span>}
             <button type="button" onClick={() => onOpen(p.id)} aria-label={`Look closer at photo ${num(p.id)}`} className="absolute right-1.5 top-1.5 grid size-7 place-items-center rounded-full bg-white/90 text-[#16324f]/70 shadow-sm transition hover:text-[#16324f]">
               <ZoomIn className="size-3.5" />

@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { motion } from 'motion/react'
 import { Check, ImagePlus, Loader2, Trash2, X } from 'lucide-react'
 import { ISSUE_LABEL, isSuggestedRemoval, type PhotoReport } from '@/lib/flow/photo-check'
+import { photoThumb } from '@/lib/flow/images'
 import type { Photo } from '@/lib/flow/types'
 import { cn } from '@/lib/utils'
 import type { PhotoStatus } from './scrapbook'
@@ -143,7 +144,7 @@ export function PhotoManager({
                       className={cn('group relative block aspect-square w-full overflow-hidden rounded-xl bg-white p-1 shadow-sm ring-2 transition', sel ? 'ring-[var(--st-peach-ink)]' : 'ring-transparent hover:ring-[var(--st-peach)]')}
                     >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={p.src} alt="" draggable={false} className={cn('size-full rounded-lg object-cover transition', st.state !== 'ready' && 'scale-105 blur-[1px] saturate-50', sel && 'opacity-80')} />
+                      <img src={photoThumb(p)} alt="" draggable={false} loading="lazy" decoding="async" className={cn('size-full rounded-lg object-cover transition', st.state !== 'ready' && 'scale-105 blur-[1px] saturate-50', sel && 'opacity-80')} />
                       {st.state !== 'ready' && <Loader2 className="absolute inset-0 m-auto size-5 animate-spin text-white drop-shadow" />}
                       {first && Icon && (
                         <span className={cn('absolute bottom-1.5 left-1.5 inline-flex size-6 items-center justify-center rounded-full shadow-sm', TONE[first])} title={ISSUE_LABEL[first]}>

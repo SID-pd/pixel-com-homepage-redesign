@@ -9,7 +9,7 @@ import { analyzePhotos, isSuggestedRemoval, type PhotoReport } from '@/lib/flow/
 import { COVERS, SIZES, TEMPLATES, type CoverId, type SizeId, type TemplateId } from '@/lib/flow/catalog'
 import { flow, getState, useFlow } from '@/lib/flow/store'
 import { captionsFor, orderPhotos, storyTitle, type StoryOccasion, type StoryTone } from '@/lib/flow/story'
-import { MEMORY_EXAMPLES, MEMORY_PROMPT, OCCASIONS, OCCASION_REPLY, PIXIE, TONES, TONE_REPLY, bookPages, inferOccasion, photoReaction, type Mood } from '@/lib/flow/story-chat'
+import { MEMORY_EXAMPLES, MEMORY_PROMPT, OCCASION_REPLY, PIXIE, TONES, TONE_REPLY, bookPages, inferOccasion, photoReaction, type Mood } from '@/lib/flow/story-chat'
 import type { Draft } from '@/lib/flow/types'
 import { curtain } from '@/components/flow/page-curtain'
 import { BotBubble, Choice, Composer, Reply, TypingBubble, UserBubble } from './chat-ui'
@@ -23,22 +23,21 @@ import { usePhotoPipeline } from './scrapbook'
 import { GhostButton, PrimaryButton, StageBackdrop } from './stage-parts'
 import { StoryHeader } from './story-header'
 import { DropOverlay, UploadBody, useIngest, useStageDrop } from './upload-step'
+import { useMediaQuery } from './use-media'
 import { CoverWidget, PagesWidget, SizeWidget, TemplateWidget } from './widgets'
 
-// Photos come first: they upload in the background (see PhotoDock) while the rest of the conversation carries on.
-type Kind = 'photos' | 'occasion' | 'memory' | 'tone' | 'title' | 'template' | 'size' | 'pages' | 'cover' | 'review' | 'preview'
+// The flow, in order: photos (they upload in the background while the chat carries on) -> pages + captions -> template ->
+// the story -> title -> size -> cover -> photo check -> preview.
+type Kind = 'photos' | 'pages' | 'template' | 'story' | 'title' | 'size' | 'cover' | 'review' | 'preview'
 type Msg = { id: string; from: 'bot' | 'user'; text?: string; ask?: Kind }
 
-const NEXT: Partial<Record<Kind, Kind>> = { photos: 'occasion', occasion: 'memory', memory: 'tone', tone: 'title', title: 'template', template: 'size', size: 'pages', pages: 'cover', cover: 'review' }
-const TEXT_KINDS: Kind[] = ['occasion', 'memory', 'tone', 'title']
-const REBUILD: Kind[] = ['occasion', 'memory', 'tone', 'title', 'template', 'pages', 'photos']
+const NEXT: Partial<Record<Kind, Kind>> = { photos: 'pages', pages: 'template', template: 'story', story: 'title', title: 'size', size: 'cover', cover: 'review' }
+const TEXT_KINDS: Kind[] = ['story', 'title']
+const REBUILD: Kind[] = ['photos', 'pages', 'template', 'story', 'title']
 const PLACEHOLDER: Partial<Record<Kind, string>> = {
-  occasion: 'Or just tell me what it’s about…',
-  memory: 'Tell me the story in a few lines…',
-  tone: 'Pick a feeling above, or describe your own…',
+  story: 'Tell me the story in a few lines…',
   title: 'Type a title, or pick one above…',
 }
-const TEMPLATE_FOR: Partial<Record<StoryOccasion, TemplateId>> = { wedding: 'ever-after', travel: 'road-trip', family: 'our-year', milestone: 'gallery', 'year-in-review': 'our-year' }
 const TAG_OCCASION: Record<string, StoryOccasion> = { Wedding: 'wedding', Travel: 'travel', Family: 'family' }
 
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms))
@@ -75,6 +74,8 @@ export function StoryStudio() {
 function Studio({ draft }: { draft: Draft }) {
   const router = useRouter()
   const wide = useWide()
+  // phones and tablets get a lighter page: no live mascot, no full-screen build scene, a pill instead of the photo rail
+  const compact = !useMediaQuery('(min-width: 1024px)')
   const { config, photos, spreads } = draft
 
   const [msgs, setMsgs] = useState<Msg[]>([])
@@ -82,11 +83,11 @@ function Studio({ draft }: { draft: Draft }) {
   const [phase, setPhase] = useState<Kind | null>(null)
   const [mood, setMood] = useState<Mood>('idle')
   const [cue, setCue] = useState<PixieCue | undefined>()
-  const [occasion, setOccasion] = useState<StoryOccasion>('general')
   const [tone, setTone] = useState<StoryTone>('warm')
   const [description, setDescription] = useState('')
   const [title, setTitle] = useState('')
   const [pagesChosen, setPagesChosen] = useState(false)
+  const [captionsOn, setCaptionsOn] = useState(true)
   const [reports, setReports] = useState<Record<string, PhotoReport> | null>(null)
   const [checking, setChecking] = useState({ active: false, done: 0, total: 0 })
   const [manage, setManage] = useState(false)
@@ -147,6 +148,17 @@ function Studio({ draft }: { draft: Draft }) {
     [push, fire, holdMood],
   )
 
+  // one answer per question: a second tap while Pixie is still replying must not answer it twice
+  const answering = useRef(false)
+  const claim = () => {
+    if (answering.current) return false
+    answering.current = true
+    return true
+  }
+  useEffect(() => {
+    answering.current = false
+  }, [phase])
+
   const you = useCallback(
     (text: string) => {
       push({ from: 'user', text })
@@ -155,11 +167,13 @@ function Studio({ draft }: { draft: Draft }) {
     [push, fire],
   )
 
+  // the template comes before the story, so it is the first hint of what the book is about; the story text refines it
   const effOccasion = useMemo<StoryOccasion>(() => {
-    if (occasion !== 'general') return occasion
+    const fromStory = inferOccasion(description)
+    if (fromStory !== 'general') return fromStory
     const tag = TEMPLATES.find((t) => t.id === config.templateId)?.tag
-    return (tag && TAG_OCCASION[tag]) || inferOccasion(description)
-  }, [occasion, description, config.templateId])
+    return (tag && TAG_OCCASION[tag]) || 'general'
+  }, [description, config.templateId])
 
   // ---- build the book -------------------------------------------------------------------------------------------------
   const build = useCallback(() => {
@@ -170,7 +184,7 @@ function Studio({ draft }: { draft: Draft }) {
     const tpl = TEMPLATES.find((t) => t.id === d.config.templateId)
     const bookTitle = title.trim() || (description.trim() ? storyTitle(description, 'Our Story', effOccasion) : (tpl?.name ?? storyTitle('', 'Our Story', effOccasion)))
     const pages = pagesChosen ? Math.max(d.config.pages, bookPages(ordered.length)) : bookPages(ordered.length)
-    const sig = JSON.stringify([order, bookTitle, pages, d.config.templateId, tone, description, effOccasion])
+    const sig = JSON.stringify([order, bookTitle, pages, d.config.templateId, tone, description, effOccasion, captionsOn])
     if (sig === builtSig.current && (getState().draft?.spreads.length ?? 0) > 1) return
     builtSig.current = sig
 
@@ -179,17 +193,18 @@ function Studio({ draft }: { draft: Draft }) {
       .filter((s) => s.kind !== 'cover')
       .map((s) => s.items.find((i) => i.type === 'photo' && i.photoId)?.photoId)
       .filter(Boolean) as string[]
+    if (!captionsOn) return
     const lines = captionsFor(description, Math.max(lead.length, 1), effOccasion, tone)
     const map: Record<string, string> = {}
     lead.forEach((id, i) => (map[id] = lines[i % lines.length]))
     flow.rebuildStory({ order, captions: map, title: bookTitle, pages })
-  }, [title, description, effOccasion, tone, pagesChosen])
+  }, [title, description, effOccasion, tone, pagesChosen, captionsOn])
 
   const startBuild = useCallback(() => {
     build()
+    setPhase('preview')
     setMood('thinking')
     setStage(true)
-    setPhase('preview')
   }, [build])
 
   const endStage = useCallback(() => {
@@ -201,22 +216,16 @@ function Studio({ draft }: { draft: Draft }) {
   // ---- the conversation script ----------------------------------------------------------------------------------------
   const prompt = useCallback((kind: Kind, occ: StoryOccasion): string[] => {
     switch (kind) {
-      case 'occasion':
-        return ['What are we remembering today?']
-      case 'memory':
+      case 'pages':
+        return ['How many pages should it have? Auto fits the book to your photos, so nothing is cut and nothing is empty. You can also choose whether I write captions.']
+      case 'template':
+        return ['Now the look. Pick a starting design, or let me decide.']
+      case 'story':
         return [OCCASION_REPLY[occ], MEMORY_PROMPT[occ]]
-      case 'tone':
-        return ['Love it. How should the captions feel?']
       case 'title':
         return ['What should we call your book? Pick one, type your own, or let me choose.']
-      case 'template': {
-        const rec = TEMPLATES.find((t) => t.id === TEMPLATE_FOR[occ])
-        return [rec ? `Now the look. Based on your story I’d start from ${rec.name}, but you know best.` : 'Now the look. Pick a starting design, or let me decide.']
-      }
       case 'size':
         return ['Which size would you like?']
-      case 'pages':
-        return ['How many pages? Auto fits the book to your photos, so nothing is cut and nothing is empty.']
       case 'cover':
         return ['Last question: hardcover or softcover?']
       case 'review':
@@ -255,12 +264,13 @@ function Studio({ draft }: { draft: Draft }) {
       await wait(1150)
       fire('wave')
       await wait(450)
-      await say(['Hi, I’m Pixie! I’ll turn your photos into a storybook, with captions and layouts done for you.', 'Let’s start with the photos. Drop them in and I’ll keep uploading them while we chat.'], 'photos')
+      await say(['Hi, I’m Pixie! I’ll turn your photos into a storybook, with captions and layouts done for you.', compact ? 'Let’s start with the photos. Add them from your phone and I’ll keep uploading while we chat.' : 'Let’s start with the photos. Drop them in and I’ll keep uploading them while we chat.'], 'photos')
     })()
   }, [say, fire])
 
   // answers ------------------------------------------------------------------------------------------------------------
   const photosDone = () => {
+    if (!claim()) return
     you(`${photos.length} photo${photos.length === 1 ? '' : 's'} added`)
     holdMood('excited', 1400)
     void (async () => {
@@ -269,63 +279,67 @@ function Studio({ draft }: { draft: Draft }) {
       await goNext('photos')
     })()
   }
-  const pickOccasion = (o: StoryOccasion, label: string) => {
-    you(label)
-    setOccasion(o)
-    void goNext('occasion', o)
-  }
-  const pickTone = (t: StoryTone, label: string) => {
-    you(label)
+  const pickTone = (t: StoryTone) => {
     setTone(t)
-    holdMood('excited', 1400)
+    holdMood('excited', 900)
+  }
+  const sendStory = (text: string) => {
+    if (!claim()) return
+    you(text)
+    setDescription(text)
+    holdMood('excited', 1200)
     void (async () => {
-      if (!editing.current) await say([TONE_REPLY[t]])
-      await goNext('tone')
+      if (!editing.current && captionsOn) await say([TONE_REPLY[tone]])
+      await goNext('story')
     })()
   }
+  const skipStory = () => {
+    if (!claim()) return
+    you('Skip, let Pixie write it')
+    setDescription('')
+    void goNext('story')
+  }
   const pickTitle = (t: string, label: string) => {
+    if (!claim()) return
     you(label)
     setTitle(t)
     void goNext('title')
   }
   const pickTemplate = (id: TemplateId | undefined) => {
+    if (!claim()) return
     const t = TEMPLATES.find((x) => x.id === id)
     you(t ? t.name : 'Let Pixie decide')
     flow.setConfig({ templateId: id })
     void goNext('template')
   }
   const pickSize = (id: SizeId) => {
+    if (!claim()) return
     you(SIZES.find((s) => s.id === id)!.label.replace(/"/g, '″'))
     flow.setConfig({ size: id })
     void goNext('size')
   }
   const pickPages = (n: number | 'auto') => {
-    you(n === 'auto' ? 'Auto' : `${n} pages`)
     if (n === 'auto') setPagesChosen(false)
     else {
       setPagesChosen(true)
       flow.setConfig({ pages: n })
     }
+  }
+  const pagesDone = () => {
+    if (!claim()) return
+    you(`${pagesChosen ? `${config.pages} pages` : 'Auto pages'} · ${captionsOn ? 'with captions' : 'no captions'}`)
+    holdMood('excited', 1000)
     void goNext('pages')
   }
   const pickCover = (id: CoverId) => {
+    if (!claim()) return
     you(COVERS.find((c) => c.id === id)!.label)
     flow.setConfig({ cover: id })
     void goNext('cover')
   }
 
   const onSend = (text: string) => {
-    if (phase === 'occasion') return pickOccasion(inferOccasion(text), text)
-    if (phase === 'memory') {
-      you(text)
-      setDescription(text)
-      holdMood('excited', 1200)
-      return void goNext('memory')
-    }
-    if (phase === 'tone') {
-      const hit = TONES.find((t) => text.toLowerCase().includes(t.id)) ?? TONES[0]
-      return pickTone(hit.id, text)
-    }
+    if (phase === 'story') return sendStory(text)
     if (phase === 'title') return pickTitle(text.trim().slice(0, 40), text)
   }
 
@@ -333,12 +347,11 @@ function Studio({ draft }: { draft: Draft }) {
     you(`I’d like to change: ${label.toLowerCase()}`)
     editing.current = kind
     const lines: Partial<Record<Kind, string>> = {
-      memory: 'Sure, tell me the story again.',
-      tone: 'Of course. How should the captions feel?',
+      story: 'Sure, tell me the story again.',
       title: 'New title? Type it below.',
       template: 'Pick another starting design.',
       size: 'Which size would you like instead?',
-      pages: 'How many pages should it have?',
+      pages: 'How many pages, and do you want captions?',
       cover: 'Hardcover or softcover?',
       photos: 'Add or remove photos here, then tell me when you’re done.',
     }
@@ -404,7 +417,7 @@ function Studio({ draft }: { draft: Draft }) {
     const el = scroller.current
     if (!el) return
     const id = window.setTimeout(() => {
-      const tall = phase === 'review'
+      const tall = phase === 'review' || phase === 'pages'
       const target = tall && activeAskId ? document.getElementById(`msg-${activeAskId}`) : null
       if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' })
       else el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' })
@@ -412,7 +425,6 @@ function Studio({ draft }: { draft: Draft }) {
     return () => window.clearTimeout(id)
   }, [msgs.length, typing, phase, activeAskId])
 
-  const recommended = TEMPLATE_FOR[effOccasion]
   const suggestedTitle = useMemo(() => storyTitle(description, 'Our Story', effOccasion), [description, effOccasion])
 
   // ---- render ----------------------------------------------------------------------------------------------------------
@@ -423,51 +435,59 @@ function Studio({ draft }: { draft: Draft }) {
         return (
           <Reply wide>
             <div className="rounded-3xl bg-white/70 p-4 ring-1 ring-white sm:p-5">
-              <UploadBody reading={reading} errors={errors} recommended={pagesChosen ? config.pages : 20} onFiles={ingest} onPack={addPack} />
-              <div className="mt-5 flex items-center justify-between gap-3 border-t border-[var(--st-peach)]/60 pt-4">
+              <UploadBody reading={reading} errors={errors} recommended={20} onFiles={ingest} onPack={addPack} />
+              {/* on a phone the photo pill sits here, in the flow, and the footer sticks to the bottom so Continue is always reachable */}
+              {compact && <PhotoPill photos={photos} status={pipeline.get} checking={checking} onManage={() => setManage(true)} className="mx-auto mt-4 w-fit max-w-full" />}
+              <div className="sticky bottom-0 z-10 -mx-4 mt-4 flex items-center justify-between gap-3 rounded-b-3xl border-t border-[var(--st-peach)]/60 bg-white px-4 py-3 sm:static sm:mx-0 sm:mt-5 sm:bg-transparent sm:p-0 sm:pt-4">
                 <p className="text-xs text-foreground/60" aria-live="polite">
-                  {photos.length === 0 ? 'Add at least one photo to continue' : waitingCount > 0 ? `${photos.length - waitingCount} of ${photos.length} uploaded, the rest keep going while we chat` : `${photos.length} uploaded`}
+                  {photos.length === 0 ? 'Add at least one photo to continue' : waitingCount > 0 ? `${photos.length - waitingCount} of ${photos.length} uploaded…` : `${photos.length} uploaded`}
                 </p>
-                <PrimaryButton disabled={photos.length === 0 || reading > 0} onClick={photosDone}>
+                <PrimaryButton disabled={photos.length === 0 || reading > 0} onClick={photosDone} className="shrink-0 px-6 sm:px-7">
                   Continue
                 </PrimaryButton>
               </div>
             </div>
           </Reply>
         )
-      case 'occasion':
+      case 'pages':
         return (
-          <Reply>
-            <div className="flex flex-wrap gap-2">
-              {OCCASIONS.map((o) => (
-                <Choice key={o.id} onClick={() => pickOccasion(o.id, o.label)}>
-                  <span aria-hidden>{o.emoji}</span> {o.label}
-                </Choice>
-              ))}
-            </div>
+          <Reply wide>
+            <PagesWidget value={config.pages} auto={!pagesChosen} captions={captionsOn} onPages={pickPages} onCaptions={setCaptionsOn} onContinue={pagesDone} />
           </Reply>
         )
-      case 'memory':
+      case 'template':
         return (
-          <Reply>
-            <div className="flex flex-wrap gap-2">
-              {MEMORY_EXAMPLES[effOccasion].map((ex, i) => (
-                <Choice key={i} hint="Use this as a starting point" onClick={() => onSend(ex)}>
-                  {ex}
-                </Choice>
-              ))}
-            </div>
+          <Reply wide>
+            <TemplateWidget value={config.templateId} onPick={pickTemplate} />
           </Reply>
         )
-      case 'tone':
+      case 'story':
         return (
           <Reply>
-            <div className="flex flex-wrap gap-2">
-              {TONES.map((t) => (
-                <Choice key={t.id} hint={t.blurb} onClick={() => pickTone(t.id, t.label)}>
-                  <span aria-hidden>{t.emoji}</span> {t.label}
-                </Choice>
-              ))}
+            <div className="space-y-3">
+              {captionsOn && (
+                <div>
+                  <p className="mb-1.5 text-xs font-semibold text-foreground/60">How should the captions feel?</p>
+                  <div className="flex flex-wrap gap-2">
+                    {TONES.map((t) => (
+                      <Choice key={t.id} on={tone === t.id} onClick={() => pickTone(t.id)}>
+                        <span aria-hidden>{t.emoji}</span> {t.label}
+                      </Choice>
+                    ))}
+                  </div>
+                </div>
+              )}
+              <div>
+                <p className="mb-1.5 text-xs font-semibold text-foreground/60">Need a starting point?</p>
+                <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+                  {MEMORY_EXAMPLES[effOccasion].map((ex, i) => (
+                    <Choice key={i} onClick={() => sendStory(ex)} className="rounded-2xl">
+                      {ex}
+                    </Choice>
+                  ))}
+                  <Choice onClick={skipStory}>✨ Skip, let Pixie write it</Choice>
+                </div>
+              </div>
             </div>
           </Reply>
         )
@@ -480,22 +500,10 @@ function Studio({ draft }: { draft: Draft }) {
             </div>
           </Reply>
         )
-      case 'template':
-        return (
-          <Reply wide>
-            <TemplateWidget value={config.templateId} recommended={recommended} onPick={pickTemplate} />
-          </Reply>
-        )
       case 'size':
         return (
           <Reply>
             <SizeWidget value={config.size} onPick={pickSize} />
-          </Reply>
-        )
-      case 'pages':
-        return (
-          <Reply>
-            <PagesWidget value={config.pages} auto={!pagesChosen} onPick={pickPages} />
           </Reply>
         )
       case 'cover':
@@ -582,12 +590,14 @@ function Studio({ draft }: { draft: Draft }) {
         {!showroom ? (
           <motion.div key="chat" initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -26, scale: 0.985 }} transition={{ duration: 0.7, ease: SMOOTH }} className="relative z-10 flex min-h-0 flex-1 flex-col">
             <main className="relative min-h-0 flex-1">
-              <div className="hidden lg:block">
+              {/* only one of the two is ever mounted: a hidden rail would still decode every thumbnail on a phone */}
+              {compact ? (
+                phase !== 'photos' && <PhotoPill photos={photos} status={pipeline.get} checking={checking} onManage={() => setManage(true)} className="absolute bottom-3 right-3 z-20" />
+              ) : (
                 <PhotoDock photos={photos} status={pipeline.get} flags={flagSet} checking={checking} onOpen={setViewId} onAdd={() => picker.current?.click()} onManage={() => setManage(true)} />
-              </div>
-              <PhotoPill photos={photos} status={pipeline.get} checking={checking} onManage={() => setManage(true)} className="absolute bottom-3 right-3 z-20 lg:hidden" />
+              )}
 
-              <div ref={scroller} className={`relative z-10 h-full overflow-y-auto overscroll-contain px-3 pb-6 pt-6 sm:px-6 ${hasPhotos ? 'min-[1024px]:max-[1279px]:pr-[5.75rem] max-lg:pb-20' : ''}`}>
+              <div ref={scroller} className={`relative z-10 h-full overflow-y-auto overscroll-contain px-3 pb-6 pt-4 sm:px-6 sm:pt-6 ${hasPhotos ? 'min-[1024px]:max-[1279px]:pr-[5.75rem] max-lg:pb-28' : 'max-lg:pb-10'}`}>
                 <div className="mx-auto flex max-w-4xl flex-col gap-3">
                   {msgs.map((m) => (
                     <div key={m.id} id={`msg-${m.id}`} className="scroll-mt-6 space-y-3">
@@ -600,19 +610,19 @@ function Studio({ draft }: { draft: Draft }) {
               </div>
             </main>
 
-            <Composer enabled={inputEnabled} placeholder={(phase && PLACEHOLDER[phase]) || 'Pick an option above…'} onSend={onSend} lead={!wide ? <div className="mb-0.5 shrink-0">{pixie(54, true)}</div> : undefined} />
+            {/* on a phone the box only appears when Pixie wants typed text, so the keyboard never covers a question you can tap */}
+            {(!compact || inputEnabled) && <Composer enabled={inputEnabled} placeholder={(phase && PLACEHOLDER[phase]) || 'Pick an option above…'} onSend={onSend} />}
           </motion.div>
         ) : (
           <motion.div key="showroom" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, y: 20 }} transition={{ duration: 0.6, ease: SMOOTH }} className="relative z-10 min-h-0 flex-1 overflow-y-auto overscroll-contain">
             {!stage && (
               <div className="mx-auto max-w-4xl space-y-4 px-3 pb-12 pt-6 sm:px-6">
                 <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: SMOOTH }} className="flex items-end gap-3">
-                  {!wide && <div className="shrink-0">{pixie(60)}</div>}
                   <div className="min-w-0 flex-1">
-                    <BotBubble avatar={wide}>{PIXIE.preview}</BotBubble>
+                    <BotBubble>{PIXIE.preview}</BotBubble>
                   </div>
                 </motion.div>
-                <div className="space-y-5 rounded-3xl bg-white/70 p-4 ring-1 ring-white sm:p-6">
+                <div className="space-y-5 rounded-3xl bg-white/70 p-3 ring-1 ring-white sm:p-6">
                   <PreviewBody reveal config={config} spreads={spreads} photos={photos} onAddPhotos={() => edit('photos', 'Photos')} />
                   <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.1, duration: 0.7, ease: SMOOTH }} className="space-y-5">
                     <div className="flex flex-wrap items-center justify-between gap-3 border-t border-[var(--st-peach)]/60 pt-4">
@@ -626,7 +636,7 @@ function Studio({ draft }: { draft: Draft }) {
         )}
       </AnimatePresence>
 
-      <AnimatePresence>{stage && <BookStage photos={photos} spreads={spreads} title={config.title} onDone={endStage} />}</AnimatePresence>
+      <AnimatePresence>{stage && <BookStage photos={photos} spreads={spreads} title={config.title} onDone={endStage} light={compact} />}</AnimatePresence>
 
       <DropOverlay show={dropping && !stage} />
 

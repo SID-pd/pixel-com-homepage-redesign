@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react'
 import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from 'motion/react'
 import { Check, ChevronLeft, ChevronRight, ImagePlus, LayoutGrid, Loader2, Trash2, X } from 'lucide-react'
+import { photoThumb } from '@/lib/flow/images'
 import { ISSUE_LABEL, type PhotoReport } from '@/lib/flow/photo-check'
 import type { Photo } from '@/lib/flow/types'
 import { cn } from '@/lib/utils'
@@ -33,7 +34,7 @@ function Tile({ photo, status, flag, onOpen }: { photo: Photo; status: PhotoStat
     >
       <span className="relative block size-full overflow-hidden rounded-[5px] bg-[var(--st-cream)]">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={photo.src} alt="" draggable={false} className={cn('size-full object-cover transition duration-500', !ready && 'scale-105 blur-[1px] saturate-50')} />
+        <img src={photoThumb(photo)} alt="" draggable={false} decoding="async" className={cn('size-full object-cover transition duration-500', !ready && 'scale-105 blur-[1px] saturate-50')} />
         {!ready && (
           <span className="absolute inset-x-0 bottom-0 h-1.5 bg-black/25">
             <span className="block h-full origin-left bg-[var(--st-peach)] transition-[width] duration-300 ease-out" style={{ width: `${status.state === 'queued' ? 4 : status.state === 'processing' ? 100 : status.progress}%` }} />
@@ -153,7 +154,7 @@ export function PhotoPill({ photos, status, checking, onManage, className }: { p
           <span className="relative flex h-11 w-[3.6rem] shrink-0 items-center">
             {recent.map((p, i) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={p.id} src={p.src || undefined} alt="" className="absolute size-10 rounded-lg border-2 border-white object-cover shadow-sm" style={{ left: i * 14, zIndex: i, transform: `rotate(${(i - 1) * 6}deg)` }} />
+              <img key={p.id} src={photoThumb(p) || undefined} alt="" decoding="async" className="absolute size-10 rounded-lg border-2 border-white object-cover shadow-sm" style={{ left: i * 14, zIndex: i, transform: `rotate(${(i - 1) * 6}deg)` }} />
             ))}
           </span>
           <span className="text-left leading-tight">

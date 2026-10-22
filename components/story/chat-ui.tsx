@@ -10,7 +10,7 @@ export function BotBubble({ children, avatar = true }: { children: ReactNode; av
   return (
     <div className="st-rise flex items-end gap-2.5">
       <span className="mb-1 w-[34px] shrink-0">{avatar && <PixieAvatar size={34} />}</span>
-      <p className="max-w-[min(34rem,85%)] whitespace-pre-line rounded-[1.4rem] rounded-bl-md bg-white px-4 py-2.5 text-[15px] leading-relaxed text-[var(--st-ink)] shadow-[0_4px_14px_-8px_rgba(90,55,30,0.5)]">{children}</p>
+      <p className="max-w-[min(34rem,88%)] whitespace-pre-line rounded-[1.4rem] rounded-bl-md bg-white px-4 py-2.5 text-[15px] leading-relaxed text-[var(--st-ink)] shadow-[0_4px_14px_-8px_rgba(90,55,30,0.5)]">{children}</p>
     </div>
   )
 }
@@ -89,7 +89,7 @@ export function Composer({
         e.preventDefault()
         submit()
       }}
-      className="relative z-20 shrink-0 px-3 pb-3 pt-2 sm:px-6 sm:pb-5"
+      className="relative z-20 shrink-0 px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-2 sm:px-6 sm:pb-5"
     >
       <div className="mx-auto flex max-w-3xl items-end gap-2">
         {lead}

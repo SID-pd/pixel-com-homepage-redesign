@@ -3,6 +3,7 @@
 import { useState, type ReactNode } from 'react'
 import { AlertTriangle, Check, Copy, EyeOff, LayoutGrid, Sun, Trash2, Undo2, ZoomIn } from 'lucide-react'
 import { ISSUE_LABEL, isSuggestedRemoval, type PhotoIssue, type PhotoReport } from '@/lib/flow/photo-check'
+import { photoThumb } from '@/lib/flow/images'
 import type { Photo } from '@/lib/flow/types'
 import { cn } from '@/lib/utils'
 import { Polaroid } from './scrapbook'
@@ -79,7 +80,7 @@ function SimilarGroup({
               <div className={cn('relative w-full overflow-hidden rounded-xl bg-white p-1 shadow-sm ring-2 transition', on ? 'ring-[var(--st-peach-ink)]' : 'ring-transparent')}>
                 <button type="button" onClick={() => toggle(p.id)} aria-pressed={on} aria-label={`Photo ${num(p.id)}: ${on ? 'keeping' : 'removing'}. Tap to switch`} className="block aspect-square w-full overflow-hidden rounded-lg bg-[var(--st-cream)]">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={p.src} alt="" draggable={false} className={cn('size-full object-cover transition duration-300', !on && 'opacity-55 saturate-50')} />
+                  <img src={photoThumb(p)} alt="" draggable={false} loading="lazy" decoding="async" className={cn('size-full object-cover transition duration-300', !on && 'opacity-55 saturate-50')} />
                 </button>
                 <span className={cn('pointer-events-none absolute right-2 top-2 grid size-6 place-items-center rounded-full ring-2 ring-white', on ? 'bg-[var(--st-peach-ink)] text-white' : 'bg-white/90')}>{on && <Check className="size-3.5" strokeWidth={3} />}</span>
                 {onOpen && (

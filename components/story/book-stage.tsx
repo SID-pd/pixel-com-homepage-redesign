@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { motion, useReducedMotion } from 'motion/react'
 import { SpreadView } from '@/components/flow/spread-view'
+import { photoThumb } from '@/lib/flow/images'
 import type { Photo, Spread } from '@/lib/flow/types'
 import type { Mood } from '@/lib/flow/story-chat'
 import { Celebration } from './celebration'
@@ -25,7 +26,10 @@ const LINES = ['Gathering your moments…', 'Binding the pages…', 'Opening you
  *  3. the cover swings open on its spine, revealing the first page
  * It sits over the entire window and fades away into the finished preview, so there is no visible "switch".
  */
-export function BookStage({ photos, spreads, title, onDone }: { photos: Photo[]; spreads: Spread[]; title: string; onDone: () => void }) {
+// Phones get the same story in a lighter telling: 6 thumbnails circle, then a flat closed book rises (no 3D, no second page, no mascot).
+const LIGHT = { form: 2400, open: 3900, leave: 5000, done: 5700 }
+
+export function BookStage({ photos, spreads, title, onDone, light = false }: { photos: Photo[]; spreads: Spread[]; title: string; onDone: () => void; light?: boolean }) {
   const reduce = useReducedMotion()
   const [stage, setStage] = useState(0)
   const [vp, setVp] = useState({ w: 1200, h: 800 })
@@ -34,20 +38,21 @@ export function BookStage({ photos, spreads, title, onDone }: { photos: Photo[];
   useEffect(() => {
     setVp({ w: window.innerWidth, h: window.innerHeight })
     const quick = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const t = light ? LIGHT : { form: T_FORM, open: T_OPEN, leave: T_LEAVE, done: T_DONE }
     const ts = [
-      window.setTimeout(() => (setStage(1), setCue({ type: 'hop', id: 1 })), quick ? 200 : T_FORM),
-      window.setTimeout(() => (setStage(2), setCue({ type: 'wave', id: 2 })), quick ? 400 : T_OPEN),
-      window.setTimeout(() => setStage(3), quick ? 600 : T_LEAVE),
-      window.setTimeout(onDone, quick ? 900 : T_DONE),
+      window.setTimeout(() => (setStage(1), setCue({ type: 'hop', id: 1 })), quick ? 200 : t.form),
+      window.setTimeout(() => (setStage(2), setCue({ type: 'wave', id: 2 })), quick ? 400 : t.open),
+      window.setTimeout(() => setStage(3), quick ? 600 : t.leave),
+      window.setTimeout(onDone, quick ? 900 : t.done),
     ]
     return () => ts.forEach(window.clearTimeout)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // one page is a square; the book is two pages wide
-  const P = Math.round(Math.max(150, Math.min(vp.w * 0.4, vp.h * 0.44, 400)))
-  const ring = Math.min(vp.w, vp.h) * 0.3
-  const flying = useMemo(() => photos.slice(0, 14), [photos])
+  const P = light ? Math.round(Math.max(140, Math.min(vp.w * 0.6, vp.h * 0.36, 280))) : Math.round(Math.max(150, Math.min(vp.w * 0.4, vp.h * 0.44, 400)))
+  const ring = Math.min(vp.w, vp.h) * (light ? 0.34 : 0.3)
+  const flying = useMemo(() => photos.slice(0, light ? 6 : 14), [photos, light])
   const cover = spreads[0]
   const first = spreads[1]
   const mood: Mood = stage === 0 ? 'excited' : stage === 1 ? 'thinking' : 'celebrate'
@@ -77,16 +82,33 @@ export function BookStage({ photos, spreads, title, onDone }: { photos: Photo[];
                   ? { x: rx, y: ry, rotate: tilt, scale: 1, opacity: 1 }
                   : { x: 0, y: 0, rotate: 0, scale: 0.3, opacity: 0 }
               }
-              transition={stage === 0 ? { type: 'spring', stiffness: 38, damping: 14, mass: 1.1, delay: 0.5 + i * 0.16 } : { duration: 1.3, delay: i * 0.05, ease: SLOW }}
+              transition={stage === 0 ? { type: 'spring', stiffness: 38, damping: 14, mass: 1.1, delay: 0.4 + i * (light ? 0.12 : 0.16) } : { duration: 1.3, delay: i * 0.05, ease: SLOW }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={p.src} alt="" className="aspect-square w-full rounded-[2px] object-cover" />
+              <img src={photoThumb(p)} alt="" className="aspect-square w-full rounded-[2px] object-cover" />
             </motion.div>
           )
         })}
       </div>
 
+      {/* light: a flat closed book rises out of the stack */}
+      {light && (
+        <div className="absolute inset-0 grid place-items-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.5, y: 40 }}
+            animate={stage >= 1 ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0, scale: 0.5, y: 40 }}
+            transition={{ type: 'spring', stiffness: 60, damping: 14 }}
+            style={{ width: P, height: P }}
+            className="relative overflow-hidden rounded-r-md rounded-l-[3px] bg-white shadow-[4px_4px_0_#efe5d3,8px_8px_0_#e4d7c1,18px_24px_34px_-10px_rgba(60,35,20,0.45)]"
+          >
+            {cover && <SpreadView spread={cover} photos={photos} />}
+            <div aria-hidden className="absolute inset-y-0 left-0 w-3 bg-gradient-to-r from-black/15 to-transparent" />
+          </motion.div>
+        </div>
+      )}
+
       {/* 2 + 3: the book */}
+      {!light && (
       <div className="absolute inset-0 grid place-items-center [perspective:2000px]">
         <motion.div
           initial={{ opacity: 0, scale: 0.45, y: 60, rotateX: 22 }}
@@ -126,6 +148,7 @@ export function BookStage({ photos, spreads, title, onDone }: { photos: Photo[];
           </motion.div>
         </motion.div>
       </div>
+      )}
 
       {/* status line */}
       <div className="pointer-events-none absolute inset-x-0 bottom-[9%] text-center">
@@ -139,11 +162,13 @@ export function BookStage({ photos, spreads, title, onDone }: { photos: Photo[];
         </div>
       </div>
 
-      <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-8">
-        <Companion size={104} mood={mood} cue={cue} />
-      </div>
+      {!light && (
+        <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-8">
+          <Companion size={104} mood={mood} cue={cue} />
+        </div>
+      )}
 
-      {stage >= 2 && !reduce && <Celebration delay={1.2} />}
+      {stage >= 2 && !reduce && !light && <Celebration delay={1.2} />}
     </motion.div>
   )
 }

@@ -2,7 +2,7 @@
 
 import { useSyncExternalStore } from 'react'
 import { PAGE_COUNTS, TEMPLATES, type ShippingId, type TemplateId } from './catalog'
-import { loadPhotoData, deletePhotoData, makeThumb } from './images'
+import { loadPhotoData, loadThumbData, deletePhotoData, deleteThumbData, makeThumb } from './images'
 import { autoBuild, blankSpread, spreadCount, uid } from './layouts'
 import { unitPrice } from './pricing'
 import { applyPhotoCaptions, captionsFor, orderPhotos, storyTitle, withCaptions, type StoryOptions } from './story'
@@ -50,7 +50,7 @@ let past: Spread[][] = []
 let future: Spread[][] = []
 let saveTimer: ReturnType<typeof setTimeout> | null = null
 
-const stripPhotos = (photos: Photo[]) => photos.map((p) => (p.kind === 'sample' ? p : { ...p, src: '' }))
+const stripPhotos = (photos: Photo[]) => photos.map((p) => (p.kind === 'sample' ? { ...p, thumb: undefined } : { ...p, src: '', thumb: undefined }))
 
 function persist() {
   if (typeof window === 'undefined') return
@@ -95,8 +95,8 @@ async function resolvePhotos(photos: Photo[]): Promise<Photo[]> {
   return Promise.all(
     photos.map(async (p) => {
       if (p.src || p.kind === 'sample') return p
-      const data = await loadPhotoData(p.id)
-      return { ...p, src: data ?? '' }
+      const [data, thumb] = await Promise.all([loadPhotoData(p.id), loadThumbData(p.id)])
+      return { ...p, src: data ?? '', thumb: thumb ?? undefined }
     }),
   )
 }
@@ -258,7 +258,10 @@ export const flow = {
       items: s.items.map((i) => (i.photoId === id ? { ...i, photoId: null } : i)),
     }))
     const photo = d.photos.find((p) => p.id === id)
-    if (photo?.kind === 'upload') void deletePhotoData(id)
+    if (photo?.kind === 'upload') {
+      void deletePhotoData(id)
+      void deleteThumbData(id)
+    }
     set({ draft: touch({ ...d, photos: d.photos.filter((p) => p.id !== id), spreads }) })
   },
 
@@ -266,7 +269,10 @@ export const flow = {
     const d = getState().draft
     if (!d) return
     d.photos.forEach((p) => {
-      if (p.kind === 'upload') void deletePhotoData(p.id)
+      if (p.kind === 'upload') {
+        void deletePhotoData(p.id)
+        void deleteThumbData(p.id)
+      }
     })
     set({ draft: touch({ ...d, photos: [], spreads: [] }) })
   },

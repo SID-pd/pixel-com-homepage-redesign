@@ -1,10 +1,10 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { AnimatePresence, motion } from 'motion/react'
 import { ImagePlus, Loader2, Sparkles, UploadCloud } from 'lucide-react'
 import { SAMPLE_PHOTOS } from '@/lib/flow/catalog'
-import { fileToPhoto, samplePhotos } from '@/lib/flow/images'
+import { fileToPhoto, makeThumb, samplePhotos } from '@/lib/flow/images'
 import { flow } from '@/lib/flow/store'
 import type { Photo } from '@/lib/flow/types'
 
@@ -55,28 +55,66 @@ export function useStageDrop(onFiles: (files: File[]) => void, enabled: boolean)
   return over
 }
 
+// Files go through a small queue instead of all at once: decoding fifty 12-megapixel photos in parallel is what makes
+// phones stall or reload the tab. Each photo is added as soon as it is ready, in small batches so the page re-renders rarely.
+const coarse = () => typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches
+const breathe = () => new Promise<void>((r) => setTimeout(r, 24))
+
 export function useIngest(photos: Photo[]) {
   const [reading, setReading] = useState(0)
   const [errors, setErrors] = useState<string[]>([])
+  const queue = useRef<File[]>([])
+  const workers = useRef(0)
+  const buffer = useRef<Photo[]>([])
+  const flushTimer = useRef<number | null>(null)
 
-  async function ingest(files: File[]) {
-    const images = files.filter((f) => f.type.startsWith('image/'))
-    if (!images.length) return
-    setErrors([])
-    setReading((n) => n + images.length)
-    // each file is added the moment it has been read, so a big batch never freezes the scene
-    await Promise.all(
-      images.map(async (f) => {
-        try {
-          flow.addPhotos([await fileToPhoto(f)])
-        } catch (err) {
-          setErrors((e) => [...e, err instanceof Error ? err.message : `Could not read ${f.name}`])
-        } finally {
-          setReading((n) => Math.max(0, n - 1))
-        }
-      }),
-    )
-  }
+  const flush = useCallback(() => {
+    if (flushTimer.current) window.clearTimeout(flushTimer.current)
+    flushTimer.current = null
+    if (!buffer.current.length) return
+    const batch = buffer.current
+    buffer.current = []
+    flow.addPhotos(batch)
+  }, [])
+
+  const work = useCallback(async () => {
+    while (queue.current.length) {
+      const f = queue.current.shift()!
+      try {
+        buffer.current.push(await fileToPhoto(f))
+        if (buffer.current.length >= 4 || !queue.current.length) flush()
+        else if (!flushTimer.current) flushTimer.current = window.setTimeout(flush, 500)
+      } catch (err) {
+        setErrors((e) => [...e, err instanceof Error ? err.message : `Could not read ${f.name}`])
+      } finally {
+        setReading((n) => Math.max(0, n - 1))
+      }
+      await breathe()
+    }
+  }, [flush])
+
+  const ingest = useCallback(
+    async (files: File[]) => {
+      const images = files.filter((f) => f.type.startsWith('image/'))
+      if (!images.length) return
+      setErrors([])
+      setReading((n) => n + images.length)
+      queue.current.push(...images)
+      const limit = coarse() ? 1 : 2
+      const runs: Promise<void>[] = []
+      while (workers.current < limit) {
+        workers.current++
+        runs.push(
+          work().finally(() => {
+            workers.current--
+          }),
+        )
+      }
+      await Promise.all(runs)
+      flush()
+    },
+    [work, flush],
+  )
 
   async function addPack(id: string) {
     setReading((n) => n + 1)
@@ -86,7 +124,13 @@ export function useIngest(photos: Photo[]) {
       let picks = all.filter((p) => pack.match(p.name))
       if (picks.length < 8) picks = [...picks, ...all.filter((p) => !picks.includes(p))].slice(0, 8)
       const have = new Set(photos.map((p) => p.name))
-      flow.addPhotos(picks.filter((p) => !have.has(p.name)))
+      // the sample pictures are multi-megabyte PNGs: give each a small copy (one at a time) so grids and rails stay light
+      const fresh = picks.filter((p) => !have.has(p.name))
+      for (const p of fresh) {
+        p.thumb = await makeThumb(p.src)
+        await breathe()
+      }
+      flow.addPhotos(fresh)
     } catch {
       setErrors(['Could not load the sample photos. Try uploading your own.'])
     } finally {
@@ -114,15 +158,18 @@ export function UploadBody({
 
   return (
     <div className="mx-auto max-w-2xl space-y-5">
-      <div className="flex flex-col items-center gap-3 rounded-[1.75rem] border-2 border-dashed border-[var(--st-peach-ink)]/30 bg-white/70 px-5 py-9 text-center">
+      <div className="flex flex-col items-center gap-3 rounded-[1.75rem] border-2 border-dashed border-[var(--st-peach-ink)]/30 bg-white/70 px-4 py-7 text-center sm:px-5 sm:py-9">
         <motion.span animate={{ y: [0, -5, 0] }} transition={{ duration: 2.6, repeat: Infinity, ease: 'easeInOut' }} className="grid size-14 place-items-center rounded-full bg-[var(--st-peach)] text-[var(--st-peach-ink)]">
           {reading ? <Loader2 className="size-6 animate-spin" /> : <UploadCloud className="size-6" />}
         </motion.span>
         <div>
-          <p className="text-lg font-semibold">Drag photos anywhere on this page</p>
+          <p className="text-lg font-semibold">
+            <span className="max-sm:hidden">Drag photos anywhere on this page</span>
+            <span className="sm:hidden">Add photos from your phone</span>
+          </p>
           <p className="text-sm text-foreground/60">JPG, PNG or WebP. Recommended: about {recommended} photos for your book.</p>
         </div>
-        <button type="button" onClick={() => inputRef.current?.click()} className="inline-flex h-11 items-center gap-2 rounded-full bg-[var(--st-ink)] px-6 text-sm font-semibold text-white transition hover:scale-[1.03] active:scale-95">
+        <button type="button" onClick={() => inputRef.current?.click()} className="inline-flex h-12 w-full max-w-xs items-center justify-center gap-2 rounded-full bg-[var(--st-ink)] px-6 sm:h-11 sm:w-auto text-sm font-semibold text-white transition hover:scale-[1.03] active:scale-95">
           <ImagePlus className="size-4" /> Choose photos
         </button>
         <input ref={inputRef} type="file" accept="image/*" multiple className="sr-only" onChange={(e) => { onFiles(Array.from(e.target.files ?? [])); e.target.value = '' }} />
@@ -133,7 +180,7 @@ export function UploadBody({
           <Sparkles className="size-3.5 text-[var(--st-peach-ink)]" /> No photos handy? Try a sample set:
         </span>
         {PACKS.map((p) => (
-          <button key={p.id} type="button" onClick={() => onPack(p.id)} className="inline-flex h-9 items-center gap-1.5 rounded-full bg-[var(--st-butter)] px-3.5 text-sm font-medium transition hover:brightness-95 active:scale-95">
+          <button key={p.id} type="button" onClick={() => onPack(p.id)} className="inline-flex h-10 items-center gap-1.5 rounded-full bg-[var(--st-butter)] px-3.5 text-sm font-medium transition hover:brightness-95 active:scale-95">
             <span aria-hidden>{p.emoji}</span> {p.label}
           </button>
         ))}
