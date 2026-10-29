@@ -17,6 +17,8 @@ import { BookStage } from './book-stage'
 import { Companion, type PixieCue } from './companion'
 import { PhotoDock, PhotoPill, PhotoViewer } from './photo-dock'
 import { PhotoManager } from './photo-manager'
+import { cn } from '@/lib/utils'
+import { MobilePreview } from './mobile-preview'
 import { PreviewBody, PreviewFooter } from './preview-step'
 import { ReviewBody } from './review-step'
 import { usePhotoPipeline } from './scrapbook'
@@ -76,6 +78,8 @@ function Studio({ draft }: { draft: Draft }) {
   const wide = useWide()
   // phones and tablets get a lighter page: no live mascot, no full-screen build scene, a pill instead of the photo rail
   const compact = !useMediaQuery('(min-width: 1024px)')
+  // a phone, upright or on its side: the finished book gets its own full-screen layout instead of the scrolling page
+  const phone = useMediaQuery('(max-width: 639px), (max-height: 500px)')
   const { config, photos, spreads } = draft
 
   const [msgs, setMsgs] = useState<Msg[]>([])
@@ -614,8 +618,9 @@ function Studio({ draft }: { draft: Draft }) {
             {(!compact || inputEnabled) && <Composer enabled={inputEnabled} placeholder={(phase && PLACEHOLDER[phase]) || 'Pick an option above…'} onSend={onSend} />}
           </motion.div>
         ) : (
-          <motion.div key="showroom" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, y: 20 }} transition={{ duration: 0.6, ease: SMOOTH }} className="relative z-10 min-h-0 flex-1 overflow-y-auto overscroll-contain">
-            {!stage && (
+          <motion.div key="showroom" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, y: 20 }} transition={{ duration: 0.6, ease: SMOOTH }} className={cn('relative z-10 min-h-0 flex-1', !phone && 'overflow-y-auto overscroll-contain')}>
+            {!stage && phone && <MobilePreview config={config} spreads={spreads} photos={photos} onAddPhotos={() => edit('photos', 'Photos')} />}
+            {!stage && !phone && (
               <div className="mx-auto max-w-4xl space-y-4 px-3 pb-12 pt-6 sm:px-6">
                 <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: SMOOTH }} className="flex items-end gap-3">
                   <div className="min-w-0 flex-1">
