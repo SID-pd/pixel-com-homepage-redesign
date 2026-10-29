@@ -5,7 +5,7 @@ import type { CSSProperties, ReactNode } from 'react'
 const hand = Caveat({ subsets: ['latin'], weight: ['500', '600'], variable: '--font-hand', display: 'swap' })
 
 // "Little Moments" palette: cream, peach, lilac, mint, butter. Mint = ready, lilac = thinking, peach = reactions.
-const palette = {
+export const storyVars = {
   '--st-cream': '#fdf6ec',
   '--st-peach': '#ffdcc6',
   '--st-peach-ink': '#b4532a',
@@ -39,7 +39,7 @@ const css = `
 /** Shared wrapper for every Story Mode page: palette, handwriting font and Pixie's animation classes. */
 export function StoryTheme({ children }: { children: ReactNode }) {
   return (
-    <div className={hand.variable} style={palette}>
+    <div className={hand.variable} style={storyVars}>
       <style dangerouslySetInnerHTML={{ __html: css }} />
       {children}
     </div>

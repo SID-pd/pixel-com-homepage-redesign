@@ -557,14 +557,15 @@ function Studio({ draft }: { draft: Draft }) {
                   onManage={() => setManage(true)}
                 />
               )}
-              <div className="sticky bottom-0 z-10 -mx-4 mt-5 flex flex-wrap items-center justify-between gap-3 rounded-b-3xl bg-white/95 px-4 py-3 backdrop-blur sm:-mx-5 sm:px-5">
-                <GhostButton onClick={() => edit('photos', 'Photos')}>
-                  <ArrowLeft className="size-4" /> Add more photos
+              <div className="sticky bottom-0 z-10 -mx-4 mt-5 flex items-center gap-2 rounded-b-3xl bg-white/95 px-4 py-3 backdrop-blur sm:-mx-5 sm:justify-between sm:px-5">
+                <GhostButton onClick={() => edit('photos', 'Photos')} aria-label="Add more photos" className="size-11 shrink-0 px-0 sm:size-auto sm:px-5">
+                  <ArrowLeft className="size-4" /> <span className="max-sm:sr-only">Add more photos</span>
                 </GhostButton>
-                <div className="flex flex-wrap items-center gap-2">
+                <div className="flex min-w-0 flex-1 items-center justify-end gap-2">
                   {flaggedIds.length > 0 && (
-                    <button type="button" onClick={() => flow.removePhotos(flaggedIds)} className="inline-flex h-11 items-center gap-2 rounded-full bg-[var(--st-peach)] px-5 text-sm font-semibold text-[var(--st-peach-ink)] transition hover:brightness-95 active:scale-95">
-                      <Trash2 className="size-4" /> Remove suggested ({flaggedIds.length})
+                    <button type="button" onClick={() => flow.removePhotos(flaggedIds)} className="inline-flex h-11 shrink-0 items-center gap-2 rounded-full bg-[var(--st-peach)] px-4 text-sm font-semibold text-[var(--st-peach-ink)] transition hover:brightness-95 active:scale-95">
+                      <Trash2 className="size-4" /> <span className="sm:hidden">Remove {flaggedIds.length}</span>
+                      <span className="max-sm:hidden">Remove suggested ({flaggedIds.length})</span>
                     </button>
                   )}
                   <PrimaryButton
@@ -573,8 +574,9 @@ function Studio({ draft }: { draft: Draft }) {
                       you('Build my storybook')
                       void startBuild()
                     }}
+                    className="min-w-0 flex-1 px-4 sm:flex-none sm:px-7"
                   >
-                    <Sparkles className="size-4" /> Build my storybook
+                    <Sparkles className="size-4" /> <span className="truncate"><span className="sm:hidden">Build book</span><span className="max-sm:hidden">Build my storybook</span></span>
                   </PrimaryButton>
                 </div>
               </div>
@@ -612,7 +614,7 @@ function Studio({ draft }: { draft: Draft }) {
             <main className="relative min-h-0 flex-1">
               {/* only one of the two is ever mounted: a hidden rail would still decode every thumbnail on a phone */}
               {compact ? (
-                phase !== 'photos' && <PhotoPill photos={photos} status={pipeline.get} checking={checking} onManage={() => setManage(true)} className="absolute bottom-3 right-3 z-20" />
+                phase !== 'photos' && phase !== 'review' && <PhotoPill photos={photos} status={pipeline.get} checking={checking} onManage={() => setManage(true)} className="absolute bottom-3 right-3 z-20" />
               ) : (
                 <PhotoDock photos={photos} status={pipeline.get} flags={flagSet} checking={checking} onOpen={setViewId} onAdd={() => picker.current?.click()} onManage={() => setManage(true)} />
               )}

@@ -1,15 +1,20 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 import { createPortal } from 'react-dom'
 import { motion } from 'motion/react'
-import { AlertTriangle, ArrowLeft, ArrowRight, BookOpen, ChevronLeft, ChevronRight, Pencil, RotateCw, Rows3, Shuffle, Smartphone, X } from 'lucide-react'
+import { AlertTriangle, ArrowLeft, ArrowRight, BookOpen, ChevronLeft, ChevronRight, Pencil, RotateCw, Rows3, Shuffle, Smartphone, Sparkles, X } from 'lucide-react'
+import { AccountMenu } from '@/components/flow/account-menu'
+import { CartBadgeLink } from '@/components/flow/flow-shell'
+import { PixovoLogo } from '@/components/pixel/pixovo-logo'
 import { flow, getState } from '@/lib/flow/store'
 import type { BookConfig, Photo, Spread } from '@/lib/flow/types'
 import { cn } from '@/lib/utils'
 import { PagesScroll } from './book-reader'
 import { Flipbook, spreadLabel } from './flipbook'
 import { StageBackdrop } from './stage-parts'
+import { storyVars } from './story-theme'
 import { SinglePageBook } from './single-page-book'
 import { useMediaQuery } from './use-media'
 import { usePreviewActions } from './use-preview-actions'
@@ -49,17 +54,17 @@ function useTilt(enabled: boolean): Tilt {
 }
 
 /** iOS asks permission for motion sensors, and only from a tap. Everywhere else it is simply available. */
-async function allowSensor(): Promise<boolean> {
+async function allowSensor(): Promise<'ok' | 'blocked' | 'none'> {
   const D = typeof window !== 'undefined' ? (window.DeviceOrientationEvent as unknown as { requestPermission?: () => Promise<string> } | undefined) : undefined
-  if (!D) return false
+  if (!D) return 'none'
   if (typeof D.requestPermission === 'function') {
     try {
-      return (await D.requestPermission()) === 'granted'
+      return (await D.requestPermission()) === 'granted' ? 'ok' : 'blocked'
     } catch {
-      return false
+      return 'blocked'
     }
   }
-  return true
+  return 'ok'
 }
 
 /** Re-deals the photos across the book. Each caption stays with its photo. */
@@ -96,17 +101,17 @@ function ActionBar({ config, className }: { config: BookConfig; className?: stri
   )
 }
 
-const chip = 'inline-flex h-9 shrink-0 items-center justify-center gap-1.5 rounded-full px-3 text-xs font-semibold transition active:scale-95'
+const chip = 'inline-flex h-9 shrink-0 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-3 text-xs font-semibold transition active:scale-95'
 
 function Tabs({ tab, onTab }: { tab: 'flip' | 'scroll'; onTab: (t: 'flip' | 'scroll') => void }) {
   const on = 'bg-[#16324f] text-white shadow-sm'
   const off = 'text-[#16324f]/70'
   return (
     <div role="tablist" aria-label="How to look at your book" className="grid grid-cols-2 gap-1 rounded-full bg-white/70 p-1">
-      <button type="button" role="tab" aria-selected={tab === 'flip'} onClick={() => onTab('flip')} className={cn('inline-flex h-9 items-center justify-center gap-2 rounded-full px-4 text-[13px] font-semibold transition', tab === 'flip' ? on : off)}>
+      <button type="button" role="tab" aria-selected={tab === 'flip'} onClick={() => onTab('flip')} className={cn('inline-flex h-9 items-center justify-center gap-2 whitespace-nowrap rounded-full px-4 text-[13px] font-semibold transition', tab === 'flip' ? on : off)}>
         <BookOpen className="size-4" /> Flip
       </button>
-      <button type="button" role="tab" aria-selected={tab === 'scroll'} onClick={() => onTab('scroll')} className={cn('inline-flex h-9 items-center justify-center gap-2 rounded-full px-4 text-[13px] font-semibold transition', tab === 'scroll' ? on : off)}>
+      <button type="button" role="tab" aria-selected={tab === 'scroll'} onClick={() => onTab('scroll')} className={cn('inline-flex h-9 items-center justify-center gap-2 whitespace-nowrap rounded-full px-4 text-[13px] font-semibold transition', tab === 'scroll' ? on : off)}>
         <Rows3 className="size-4" /> Scroll all pages
       </button>
     </div>
@@ -126,19 +131,25 @@ function LandscapeReader({ config, spreads, photos, index, onIndex, onClose, onS
   return (
     <motion.div role="dialog" aria-modal="true" aria-label={`${config.title}, landscape view`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }} className="fixed inset-0 z-[75] overflow-hidden text-[var(--st-ink)]">
       <StageBackdrop />
-      <div style={turned} className={cn('flex flex-col', !turned && 'absolute inset-0')}>
+      <div style={turned} className={cn('flex flex-col @container', !turned && 'absolute inset-0')}>
         <div className="flex shrink-0 items-center gap-2 px-3 pt-2">
-          <div className="w-52 shrink-0">
+          <Link href="/" aria-label="Pixovo home" className="shrink-0">
+            <PixovoLogo className="[&_img]:h-7" />
+          </Link>
+          <div className="hidden shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border border-accent/20 bg-accent/10 px-2.5 py-1 text-xs font-semibold text-accent @min-[820px]:flex">
+            <Sparkles className="size-3.5" aria-hidden /> Story Mode
+          </div>
+          <div className="ml-1 shrink-0">
             <Tabs tab="flip" onTab={(t) => t === 'scroll' && onScroll()} />
           </div>
-          <p className="min-w-0 flex-1 truncate text-center text-xs font-semibold text-[#16324f]/65">
-            {spreadLabel(index)} · {index + 1}/{spreads.length}
-          </p>
-          <button type="button" onClick={onShuffle} className={cn(chip, 'bg-white text-[#16324f] shadow-sm')}>
-            <Shuffle className="size-3.5" /> Shuffle all
+          <span className="min-w-0 flex-1" />
+          <button type="button" onClick={onShuffle} aria-label="Shuffle all" className={cn(chip, 'bg-white text-[#16324f] shadow-sm')}>
+            <Shuffle className="size-3.5" /> <span className="hidden @min-[700px]:inline">Shuffle all</span>
           </button>
+          <AccountMenu />
+          <CartBadgeLink />
           {closable && (
-            <button type="button" onClick={onClose} aria-label="Close landscape view" className="grid size-9 shrink-0 place-items-center rounded-full bg-white text-[#16324f] shadow-sm transition active:scale-95">
+            <button type="button" onClick={onClose} aria-label="Close landscape view" className="grid size-10 shrink-0 place-items-center rounded-full bg-white text-[#16324f] shadow-sm transition active:scale-95">
               <X className="size-5" />
             </button>
           )}
@@ -146,7 +157,7 @@ function LandscapeReader({ config, spreads, photos, index, onIndex, onClose, onS
 
         <div className="min-h-0 flex-1 px-4 py-1 [container-type:size]">
           <div className="grid size-full place-items-center">
-            <Flipbook spreads={spreads} photos={photos} index={index} onIndex={onIndex} controls={false} className="max-w-[min(100cqw,200cqh)]" />
+            <Flipbook spreads={spreads} photos={photos} index={index} onIndex={onIndex} controls={false} rotate={turned ? (tilt === 'cw' ? -90 : 90) : 0} className="max-w-[min(100cqw,200cqh)]" />
           </div>
         </div>
 
@@ -159,7 +170,9 @@ function LandscapeReader({ config, spreads, photos, index, onIndex, onClose, onS
               <ChevronRight className="size-5" />
             </button>
           </div>
-          <span className="min-w-0 flex-1" />
+          <p className="min-w-0 flex-1 truncate text-center text-xs font-semibold tabular-nums text-[#16324f]/65">
+            {spreadLabel(index)} · {index + 1} of {spreads.length}
+          </p>
           <ActionBar config={config} className="w-72 max-w-[55%] [&_button]:h-10" />
         </div>
       </div>
@@ -178,6 +191,7 @@ export function MobilePreview({ config, spreads, photos, onAddPhotos }: { config
   const [auto, setAuto] = useState(false)
   const [dismissed, setDismissed] = useState(false)
   const [sync, setSync] = useState(0)
+  const [note, setNote] = useState<string | null>(null)
   const sideways = useMediaQuery('(orientation: landscape)')
   const tilt = useTilt(auto)
   const last = Math.max(0, spreads.length - 1)
@@ -198,7 +212,14 @@ export function MobilePreview({ config, spreads, photos, onAddPhotos }: { config
 
   async function toggleAuto() {
     const next = !auto
-    if (next && !(await allowSensor())) return
+    if (next) {
+      const sensor = await allowSensor()
+      if (sensor !== 'ok') {
+        setNote(sensor === 'none' ? 'This device has no motion sensor, so use Rotate instead.' : 'Motion access was blocked. Allow it in your browser settings to use Auto.')
+        return
+      }
+      setNote('Auto is on. Turn your phone sideways to open the full book.')
+    } else setNote(null)
     setAuto(next)
     try {
       localStorage.setItem(AUTO_KEY, next ? '1' : '0')
@@ -286,7 +307,9 @@ export function MobilePreview({ config, spreads, photos, onAddPhotos }: { config
               <input value={caption.text ?? ''} onChange={(e) => setCaption(e.target.value)} maxLength={90} className="w-full bg-transparent text-center font-[family-name:var(--font-hand)] text-xl outline-none" />
             </label>
           )}
-          <p className="shrink-0 pb-1 pt-1 text-center text-[11px] text-[#16324f]/55">Turn your phone sideways to see the whole spread</p>
+          <p role="status" className={cn('shrink-0 pb-1 pt-1 text-center text-[11px]', note?.startsWith('Motion') || note?.startsWith('This') ? 'font-semibold text-[#b4532a]' : 'text-[#16324f]/55')}>
+            {note ?? 'Tap Rotate, or turn your phone sideways, for the whole spread'}
+          </p>
         </>
       ) : (
         <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain pb-3">
@@ -296,7 +319,7 @@ export function MobilePreview({ config, spreads, photos, onAddPhotos }: { config
 
       <ActionBar config={config} className="pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-1" />
 
-      {reader && createPortal(<LandscapeReader config={config} spreads={spreads} photos={photos} index={i} onIndex={setSpread} onClose={closeReader} onScroll={toScroll} onShuffle={shuffle} closable={!sideways} tilt={tilt} />, document.body)}
+      {reader && createPortal(<div style={storyVars} className="contents"><LandscapeReader config={config} spreads={spreads} photos={photos} index={i} onIndex={setSpread} onClose={closeReader} onScroll={toScroll} onShuffle={shuffle} closable={!sideways} tilt={tilt} /></div>, document.body)}
     </div>
   )
 }

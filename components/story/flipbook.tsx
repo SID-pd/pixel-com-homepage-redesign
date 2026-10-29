@@ -27,6 +27,7 @@ export function Flipbook({
   index,
   onIndex,
   controls = true,
+  rotate = 0,
   className,
 }: {
   spreads: Spread[]
@@ -34,6 +35,8 @@ export function Flipbook({
   index: number
   onIndex: (i: number) => void
   controls?: boolean
+  /** the book is drawn turned a quarter on screen (90 = clockwise): swipes are read along the book's own axis */
+  rotate?: 0 | 90 | -90
   className?: string
 }) {
   const reduce = useReducedMotion()
@@ -45,7 +48,7 @@ export function Flipbook({
   const shadeFront = useTransform(turn, [0, -90], [0, 0.5])
   const shadeBack = useTransform(turn, [-90, -180], [0.5, 0])
   const cast = useTransform(turn, [0, -90, -180], [0, 0.32, 0])
-  const drag = useRef<number | null>(null)
+  const drag = useRef<{ x: number; y: number } | null>(null)
   const busy = useRef(false)
 
   // keep the resting position right when the index changes from outside (slider, thumbnails, full-screen reader)
@@ -108,14 +111,16 @@ export function Flipbook({
           if (e.key === 'ArrowRight') go(index + 1)
           if (e.key === 'ArrowLeft') go(index - 1)
         }}
-        onPointerDown={(e) => (drag.current = e.clientX)}
+        onPointerDown={(e) => (drag.current = { x: e.clientX, y: e.clientY })}
         onPointerUp={(e) => {
           if (drag.current === null) return
-          const dx = e.clientX - drag.current
+          const sx = e.clientX - drag.current.x
+          const sy = e.clientY - drag.current.y
           drag.current = null
+          const dx = rotate === 90 ? sy : rotate === -90 ? -sy : sx
           if (Math.abs(dx) > 60) go(index + (dx < 0 ? 1 : -1))
         }}
-        className="relative mx-auto aspect-[2/1] w-full select-none rounded-sm outline-none [perspective:2400px] focus-visible:ring-2 focus-visible:ring-[#d4673f]/50"
+        className={cn('relative mx-auto aspect-[2/1] w-full select-none rounded-sm outline-none [perspective:2400px] focus-visible:ring-2 focus-visible:ring-[#d4673f]/50', rotate ? 'touch-none' : 'touch-pan-y')}
       >
         <motion.div style={{ transform: frame, transformStyle: 'preserve-3d' }} className="absolute inset-0">
           {/* left page */}
