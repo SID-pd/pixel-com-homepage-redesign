@@ -283,6 +283,17 @@ function Studio({ draft }: { draft: Draft }) {
       await goNext('photos')
     })()
   }
+  // the express lane: skip the six questions, keep Pixie's defaults (auto pages, her design and title, current size and cover)
+  // and go straight to the photo check, where Build is one tap
+  const quickBuild = () => {
+    if (!claim()) return
+    you('Build it for me')
+    holdMood('excited', 1200)
+    void (async () => {
+      editing.current = null
+      await say(['On it! I’ll pick the pages, design and title. You can still change anything in the editor.', ...prompt('review', effOccasion)], 'review')
+    })()
+  }
   const pickTone = (t: StoryTone) => {
     setTone(t)
     holdMood('excited', 900)
@@ -446,9 +457,14 @@ function Studio({ draft }: { draft: Draft }) {
                 <p className="text-xs text-foreground/60" aria-live="polite">
                   {photos.length === 0 ? 'Add at least one photo to continue' : waitingCount > 0 ? `${photos.length - waitingCount} of ${photos.length} uploaded…` : `${photos.length} uploaded`}
                 </p>
-                <PrimaryButton disabled={photos.length === 0 || reading > 0} onClick={photosDone} className="shrink-0 px-6 sm:px-7">
-                  Continue
-                </PrimaryButton>
+                <div className="flex shrink-0 items-center gap-2">
+                  <GhostButton disabled={photos.length === 0 || reading > 0 || editing.current === 'photos'} onClick={quickBuild} className="bg-white px-4 shadow-sm">
+                    <Sparkles className="size-4" /> Build now
+                  </GhostButton>
+                  <PrimaryButton disabled={photos.length === 0 || reading > 0} onClick={photosDone} className="px-6 sm:px-7">
+                    Continue
+                  </PrimaryButton>
+                </div>
               </div>
             </div>
           </Reply>
@@ -541,13 +557,13 @@ function Studio({ draft }: { draft: Draft }) {
                   onManage={() => setManage(true)}
                 />
               )}
-              <div className="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-[var(--st-peach)]/60 pt-4">
+              <div className="sticky bottom-0 z-10 -mx-4 mt-5 flex flex-wrap items-center justify-between gap-3 rounded-b-3xl bg-white/95 px-4 py-3 backdrop-blur sm:-mx-5 sm:px-5">
                 <GhostButton onClick={() => edit('photos', 'Photos')}>
                   <ArrowLeft className="size-4" /> Add more photos
                 </GhostButton>
                 <div className="flex flex-wrap items-center gap-2">
                   {flaggedIds.length > 0 && (
-                    <button type="button" onClick={() => flaggedIds.forEach((id) => flow.removePhoto(id))} className="inline-flex h-11 items-center gap-2 rounded-full bg-[var(--st-peach)] px-5 text-sm font-semibold text-[var(--st-peach-ink)] transition hover:brightness-95 active:scale-95">
+                    <button type="button" onClick={() => flow.removePhotos(flaggedIds)} className="inline-flex h-11 items-center gap-2 rounded-full bg-[var(--st-peach)] px-5 text-sm font-semibold text-[var(--st-peach-ink)] transition hover:brightness-95 active:scale-95">
                       <Trash2 className="size-4" /> Remove suggested ({flaggedIds.length})
                     </button>
                   )}
@@ -657,7 +673,7 @@ function Studio({ draft }: { draft: Draft }) {
             onOpen={(id) => {
               setViewId(id)
             }}
-            onRemoveMany={(ids) => ids.forEach((id) => flow.removePhoto(id))}
+            onRemoveMany={(ids) => flow.removePhotos(ids)}
             onKeep={(id) => setIgnored((s) => new Set(s).add(id))}
             onUndoKeep={(id) =>
               setIgnored((s) => {

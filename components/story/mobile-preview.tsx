@@ -1,13 +1,15 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { motion } from 'motion/react'
-import { AlertTriangle, ArrowLeft, ArrowRight, BookOpen, Pencil, RotateCw, Rows3, Shuffle, Smartphone, X } from 'lucide-react'
+import { AlertTriangle, ArrowLeft, ArrowRight, BookOpen, ChevronLeft, ChevronRight, Pencil, RotateCw, Rows3, Shuffle, Smartphone, X } from 'lucide-react'
 import { flow, getState } from '@/lib/flow/store'
 import type { BookConfig, Photo, Spread } from '@/lib/flow/types'
 import { cn } from '@/lib/utils'
 import { PagesScroll } from './book-reader'
 import { Flipbook, spreadLabel } from './flipbook'
+import { StageBackdrop } from './stage-parts'
 import { SinglePageBook } from './single-page-book'
 import { useMediaQuery } from './use-media'
 import { usePreviewActions } from './use-preview-actions'
@@ -79,12 +81,12 @@ function shuffleAll() {
   flow.rebuildStory({ order, captions, title: d.config.title, pages: d.config.pages })
 }
 
-/** Sticky bottom bar: the two things you do with a finished book, always in reach. `dark` is for the landscape reader. */
-function ActionBar({ config, dark = false, className }: { config: BookConfig; dark?: boolean; className?: string }) {
+/** Sticky bottom bar: the two things you do with a finished book, always in reach. */
+function ActionBar({ config, className }: { config: BookConfig; className?: string }) {
   const { busy, checkout, edit } = usePreviewActions(config)
   return (
     <div className={cn('flex shrink-0 items-center gap-2', className)}>
-      <button type="button" onClick={edit} className={cn('inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-full px-5 text-[15px] font-semibold transition active:scale-95', dark ? 'bg-white/15 text-white' : 'bg-white text-[#16324f] shadow-sm')}>
+      <button type="button" onClick={edit} className="inline-flex h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-white px-5 text-[15px] font-semibold text-[#16324f] shadow-sm transition active:scale-95">
         <Pencil className="size-4" /> Edit
       </button>
       <button type="button" disabled={busy} onClick={checkout} className="inline-flex h-12 min-w-0 flex-1 items-center justify-center gap-2 rounded-full bg-[#d4673f] px-6 text-[15px] font-semibold text-white shadow-[0_10px_24px_-12px_rgba(212,103,63,0.9)] transition enabled:active:scale-[0.97] disabled:opacity-60">
@@ -96,11 +98,11 @@ function ActionBar({ config, dark = false, className }: { config: BookConfig; da
 
 const chip = 'inline-flex h-9 shrink-0 items-center justify-center gap-1.5 rounded-full px-3 text-xs font-semibold transition active:scale-95'
 
-function Tabs({ tab, onTab, dark = false }: { tab: 'flip' | 'scroll'; onTab: (t: 'flip' | 'scroll') => void; dark?: boolean }) {
-  const on = dark ? 'bg-white text-[#16324f]' : 'bg-[#16324f] text-white shadow-sm'
-  const off = dark ? 'text-white/75' : 'text-[#16324f]/70'
+function Tabs({ tab, onTab }: { tab: 'flip' | 'scroll'; onTab: (t: 'flip' | 'scroll') => void }) {
+  const on = 'bg-[#16324f] text-white shadow-sm'
+  const off = 'text-[#16324f]/70'
   return (
-    <div role="tablist" aria-label="How to look at your book" className={cn('grid grid-cols-2 gap-1 rounded-full p-1', dark ? 'bg-white/10' : 'bg-white/70')}>
+    <div role="tablist" aria-label="How to look at your book" className="grid grid-cols-2 gap-1 rounded-full bg-white/70 p-1">
       <button type="button" role="tab" aria-selected={tab === 'flip'} onClick={() => onTab('flip')} className={cn('inline-flex h-9 items-center justify-center gap-2 rounded-full px-4 text-[13px] font-semibold transition', tab === 'flip' ? on : off)}>
         <BookOpen className="size-4" /> Flip
       </button>
@@ -122,20 +124,21 @@ function LandscapeReader({ config, spreads, photos, index, onIndex, onClose, onS
   const turned = upright ? (tilt === 'cw' ? { ...base, transform: 'translateY(100dvh) rotate(-90deg)' } : { ...base, transform: 'translateX(100vw) rotate(90deg)' }) : undefined
 
   return (
-    <motion.div role="dialog" aria-modal="true" aria-label={`${config.title}, landscape view`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }} className="fixed inset-0 z-[75] bg-[#2b211c] text-white">
+    <motion.div role="dialog" aria-modal="true" aria-label={`${config.title}, landscape view`} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.25 }} className="fixed inset-0 z-[75] overflow-hidden text-[var(--st-ink)]">
+      <StageBackdrop />
       <div style={turned} className={cn('flex flex-col', !turned && 'absolute inset-0')}>
         <div className="flex shrink-0 items-center gap-2 px-3 pt-2">
           <div className="w-52 shrink-0">
-            <Tabs tab="flip" onTab={(t) => t === 'scroll' && onScroll()} dark />
+            <Tabs tab="flip" onTab={(t) => t === 'scroll' && onScroll()} />
           </div>
-          <p className="min-w-0 flex-1 truncate text-center text-xs font-semibold text-white/70">
+          <p className="min-w-0 flex-1 truncate text-center text-xs font-semibold text-[#16324f]/65">
             {spreadLabel(index)} · {index + 1}/{spreads.length}
           </p>
-          <button type="button" onClick={onShuffle} className={cn(chip, 'bg-white/15 text-white')}>
+          <button type="button" onClick={onShuffle} className={cn(chip, 'bg-white text-[#16324f] shadow-sm')}>
             <Shuffle className="size-3.5" /> Shuffle all
           </button>
           {closable && (
-            <button type="button" onClick={onClose} aria-label="Close landscape view" className="grid size-9 shrink-0 place-items-center rounded-full bg-white/15 transition active:scale-95">
+            <button type="button" onClick={onClose} aria-label="Close landscape view" className="grid size-9 shrink-0 place-items-center rounded-full bg-white text-[#16324f] shadow-sm transition active:scale-95">
               <X className="size-5" />
             </button>
           )}
@@ -148,8 +151,16 @@ function LandscapeReader({ config, spreads, photos, index, onIndex, onClose, onS
         </div>
 
         <div className="flex shrink-0 items-center gap-4 px-4 pb-2 pt-1">
-          <input type="range" min={0} max={last} value={index} onChange={(e) => onIndex(Number(e.target.value))} aria-label="Jump to a page" aria-valuetext={spreadLabel(index)} className="h-1.5 min-w-0 flex-1 cursor-pointer appearance-none rounded-full bg-white/20 accent-[#ffdcc6]" />
-          <ActionBar config={config} dark className="w-72 max-w-[55%] [&_button]:h-10" />
+          <div className="flex shrink-0 items-center gap-2">
+            <button type="button" onClick={() => onIndex(Math.max(0, index - 1))} disabled={index === 0} aria-label="Previous page" className="grid size-10 place-items-center rounded-full bg-white text-[#16324f] shadow-sm transition enabled:active:scale-95 disabled:opacity-35">
+              <ChevronLeft className="size-5" />
+            </button>
+            <button type="button" onClick={() => onIndex(Math.min(last, index + 1))} disabled={index >= last} aria-label="Next page" className="grid size-10 place-items-center rounded-full bg-white text-[#16324f] shadow-sm transition enabled:active:scale-95 disabled:opacity-35">
+              <ChevronRight className="size-5" />
+            </button>
+          </div>
+          <span className="min-w-0 flex-1" />
+          <ActionBar config={config} className="w-72 max-w-[55%] [&_button]:h-10" />
         </div>
       </div>
     </motion.div>
@@ -285,7 +296,7 @@ export function MobilePreview({ config, spreads, photos, onAddPhotos }: { config
 
       <ActionBar config={config} className="pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-1" />
 
-      {reader && <LandscapeReader config={config} spreads={spreads} photos={photos} index={i} onIndex={setSpread} onClose={closeReader} onScroll={toScroll} onShuffle={shuffle} closable={!sideways} tilt={tilt} />}
+      {reader && createPortal(<LandscapeReader config={config} spreads={spreads} photos={photos} index={i} onIndex={setSpread} onClose={closeReader} onScroll={toScroll} onShuffle={shuffle} closable={!sideways} tilt={tilt} />, document.body)}
     </div>
   )
 }

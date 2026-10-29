@@ -265,6 +265,24 @@ export const flow = {
     set({ draft: touch({ ...d, photos: d.photos.filter((p) => p.id !== id), spreads }) })
   },
 
+  /** Remove many photos in one update (one render, one save) instead of one call per photo. */
+  removePhotos(ids: string[]) {
+    const d = getState().draft
+    if (!d || !ids.length) return
+    const gone = new Set(ids)
+    const spreads = d.spreads.map((s) => ({
+      ...s,
+      items: s.items.map((i) => (i.photoId && gone.has(i.photoId) ? { ...i, photoId: null } : i)),
+    }))
+    for (const p of d.photos) {
+      if (gone.has(p.id) && p.kind === 'upload') {
+        void deletePhotoData(p.id)
+        void deleteThumbData(p.id)
+      }
+    }
+    set({ draft: touch({ ...d, photos: d.photos.filter((p) => !gone.has(p.id)), spreads }) })
+  },
+
   clearPhotos() {
     const d = getState().draft
     if (!d) return
