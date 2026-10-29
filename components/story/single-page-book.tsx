@@ -1,10 +1,11 @@
 'use client'
 
-import { useCallback, useRef, useState, type ReactNode } from 'react'
+import { useCallback, useEffect, useRef, useState, type ReactNode } from 'react'
 import { animate, motion, useMotionValue, useReducedMotion, useTransform } from 'motion/react'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import { SpreadView } from '@/components/flow/spread-view'
 import type { Photo, Spread } from '@/lib/flow/types'
+import { cn } from '@/lib/utils'
 
 const FLIP = 0.45
 const EASE = [0.45, 0.05, 0.25, 1] as const
@@ -17,11 +18,15 @@ type PageRef = { spread: number; side: 'cover' | 'left' | 'right' }
  * It is a flat slide (transform and opacity only, no 3D layers): a perspective page turn of two full-size pages is more than
  * a phone can paint smoothly.
  */
-export function SinglePageBook({ spreads, photos }: { spreads: Spread[]; photos: Photo[] }) {
+export function SinglePageBook({ spreads, photos, start = 0, onSpread, className }: { spreads: Spread[]; photos: Photo[]; /** spread to open on */ start?: number; /** reports which spread the visible page belongs to */ onSpread?: (spread: number) => void; className?: string }) {
   const reduce = useReducedMotion()
   const pages: PageRef[] = [{ spread: 0, side: 'cover' }, ...spreads.slice(1).flatMap((_, k): PageRef[] => [{ spread: k + 1, side: 'left' }, { spread: k + 1, side: 'right' }])]
   const last = pages.length - 1
-  const [index, setIndex] = useState(0)
+  const [index, setIndex] = useState(() => (start <= 0 ? 0 : Math.min(start * 2 - 1, last)))
+  useEffect(() => {
+    onSpread?.(pages[Math.min(index, last)]?.spread ?? 0)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [index])
   const [flip, setFlip] = useState<{ from: number; to: number } | null>(null)
   const turn = useMotionValue(0) // 0 flat, -180 turned over to the left
   const busy = useRef(false)
@@ -69,7 +74,7 @@ export function SinglePageBook({ spreads, photos }: { spreads: Spread[]; photos:
   const paper = 'absolute inset-0 overflow-hidden rounded-md bg-white'
 
   return (
-    <div className="w-full">
+    <div className={cn('w-full', className)}>
       <div
         tabIndex={0}
         role="group"
