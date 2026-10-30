@@ -4,11 +4,12 @@ import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { createPortal } from 'react-dom'
 import { motion } from 'motion/react'
-import { AlertTriangle, ArrowLeft, ArrowRight, BookOpen, ChevronLeft, ChevronRight, Pencil, RotateCw, Rows3, Shuffle, Smartphone, Sparkles, X } from 'lucide-react'
+import { AlertTriangle, ArrowLeft, ArrowRight, BookOpen, ChevronLeft, ChevronRight, Lock, LockOpen, Pencil, RefreshCw, RotateCw, Rows3, Shuffle, Smartphone, Sparkles, X } from 'lucide-react'
 import { AccountMenu } from '@/components/flow/account-menu'
 import { CartBadgeLink } from '@/components/flow/flow-shell'
 import { PixovoLogo } from '@/components/pixel/pixovo-logo'
 import { flow, getState } from '@/lib/flow/store'
+import { applyPhotoCaptions, captionIdeas, captionItem, type StoryTone } from '@/lib/flow/story'
 import type { BookConfig, Photo, Spread } from '@/lib/flow/types'
 import { cn } from '@/lib/utils'
 import { PagesScroll } from './book-reader'
@@ -67,23 +68,97 @@ async function allowSensor(): Promise<'ok' | 'blocked' | 'none'> {
   return 'ok'
 }
 
-/** Re-deals the photos across the book. Each caption stays with its photo. */
-function shuffleAll() {
+/** Re-deals the photos between the pages that are not locked. Locked pages stay as they are; each caption stays with its photo. */
+function shuffleAll(locked: Set<string>) {
   const d = getState().draft
   if (!d) return
   const captions: Record<string, string> = {}
-  for (const s of d.spreads) {
-    if (s.kind === 'cover') continue
-    const first = s.items.find((it) => it.type === 'photo' && it.photoId)?.photoId
-    const text = s.items.find((it) => it.type === 'text' && it.id.startsWith('c_'))?.text
-    if (first && text) captions[first] = text
-  }
-  const order = d.photos.map((p) => p.id)
-  for (let i = order.length - 1; i > 0; i--) {
+  const slots: { s: number; i: number }[] = []
+  d.spreads.forEach((s, si) => {
+    if (s.kind !== 'cover') {
+      const first = s.items.find((it) => it.type === 'photo' && it.photoId)?.photoId
+      const text = s.items.find((it) => it.type === 'text' && it.id.startsWith('c_'))?.text
+      if (first && text) captions[first] = text
+    }
+    if (locked.has(s.id)) return
+    s.items.forEach((it, ii) => {
+      if (it.type === 'photo' && it.photoId) slots.push({ s: si, i: ii })
+    })
+  })
+  const ids = slots.map(({ s, i }) => d.spreads[s].items[i].photoId as string)
+  for (let i = ids.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
-    ;[order[i], order[j]] = [order[j], order[i]]
+    ;[ids[i], ids[j]] = [ids[j], ids[i]]
   }
-  flow.rebuildStory({ order, captions, title: d.config.title, pages: d.config.pages })
+  const next = d.spreads.map((s) => ({ ...s, items: [...s.items] }))
+  slots.forEach(({ s, i }, k) => {
+    next[s].items[i] = { ...next[s].items[i], photoId: ids[k] }
+  })
+  flow.checkpoint()
+  flow.apply(() => applyPhotoCaptions(next, captions))
+}
+
+const AI_TONES: { id: StoryTone; label: string }[] = [
+  { id: 'warm', label: 'Warm' },
+  { id: 'playful', label: 'Playful' },
+  { id: 'poetic', label: 'Poetic' },
+  { id: 'minimal', label: 'Minimal' },
+]
+
+/** Caption for the page on screen: type your own, or open the AI ideas and tap one. */
+function CaptionEditor({ spread, label }: { spread: Spread; label: string }) {
+  const [ideasOpen, setIdeasOpen] = useState(false)
+  const [round, setRound] = useState(0)
+  const [tone, setTone] = useState<StoryTone>('warm')
+  const caption = spread.items.find((it) => it.type === 'text' && it.id.startsWith('c_'))
+  const hasPhoto = spread.items.some((it) => it.type === 'photo' && it.photoId)
+  if (spread.kind === 'cover' || !hasPhoto) return null
+
+  function setCaption(text: string) {
+    flow.apply((all) =>
+      all.map((s) => {
+        if (s.id !== spread.id) return s
+        if (caption) return { ...s, items: s.items.map((it) => (it.id === caption.id ? { ...it, text } : it)) }
+        return text ? { ...s, items: [...s.items, captionItem(text)] } : s
+      }),
+    )
+  }
+
+  return (
+    <div className="mx-auto mt-1 w-full max-w-sm shrink-0">
+      <div className="flex items-center gap-1.5">
+        <label className="flex min-w-0 flex-1 items-center gap-2 rounded-full bg-white/80 px-4 py-1.5 focus-within:bg-white focus-within:ring-2 focus-within:ring-[#d4673f]/50">
+          <Pencil className="size-3.5 shrink-0 text-[#16324f]/40" aria-hidden />
+          <span className="sr-only">Caption for {label}</span>
+          <input value={caption?.text ?? ''} onChange={(e) => setCaption(e.target.value)} placeholder="Type a caption…" maxLength={90} className="w-full bg-transparent text-center font-[family-name:var(--font-hand)] text-xl outline-none placeholder:text-[#16324f]/35" />
+        </label>
+        <button type="button" aria-pressed={ideasOpen} aria-label="AI caption ideas" onClick={() => setIdeasOpen((o) => !o)} className={cn('grid size-10 shrink-0 place-items-center rounded-full shadow-sm transition active:scale-95', ideasOpen ? 'bg-[#16324f] text-white' : 'bg-white text-[#16324f]')}>
+          <Sparkles className="size-4" />
+        </button>
+      </div>
+      {ideasOpen && (
+        <div className="mt-1.5 rounded-2xl bg-white/80 p-2">
+          <div className="flex items-center gap-1">
+            {AI_TONES.map((t) => (
+              <button key={t.id} type="button" onClick={() => { setTone(t.id); setRound(0) }} className={cn('h-7 rounded-full px-2.5 text-[11px] font-semibold transition', tone === t.id ? 'bg-[#16324f] text-white' : 'bg-[#16324f]/8 text-[#16324f]/70')}>
+                {t.label}
+              </button>
+            ))}
+            <button type="button" aria-label="More ideas" onClick={() => setRound((r) => r + 1)} className="ml-auto grid size-7 place-items-center rounded-full bg-[#16324f]/8 text-[#16324f] transition active:scale-95">
+              <RefreshCw className="size-3.5" />
+            </button>
+          </div>
+          <div className="mt-1.5 flex flex-col gap-1">
+            {captionIdeas(round, 4, tone).map((line) => (
+              <button key={line} type="button" onClick={() => { setCaption(line); setIdeasOpen(false) }} className="rounded-xl bg-white px-3 py-1.5 text-left font-[family-name:var(--font-hand)] text-lg leading-tight text-[#16324f] shadow-sm transition active:scale-[0.98]">
+                {line}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  )
 }
 
 /** Sticky bottom bar: the two things you do with a finished book, always in reach. */
@@ -192,6 +267,7 @@ export function MobilePreview({ config, spreads, photos, onAddPhotos }: { config
   const [dismissed, setDismissed] = useState(false)
   const [sync, setSync] = useState(0)
   const [note, setNote] = useState<string | null>(null)
+  const [locked, setLocked] = useState<Set<string>>(() => new Set())
   const sideways = useMediaQuery('(orientation: landscape)')
   const tilt = useTilt(auto)
   const last = Math.max(0, spreads.length - 1)
@@ -248,19 +324,21 @@ export function MobilePreview({ config, spreads, photos, onAddPhotos }: { config
     setTab('scroll')
   }
   function shuffle() {
-    shuffleAll()
-    setSpread(0)
+    shuffleAll(locked)
     setSync((n) => n + 1)
+  }
+  function toggleLock() {
+    const id = spreads[i]?.id
+    if (!id) return
+    setLocked((prev) => {
+      const next = new Set(prev)
+      if (!next.delete(id)) next.add(id)
+      return next
+    })
   }
 
   const reader = tab === 'flip' && (asked || sideways || (auto && phoneSide && !dismissed))
-  const caption = spreads[i]?.items.find((it) => it.type === 'text' && it.id.startsWith('c_'))
-
-  function setCaption(text: string) {
-    const sp = spreads[i]
-    if (!sp || !caption) return
-    flow.apply((all) => all.map((s) => (s.id !== sp.id ? s : { ...s, items: s.items.map((it) => (it.id === caption.id ? { ...it, text } : it)) })))
-  }
+  const pageLocked = !!spreads[i] && locked.has(spreads[i].id)
 
   return (
     <div className="flex h-full min-h-0 flex-col px-3">
@@ -272,8 +350,11 @@ export function MobilePreview({ config, spreads, photos, onAddPhotos }: { config
         <button type="button" onClick={onAddPhotos} className={cn(chip, 'bg-white text-[#16324f] shadow-sm')}>
           <ArrowLeft className="size-3.5" /> Photos
         </button>
-        <button type="button" onClick={shuffle} className={cn(chip, 'bg-white text-[#16324f] shadow-sm')}>
-          <Shuffle className="size-3.5" /> Shuffle all
+        <button type="button" onClick={shuffle} aria-label="Shuffle all unlocked pages" title="Shuffle" className={cn(chip, 'w-9 bg-white px-0 text-[#16324f] shadow-sm')}>
+          <Shuffle className="size-4" />
+        </button>
+        <button type="button" onClick={toggleLock} aria-pressed={pageLocked} aria-label={pageLocked ? 'Unlock this page' : 'Lock this page so Shuffle skips it'} title={pageLocked ? 'Unlock page' : 'Lock page'} className={cn(chip, 'w-9 px-0', pageLocked ? 'bg-[#d4673f] text-white' : 'bg-white text-[#16324f] shadow-sm')}>
+          {pageLocked ? <Lock className="size-4" /> : <LockOpen className="size-4" />}
         </button>
         <button type="button" onClick={openReader} className={cn(chip, 'ml-auto bg-white text-[#16324f] shadow-sm')}>
           <RotateCw className="size-3.5" /> Rotate
@@ -300,13 +381,7 @@ export function MobilePreview({ config, spreads, photos, onAddPhotos }: { config
               <SinglePageBook key={sync} spreads={spreads} photos={photos} start={i} onSpread={setSpread} className="max-w-[min(100cqw,calc(100cqh-4.5rem))]" />
             </div>
           </div>
-          {caption && (
-            <label className="mx-auto mt-1 flex w-full max-w-sm shrink-0 items-center gap-2 rounded-full bg-white/80 px-4 py-1.5 focus-within:bg-white focus-within:ring-2 focus-within:ring-[#d4673f]/50">
-              <Pencil className="size-3.5 shrink-0 text-[#16324f]/40" aria-hidden />
-              <span className="sr-only">Caption for {spreadLabel(i)}</span>
-              <input value={caption.text ?? ''} onChange={(e) => setCaption(e.target.value)} maxLength={90} className="w-full bg-transparent text-center font-[family-name:var(--font-hand)] text-xl outline-none" />
-            </label>
-          )}
+          {spreads[i] && <CaptionEditor key={spreads[i].id} spread={spreads[i]} label={spreadLabel(i)} />}
           <p role="status" className={cn('shrink-0 pb-1 pt-1 text-center text-[11px]', note?.startsWith('Motion') || note?.startsWith('This') ? 'font-semibold text-[#b4532a]' : 'text-[#16324f]/55')}>
             {note ?? 'Tap Rotate, or turn your phone sideways, for the whole spread'}
           </p>

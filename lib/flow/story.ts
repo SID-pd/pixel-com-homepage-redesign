@@ -168,7 +168,15 @@ export function captionsFor(
   return out
 }
 
-function captionItem(text: string): Item {
+/** A handful of ready-made caption ideas to pick from; `round` rotates which ones come up so "More ideas" gives fresh lines. */
+export function captionIdeas(round = 0, count = 4, tone?: StoryTone): string[] {
+  const tones = tone ? [tone] : (Object.keys(TONE_LINES) as StoryTone[])
+  const pool = [...new Set(tones.flatMap((t) => TONE_LINES[t]).concat(OCCASION_LINES.general))]
+  return Array.from({ length: Math.min(count, pool.length) }, (_, k) => pool[(round * count + k * 3) % pool.length])
+    .filter((l, k, a) => a.indexOf(l) === k)
+}
+
+export function captionItem(text: string): Item {
   return { id: uid('c'), type: 'text', x: 10, y: 93, w: 80, h: 6, rotation: 0, text, font: 'sans', color: '#5a504a', size: 20, align: 'center', italic: true }
 }
 
