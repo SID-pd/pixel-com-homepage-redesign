@@ -172,8 +172,7 @@ export function captionsFor(
 export function captionIdeas(round = 0, count = 4, tone?: StoryTone): string[] {
   const tones = tone ? [tone] : (Object.keys(TONE_LINES) as StoryTone[])
   const pool = [...new Set(tones.flatMap((t) => TONE_LINES[t]).concat(OCCASION_LINES.general))]
-  return Array.from({ length: Math.min(count, pool.length) }, (_, k) => pool[(round * count + k * 3) % pool.length])
-    .filter((l, k, a) => a.indexOf(l) === k)
+  return Array.from({ length: Math.min(count, pool.length) }, (_, k) => pool[(round * count + k) % pool.length])
 }
 
 export function captionItem(text: string): Item {
